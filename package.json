@@ -1,0 +1,23 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "DataBase Project - Semester 4",
+  "main": "index.js",
+  "scripts": {
+    "test": "server.js",
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sem3db/dbproject.git"
+  },
+  "author": "Dakshitha Suriyaaratchie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sem3db/dbproject/issues"
+  },
+  "homepage": "https://github.com/sem3db/dbproject#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
