@@ -1,7 +1,14 @@
+const mysql = require("mysql");
+const bodyParser = require("body-parser");
+const colors = require('colors')
 const express = require("express");
+const dotenv = require("dotenv");
 const products = require("./data/products");
-
+const mysqlConnection = require("./config/db");
+dotenv.config();
 const app = express();
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => {
   res.send("API is running");
 });
@@ -13,4 +20,5 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-app.listen(5000, console.log("Server running on port 5000..."));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, console.log(`Server running on port ${PORT}...`.yellow.bold));

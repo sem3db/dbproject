@@ -1,5 +1,5 @@
 import React, {useState, useEffect } from "react";
-import { Link, matchPath } from "react-router-dom";
+import { Link} from "react-router-dom";
 import axios from 'axios'
 import {
   Row,
@@ -7,8 +7,7 @@ import {
   Image,
   ListGroup,
   Card,
-  Button,
-  ListGroupItem,
+  Button
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 
@@ -20,7 +19,7 @@ import Rating from "../components/Rating";
         setProduct(data)
       }
       fetchProduct()
-    }, []);
+    }, [match]);
   return (
     <>
       <Link className="btn btn-dark my-3" to="/">
