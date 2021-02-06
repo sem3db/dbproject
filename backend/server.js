@@ -20,6 +20,10 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 app.get("/api/products", (req, res) => {
+    // res.status(401)
+    // res.statusText="llllllllll"
+    // res.statusMessage='email already used';
+    // throw new Error('Some error')
   res.json(products);
 });
 app.get("/api/products/:id", (req, res) => {
