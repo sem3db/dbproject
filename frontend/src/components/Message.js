@@ -1,9 +1,9 @@
 import React from 'react'
 import {Alert} from 'react-bootstrap'
-const Message = ({variant,Children}) => {
+const Message = ({variant,children}) => {
     return (
         <Alert variant={variant}>
-            {Children}
+            {children}
         </Alert>
     )
 }

@@ -1,9 +1,8 @@
-import React, {useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { Link} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Rating from "../components/Rating";
 import Message from "../components/Message"
-import Loader from "../components/Loader"
+// import Loader from "../components/Loader"
 import { addToCart , removeFromCart} from "../action/cartAction";
 import {
   Row,
