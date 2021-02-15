@@ -1,1 +1,0 @@
-const mysqlConnection = mysql.create

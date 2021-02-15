@@ -1,39 +1,23 @@
-const mysql = require("mysql");
-const bodyParser = require("body-parser");
-const colors = require("colors");
-const express = require("express");
-const dotenv = require("dotenv");
-//const products = require("./data/products");
-const mysqlConnection = require("./config/db");
+const express =require('express');
+const dotenv=require('dotenv');
 
-var authController = require("./routes/authController");
+const userRouter=require( './routers/customerRouter.js');
 
 dotenv.config();
+
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// app.use(app.router);
-// routes.initialize(app);
 
-app.use(bodyParser.json());
+app.use('/api/customer', userRouter);
 
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-app.get("/api/products", (req, res) => {
-    // res.status(401)
-    // res.statusText="llllllllll"
-    // res.statusMessage='email already used';
-    // throw new Error('Some error')
-  res.json(products);
-});
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
 
-app.use("/auth", authController);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, console.log(`Server running on port ${PORT}...`.yellow.bold));
-
-// app.listen(3000);
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Serve at http://localhost:${port}`);
+});
