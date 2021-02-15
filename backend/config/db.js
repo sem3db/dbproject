@@ -5,7 +5,7 @@ const mysqlConnection = mysql.createConnection({
   host: "localhost",
   user: "sem4db",
   password: "pass",
-  database: "dbproject2",
+  database: "dbproject",
   // host: process.env.DB_HOST,
   // user: process.env.DB_USER,
   // password: process.env.DB_PASSWORD,
@@ -14,7 +14,7 @@ const mysqlConnection = mysql.createConnection({
 });
 mysqlConnection.connect((err) => {
   if (!err) {
-    console.log("DataBase Connected".cyan.underline);
+    console.log("DataBase Connected".green.bold);
   } else {
     console.log("DataBase Connection Failed ".red.bold +"with Error code "+ err.code.magenta.bold);
   }
