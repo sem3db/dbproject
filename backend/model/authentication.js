@@ -7,6 +7,7 @@ async function login(method) {
 
   const username = body.username;
   const password = body.password;
+  
   connection.query(
     "SELECT username, password FROM user_table where username=?",
     [username],
