@@ -2,6 +2,7 @@ const express =require('express');
 const dotenv=require('dotenv');
 
 const userRouter=require( './routers/customerRouter.js');
+const productRouter=require('./routers/productRouter.js');
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api/customer', userRouter);
+app.use('/api/products', productRouter);
 
 
 app.use((err, req, res, next) => {
