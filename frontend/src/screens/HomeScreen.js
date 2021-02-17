@@ -6,13 +6,16 @@ import Message from "../components/Message"
 import Loader from "../components/Loader"
 import { listProducts } from "../action/productAction";
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
+  const cat = match.params.cat ? match.params.cat:" "
   const productList=useSelector(state=>state.productList)
   const {loading, error, products} =productList
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch])
+    if(cat){
+      dispatch(listProducts(cat))
+    }
+  }, [dispatch,cat])
 
   return (
     <>
@@ -29,3 +32,6 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+
+

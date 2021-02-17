@@ -17,10 +17,10 @@ import {
     PRODUCT_DELETE_SUCCESS,
 } from '../constants/productConstants'
 
-export const listProducts = () => async (dispatch) =>{
+export const listProducts = (cat) => async (dispatch) =>{
     try{
         dispatch({type:PRODUCT_LIST_REQUEST})
-        const {data} = await axios.get('/api/products')
+        const {data} = await axios.get(`/api/products/${cat}`)
         dispatch({
             type:PRODUCT_LIST_SUCCESS,
             payload:data
@@ -37,7 +37,7 @@ export const listProducts = () => async (dispatch) =>{
 export const listProductDetails = (id) => async (dispatch) =>{
     try{
         dispatch({type:PRODUCT_DETAILS_REQUEST})
-        const {data} = await axios.get(`/api/products/${id}`)
+        const {data} = await axios.get(`/api/product/${id}`)
         dispatch({
             type:PRODUCT_DETAILS_SUCCESS,
             payload:data

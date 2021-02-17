@@ -1,7 +1,6 @@
 const {hash} = require("bcryptjs");
 const {executeSQL} = require("../database/dbQuery.js");
 
-
 const ACCESS_TOKEN_SECRECT = "DBProject";
 
 async function loginIn(email){
@@ -51,9 +50,6 @@ async function getCustomers(){
         return("Error");
     }
 };
-
-
-
 
 
 

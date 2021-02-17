@@ -7,7 +7,6 @@ const { generateToken} =require( '../utils.js');
 
 const userRouter = express.Router();
 
-
 userRouter.post(
   '/signin',
   expressAsyncHandler(async (req, res) => {

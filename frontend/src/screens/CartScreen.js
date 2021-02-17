@@ -1,9 +1,8 @@
-import React, {useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { Link} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Rating from "../components/Rating";
 import Message from "../components/Message"
-import Loader from "../components/Loader"
+// import Loader from "../components/Loader"
 import { addToCart , removeFromCart} from "../action/cartAction";
 import {
   Row,
@@ -17,6 +16,7 @@ import {
 
 const CartScreen = ({match,location,history})=>{
     const productId = match.params.id
+    // console.log
     const qty = location.search ? Number(location.search.split('=')[1]):1
     const dispatch = useDispatch()
     const cart = useSelector(state=>state.cart)
@@ -33,7 +33,8 @@ const CartScreen = ({match,location,history})=>{
         dispatch(removeFromCart(id))
     }
     const checkoutHandler =()=>{
-        history.push('/login?redirect=shipping')
+        // history.push('/login?redirect=shipping')
+        history.push('/shipping')
     }
 
     return <Row>
@@ -87,3 +88,4 @@ const CartScreen = ({match,location,history})=>{
     </Row>
 }
 export default CartScreen;
+
