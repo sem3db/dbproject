@@ -1,15 +1,37 @@
-import express from 'express'
-import Product from '../models/productModel'
+const express =require('express');
+const expressAsyncHandler =require('express-async-handler');
+const bcrypt =require('bcryptjs');
+const{findProductById,getProducts} =require( '../models/productModel.js');
 
-const router = express.Router()
+const productRouter = express.Router();
 
-router.get("/products", (req, res) => {
-    const products=await Product.find({})
-  res.json(products);
-});
-router.get("/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+productRouter.get(
+  '/',
+  expressAsyncHandler(async (req, res) => {
+    const products = await getProducts();
+    res.send({ products });
+  })
+);
 
-export default router
+productRouter.get(
+  '/categories',
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
+  })
+);
+
+productRouter.get(
+  '/:id',
+  expressAsyncHandler(async (req, res) => {
+    const product = await findProductById(req.params.id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+
+
+module.exports = productRouter;
