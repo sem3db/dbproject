@@ -1,8 +1,5 @@
-import React, {useState, useEffect } from "react";
-import { Link} from "react-router-dom";
+import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Rating from "../components/Rating";
-import Message from "../components/Message"
 import CheckoutSteps from "../components/CheckoutSteps"
 import {savePaymentMethod} from "../action/cartAction";
 import {

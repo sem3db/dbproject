@@ -19,48 +19,22 @@ const Header = () => {
             <Navbar.Brand>Shop - C</Navbar.Brand>
           </LinkContainer>
 
-
-          {/* <Nav >
-          <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/a">Product1</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/a">Product2</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/">Product3</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/c">Product4</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/d">Product5</Nav.Link>
-            </Nav.Item>
-          </Nav> */}
-
-
-
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-
-          <Nav className=".d-none">
-          <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/a">Product1</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/a">Product2</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/">Product3</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/c">Product4</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="btn btn-secondary" href="/d">Product5</Nav.Link>
-            </Nav.Item>
-          </Nav>
-
+            <Nav className=".d-none">
+              <LinkContainer to="/products/camera">
+                <Nav.Link className="btn btn-secondary">Camera</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/products/phone">
+                <Nav.Link className="btn btn-secondary">Phone</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/products/laptop">
+                <Nav.Link className="btn btn-secondary">Laptop</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/products/watch">
+                <Nav.Link className="btn btn-secondary">Watch</Nav.Link>
+              </LinkContainer>
+            </Nav>
 
             <Nav className="ml-auto">
               <LinkContainer to="/cart">

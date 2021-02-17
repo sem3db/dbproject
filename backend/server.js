@@ -1,28 +1,43 @@
-const mysql = require("mysql");
-const bodyParser = require("body-parser");
+const express =require('express');
+const dotenv=require('dotenv');
 const colors = require('colors')
-const express = require("express");
-const dotenv = require("dotenv");
-const products = require("./data/products");
-const mysqlConnection = require("./config/db");
+
+const userRouter=require( './routers/customerRouter.js');
+const bodyParser = require('body-parser');
+
 dotenv.config();
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ============================USE THIS FORMAT TO RETRIVE PRODUCT DATA ===========================================
+// /api/products -> PRODUCT OVERVIEW (MOST DEMANDED, LATEST PRODUCTS)
+// /api/products(category) -> PRODUCTS OF PARTICULAR category
+// /api/product/id -> PARTICULAR PRODUCT DETAILS
+
+const products = require("./data/products");
 
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 app.get("/api/products", (req, res) => {
-    // res.status(401)
-    // res.statusText="llllllllll"
-    // res.statusMessage='email already used';
-    // throw new Error('Some error')
+
   res.json(products);
 });
-app.get("/api/products/:id", (req, res) => {
+app.get("/api/product/:id", (req, res) => {
   const product = products.find((p) => p._id === req.params.id);
   res.json(product);
+});
+// ========================================
+
+app.use('/api/customer', userRouter);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running on port ${PORT}...`.yellow.bold));
+
+
+

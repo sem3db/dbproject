@@ -1,8 +1,8 @@
-import React, {useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps"
 import {Link} from "react-router-dom"
-import { saveShippingAddress} from "../action/cartAction";
+// import { saveShippingAddress} from "../action/cartAction";
 import {
   Row,
   Col,

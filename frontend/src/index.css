@@ -15,3 +15,78 @@ h2{
     font-size: 1.4rem;
     padding: 0.5rem 0;
 }
+
+/* Admin */
+/* Dropdown */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+.dropdown-content {
+    position: absolute;
+    display: none;
+    right: 0;
+    min-width: 12rem;
+    padding: 1rem;
+    z-index: 1;
+    background-color: #203040;
+    margin: 0;
+    margin-top: 0.4rem;
+    border-radius: 0.5rem;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Admin Table */
+.admin .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.admin .table tbody tr:nth-of-type(odd) {
+    background-color: #f4f4f4;
+}
+.admin .table td,
+.admin .table th {
+    text-align: left;
+    border: 0.1rem solid #e4e4e4;
+}
+.admin .table button {
+    margin: 0 0.2rem;
+}
+
+.admin .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Admin Form */
+.admin .form {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+.admin .form > div {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+.admin .form label {
+    margin: 1rem 0;
+}
+
+.admin button {
+    border: 0.125rem #949494 solid;
+    background-color: #f8f8f8;
+    cursor: pointer;
+}
+.admin input:hover,
+.admin select:hover,
+.admin textarea:hover,
+.admin button:hover {
+    border: 0.1rem #404040 solid;
+}
+.admin button.primary {
+    background-color: #f0c040;
+}
