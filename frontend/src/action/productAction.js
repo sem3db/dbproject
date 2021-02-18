@@ -36,7 +36,7 @@ const productdata = [
     color: 'v-color',
     size: 'v-size',
     no_stock: 'v-stock',
-    product_image: '/images/p1.jpg',
+    image_url: '/images/p1.jpg',
   },
   { _id: 2,
     product_name: 'p-name',
@@ -56,7 +56,7 @@ const productdata = [
     color: 'v-color2',
     size: 'v-size2',
     no_stock: 'v-stock2',
-    product_image: '/images/p2.jpg',
+    image_url: '/images/p2.jpg',
   }
 ]
 

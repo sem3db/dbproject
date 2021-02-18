@@ -25,7 +25,7 @@ export default function ProductEditScreen(props) {
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
   const [no_stock, setNo_stock] = useState('');
-  const [product_image, setProduct_image] = useState('');
+  const [image_url, setImage_url] = useState('');
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -63,7 +63,7 @@ export default function ProductEditScreen(props) {
       setColor(product.color);
       setSize(product.size);
       setNo_stock(product.no_stock);
-      setProduct_image(product.product_image);
+      setImage_url(product.image_url);
     }
   }, [product, dispatch, productId, successUpdate, props.history]);
   const submitHandler = (e) => {
@@ -89,7 +89,7 @@ export default function ProductEditScreen(props) {
         color,
         size,
         no_stock,
-        product_image,
+        image_url,
       })
     );
   };
@@ -101,11 +101,11 @@ export default function ProductEditScreen(props) {
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('product_image', file);
+    bodyFormData.append('image_url', file);
     setLoadingUpload(true);
     try {
       const { data } = await Axios.post('/api/uploads', bodyFormData);
-      setProduct_image(data);
+      setImage_url(data);
       setLoadingUpload(false);
     } catch (error) {
       setErrorUpload(error.message);
@@ -159,13 +159,23 @@ export default function ProductEditScreen(props) {
               ></input>
             </div>
             <div>
-              <label htmlFor="category_name">Category_name</label>
+              <label htmlFor="dimension">Dimension</label>
               <input
-                id="category_name"
+                id="dimension"
                 type="text"
-                placeholder="Enter Category_name"
-                value={category_name}
-                onChange={(e) => setCategory_name(e.target.value)}
+                placeholder="Enter Dimension"
+                value={dimension}
+                onChange={(e) => setDimension(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="brand">Brand</label>
+              <input
+                id="brand"
+                type="text"
+                placeholder="Enter brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
               ></input>
             </div>
             <div>
@@ -178,25 +188,75 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setCategory_name(e.target.value)}
               ></input>
             </div>
-            
             <div>
-              <label htmlFor="price">Price</label>
+              <label htmlFor="category_description">Category_description</label>
               <input
-                id="price"
+                id="category_description"
                 type="text"
-                placeholder="Enter price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                placeholder="Enter Category_description"
+                value={category_description}
+                onChange={(e) => setCategory_description(e.target.value)}
               ></input>
             </div>
             <div>
-              <label htmlFor="product_image">product_image</label>
+              <label htmlFor="subcat_name">Subcategory_name</label>
               <input
-                id="product_image"
+                id="subcat_name"
                 type="text"
-                placeholder="Enter product_image"
-                value={product_image}
-                onChange={(e) => setProduct_image(e.target.value)}
+                placeholder="Enter Subcategory_name"
+                value={subcat_name}
+                onChange={(e) => setSubcat_name(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="supplier_name">Supplier_name</label>
+              <input
+                id="supplier_name"
+                type="text"
+                placeholder="Enter Supplier_name"
+                value={supplier_name}
+                onChange={(e) => setSupplier_name(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="contact_number">Contact_number</label>
+              <input
+                id="contact_number"
+                type="text"
+                placeholder="Enter Contact_number"
+                value={contact_number}
+                onChange={(e) => setContact_number(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="text"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="SKU">SKU</label>
+              <input
+                id="SKU"
+                type="text"
+                placeholder="Enter SKU"
+                value={SKU}
+                onChange={(e) => setSKU(e.target.value)}
+              ></input>
+            </div>
+
+            <div>
+              <label htmlFor="image_url">image_url</label>
+              <input
+                id="image_url"
+                type="text"
+                placeholder="Enter image_url"
+                value={image_url}
+                onChange={(e) => setImage_url(e.target.value)}
               ></input>
             </div>
             <div>
@@ -212,15 +272,44 @@ export default function ProductEditScreen(props) {
                 <Message variant="danger">{errorUpload}</Message>
               )}
             </div>
-
             <div>
-              <label htmlFor="brand">Brand</label>
+              <label htmlFor="price">Price</label>
               <input
-                id="brand"
+                id="price"
                 type="text"
-                placeholder="Enter brand"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+                placeholder="Enter Price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="offer">Offer</label>
+              <input
+                id="offer"
+                type="text"
+                placeholder="Enter Offer"
+                value={offer}
+                onChange={(e) => setOffer(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="color">Color</label>
+              <input
+                id="color"
+                type="text"
+                placeholder="Enter Color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="size">Size</label>
+              <input
+                id="size"
+                type="text"
+                placeholder="Enter Size"
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
               ></input>
             </div>
             <div>
