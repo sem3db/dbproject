@@ -59,7 +59,7 @@ export const productCreateReducer = (state = {}, action) => {
         return state;
     }
 };
-   
+
 export const productUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case PRODUCT_UPDATE_REQUEST:

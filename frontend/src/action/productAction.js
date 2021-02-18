@@ -17,7 +17,47 @@ import {
     PRODUCT_DELETE_SUCCESS,
 } from '../constants/productConstants'
 
-export const listProducts = (cat) => async (dispatch) =>{
+export const listProducts = () => async (dispatch) =>{
+  try{
+      dispatch({type:PRODUCT_LIST_REQUEST})
+      // const {data} = await axios.get('/api/products')
+      const data = [{ _id: 1,
+        name: 'Nike Slim Shirt',
+        category: 'Shirts',
+        image: '/images/p1.jpg',
+        price: 120,
+        countInStock: 10,
+        brand: 'Nike',
+        rating: 4.5,
+        numReviews: 10,
+        description: 'high quality product',
+      },
+      { _id: 2,
+        name: 'Adidas Fit Shirt',
+        category: 'Shirts',
+        image: '/images/p2.jpg',
+        price: 100,
+        countInStock: 20,
+        brand: 'Adidas',
+        rating: 4.0,
+        numReviews: 10,
+        description: 'high quality product',
+      }];
+      dispatch({
+          type:PRODUCT_LIST_SUCCESS,
+          payload:data
+      })
+  }
+  catch(error){
+      console.log(error)
+      dispatch({
+          type:PRODUCT_LIST_FAIL,
+          payload : error.response && error.response.data.message ? error.response.data.message: error.message
+      })
+  }
+}
+
+export const listProductsCat = (cat) => async (dispatch) =>{
     try{
         dispatch({type:PRODUCT_LIST_REQUEST})
         const {data} = await axios.get(`/api/products/${cat}`)

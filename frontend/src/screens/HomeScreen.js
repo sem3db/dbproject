@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProducts } from "../action/productAction";
+import { listProductsCat } from "../action/productAction";
 
 const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const HomeScreen = ({match}) => {
   const {loading, error, products} =productList
   useEffect(() => {
     if(cat){
-      dispatch(listProducts(cat))
+      dispatch(listProductsCat(cat))
     }
   }, [dispatch,cat])
 
@@ -32,6 +32,3 @@ const HomeScreen = ({match}) => {
 };
 
 export default HomeScreen;
-
-
-
