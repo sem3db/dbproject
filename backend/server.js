@@ -1,10 +1,11 @@
-const express =require('express');
-const dotenv=require('dotenv');
-const colors = require('colors')
+const express = require("express");
+const dotenv = require("dotenv");
+const colors = require("colors");
 
-const userRouter=require( './routers/customerRouter.js');
-const bodyParser = require('body-parser');
-const productRouter=require('./routers/productRouter.js');
+const userRouter = require("./routers/customerRouter.js");
+const adminRouter = require("./routers/adminRouter");
+const bodyParser = require("body-parser");
+const productRouter = require("./routers/productRouter.js");
 
 dotenv.config();
 const app = express();
@@ -28,9 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 //   res.json(product);
 // });
 // =================================================================================================================
-app.use('/api/customer', userRouter);
-app.use('/api/products', productRouter);
-
+app.use("/api/customer", userRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/products", productRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
