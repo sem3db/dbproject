@@ -1,23 +1,38 @@
 let mysql = require('mysql');
 
-var pool = mysql.createPool({
+var adminpool = mysql.createPool({
     connectionLimit: 5,
     host: 'localhost',
-    user: 'root',
-    password: '', 
+    user: 'admin',
+    password: 'admin_password', 
+    database: 'cse_21'
+});
+
+var customerpool = mysql.createPool({
+    connectionLimit: 5,
+    host: 'localhost',
+    user: 'customer',
+    password: 'customer_password', 
     database: 'cse_21'
 });
 
 
 
-module.exports=pool;
+module.exports={adminpool,customerpool};
 
 
-// let config = {
+// let adminUser = {
 //     host    : 'localhost',
-//     user    : 'root',
-//     password: '',
+//     user    : 'admin',
+//     password: 'admin_password',
 //     database: 'cse_21'
-//   };
+// };
+
+// let customerUser = {
+// host    : 'localhost',
+// user    : 'customer',
+// password: 'customer_password',
+// database: 'cse_21'
+// };
   
-//   module.exports = config;
+// module.exports = {adminUser,customerUser};

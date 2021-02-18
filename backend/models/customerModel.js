@@ -1,12 +1,12 @@
 const {hash} = require("bcryptjs");
-const {executeSQL} = require("../database/dbQuery.js");
+const {customerExecuteSQL} = require("../database/dbQuery.js");
 
 const ACCESS_TOKEN_SECRECT = "DBProject";
 
 async function loginIn(email){
     try{       
 
-        const credential = await executeSQL('SELECT email , password, first_name, last_name FROM registered_customer WHERE email =?',[email]);
+        const credential = await customerExecuteSQL('SELECT email , password, first_name, last_name FROM registered_customer WHERE email =?',[email]);
             
 
         return ( credential);
@@ -20,7 +20,7 @@ async function loginIn(email){
 async function register(reg_id,email,password, fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId){   
     
     try{
-        const data = await executeSQL('SELECT email FROM registered_customer WHERE email = ?',[this.email]);
+        const data = await customerExecuteSQL('SELECT email FROM registered_customer WHERE email = ?',[this.email]);
         
         if(data[0]){
 
@@ -28,7 +28,7 @@ async function register(reg_id,email,password, fName,lName,zipCode,addressLine1,
         
         }else{
             
-            await executeSQL('INSERT INTO registered_customer VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[reg_id,email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId]);
+            await customerExecuteSQL('INSERT INTO registered_customer VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[reg_id,email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId]);
             
             console.log(fName+" "+lName+ " successfuly added");
             return ("Customer added");
@@ -43,7 +43,7 @@ async function register(reg_id,email,password, fName,lName,zipCode,addressLine1,
 
 async function getCustomers(){
     try{
-        const data = await executeSQL('SELECT first_name, last_name FROM registered_customer');
+        const data = await customerExecuteSQL('SELECT first_name, last_name FROM registered_customer');
         return(data);
     }catch(e){
         console.log(e);
