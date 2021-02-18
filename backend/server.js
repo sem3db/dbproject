@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // /api/products -> PRODUCT OVERVIEW (MOST DEMANDED, LATEST PRODUCTS)
 // /api/products(category) -> PRODUCTS OF PARTICULAR category
 // /api/product/id -> PARTICULAR PRODUCT DETAILS
+
 const products = require("./data/products");
 app.get("/", (req, res) => {
   res.send("API is running");
