@@ -9,7 +9,7 @@ productRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
-    res.send({ products });
+    res.send(products);
   })
 );
 
