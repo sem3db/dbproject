@@ -5,7 +5,7 @@ import Rating from "../components/Rating";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
 import Variant from "../components/Variant"
-import { listProductDetails } from "../action/productAction";
+import { detailsProduct } from "../action/productAction";
 import {
   Row,
   Col,
@@ -26,7 +26,7 @@ import {
     // const variants=product.variants
     // console.log(variants && variants.size?variants.size:"")
     useEffect(() => {
-      dispatch(listProductDetails(match.params.id))
+      dispatch(detailsProduct(match.params.id))
     }, [dispatch, match]);
 
     const addToCartHandler =()=>{

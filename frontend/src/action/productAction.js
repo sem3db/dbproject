@@ -97,32 +97,53 @@ export const listProductsCat = (cat) => async (dispatch) =>{
         })
     }
 }
-export const listProductDetails = (id) => async (dispatch) =>{
-    try{
-        dispatch({type:PRODUCT_DETAILS_REQUEST})
-        // const {data} = await axios.get(`/api/product/${id}`)
-        const data = productdata[id];
-        dispatch({
-            type:PRODUCT_DETAILS_SUCCESS,
-            payload:data
-        })
-    }
-    catch(error){
-        console.log(error)
-        dispatch({
-            type:PRODUCT_DETAILS_FAIL,
-            payload : error.response && error.response.data.message ? error.response.data.message: error.message
-        })
-    }
+export const detailsProduct = (productId) => async (dispatch) =>{
+  dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
+  try{
+      dispatch({type:PRODUCT_DETAILS_REQUEST})
+      // const {data} = await axios.get(`/api/product/${productId}`)
+      const data = productdata[productId-1];
+      dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+  }
+  catch(error){
+      console.log(error)
+      dispatch({
+          type:PRODUCT_DETAILS_FAIL,
+          payload : error.response && error.response.data.message ? error.response.data.message: error.message
+      })
+  }
 }
 
 export const createProduct = () => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
     try {
-      const { data } = await axios.post(
-        '/api/products',
-        {},
-      );
+      // const { data } = await axios.post(
+      //   '/api/products',
+      //   {},
+      // );
+      const newproduct = {
+        _id: productdata.length +1,
+        product_name: 'sample-p-name',
+        category_name: 'sample-cat-name',
+        category_description: 'sample-cat-description',
+        subcat_name: 'sample-subcat-name',
+        description: 'sample-p-description',
+        weight: 'sample-p-weight',
+        dimension: 'sample-p-dimension',
+        brand: 'sample-p-brand',
+        supplier_name: 'sample-s-name',
+        contact_number: 'sample-s-contact',
+        email: 'sample-s-email',
+        SKU: 'sample-v-sku2',
+        price: 'sample-v-price2',
+        offer: 'sample-v-offer2',
+        color: 'sample-v-color2',
+        size: 'sample-v-size2',
+        no_stock: 'sample-v-stock2',
+        image_url: '/images/p0.jpg',
+      };
+      productdata.push(newproduct);
+      const data = {product:newproduct};
       dispatch({
         type: PRODUCT_CREATE_SUCCESS,
         payload: data.product,
@@ -141,7 +162,9 @@ export const createProduct = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = await axios.put(`/api/products/${product._id}`, product);
+      // const { data } = await axios.put(`/api/products/${product._id}`, product);
+      productdata[product._id - 1] = product;
+      const { data } = productdata;
       dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
     } catch (error) {
       const message =
