@@ -8,13 +8,24 @@ import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
-  const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [brand, setBrand] = useState('');
+  const [product_name, setProduct_name] = useState('');
   const [description, setDescription] = useState('');
+  const [brand, setBrand] = useState('');
+  const [weight, setWeight] = useState('');
+  const [dimension, setDimension] = useState('');
+  const [category_name, setCategory_name] = useState('');
+  const [category_description, setCategory_description] = useState('');
+  const [subcat_name, setSubcat_name] = useState('');
+  const [supplier_name, setSupplier_name] = useState('');
+  const [contact_number, setContact_number] = useState('');
+  const [email, setEmail] = useState('');
+  const [SKU, setSKU] = useState('');
+  const [price, setPrice] = useState('');
+  const [offer, setOffer] = useState('');
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
+  const [no_stock, setNo_stock] = useState('');
+  const [product_image, setProduct_image] = useState('');
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -35,13 +46,24 @@ export default function ProductEditScreen(props) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(listProductDetails(productId));
     } else {
-      setName(product.name);
-      setPrice(product.price);
-      setImage(product.image);
-      setCategory(product.category);
-      setCountInStock(product.countInStock);
-      setBrand(product.brand);
+      setProduct_name(product.product_name);
       setDescription(product.description);
+      setWeight(product.weight);
+      setDimension(product.dimension);
+      setBrand(product.brand);
+      setCategory_name(product.category_name);
+      setCategory_description(product.category_description);
+      setSubcat_name(product.subcat_name);
+      setSupplier_name(product.supplier_name);
+      setContact_number(product.contact_number);
+      setEmail(product.email);
+      setSKU(product.SKU);
+      setPrice(product.price);
+      setOffer(product.offer);
+      setColor(product.color);
+      setSize(product.size);
+      setNo_stock(product.no_stock);
+      setProduct_image(product.product_image);
     }
   }, [product, dispatch, productId, successUpdate, props.history]);
   const submitHandler = (e) => {
@@ -50,13 +72,24 @@ export default function ProductEditScreen(props) {
     dispatch(
       updateProduct({
         _id: productId,
-        name,
-        price,
-        image,
-        category,
-        brand,
-        countInStock,
+        product_name,
         description,
+        weight,
+        dimension,
+        brand,
+        category_name,
+        category_description,
+        subcat_name,
+        supplier_name,
+        contact_number,
+        email,
+        SKU,
+        price,
+        offer,
+        color,
+        size,
+        no_stock,
+        product_image,
       })
     );
   };
@@ -68,11 +101,11 @@ export default function ProductEditScreen(props) {
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('image', file);
+    bodyFormData.append('product_image', file);
     setLoadingUpload(true);
     try {
       const { data } = await Axios.post('/api/uploads', bodyFormData);
-      setImage(data);
+      setProduct_image(data);
       setLoadingUpload(false);
     } catch (error) {
       setErrorUpload(error.message);
@@ -95,76 +128,13 @@ export default function ProductEditScreen(props) {
         ) : (
           <>
             <div>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="product_name">Product_name</label>
               <input
-                id="name"
+                id="product_name"
                 type="text"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="price">Price</label>
-              <input
-                id="price"
-                type="text"
-                placeholder="Enter price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="image">Image</label>
-              <input
-                id="image"
-                type="text"
-                placeholder="Enter image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="imageFile">Image File</label>
-              <input
-                type="file"
-                id="imageFile"
-                label="Choose Image"
-                onChange={uploadFileHandler}
-              ></input>
-              {loadingUpload && <Loader></Loader>}
-              {errorUpload && (
-                <Message variant="danger">{errorUpload}</Message>
-              )}
-            </div>
-            <div>
-              <label htmlFor="category">Category</label>
-              <input
-                id="category"
-                type="text"
-                placeholder="Enter category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="brand">Brand</label>
-              <input
-                id="brand"
-                type="text"
-                placeholder="Enter brand"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="countInStock">Count In Stock</label>
-              <input
-                id="countInStock"
-                type="text"
-                placeholder="Enter countInStock"
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
+                placeholder="Enter Product_name"
+                value={product_name}
+                onChange={(e) => setProduct_name(e.target.value)}
               ></input>
             </div>
             <div>
@@ -178,6 +148,92 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
+            <div>
+              <label htmlFor="weight">Weight</label>
+              <input
+                id="weight"
+                type="text"
+                placeholder="Enter Weight"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="category_name">Category_name</label>
+              <input
+                id="category_name"
+                type="text"
+                placeholder="Enter Category_name"
+                value={category_name}
+                onChange={(e) => setCategory_name(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="category_name">Category_name</label>
+              <input
+                id="category_name"
+                type="text"
+                placeholder="Enter Category_name"
+                value={category_name}
+                onChange={(e) => setCategory_name(e.target.value)}
+              ></input>
+            </div>
+            
+            <div>
+              <label htmlFor="price">Price</label>
+              <input
+                id="price"
+                type="text"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="product_image">product_image</label>
+              <input
+                id="product_image"
+                type="text"
+                placeholder="Enter product_image"
+                value={product_image}
+                onChange={(e) => setProduct_image(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="product_imageFile">product_image File</label>
+              <input
+                type="file"
+                id="product_imageFile"
+                label="Choose product_image"
+                onChange={uploadFileHandler}
+              ></input>
+              {loadingUpload && <Loader></Loader>}
+              {errorUpload && (
+                <Message variant="danger">{errorUpload}</Message>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="brand">Brand</label>
+              <input
+                id="brand"
+                type="text"
+                placeholder="Enter brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="no_stock">Count In Stock</label>
+              <input
+                id="no_stock"
+                type="text"
+                placeholder="Enter no_stock"
+                value={no_stock}
+                onChange={(e) => setNo_stock(e.target.value)}
+              ></input>
+            </div>
+
             <div>
               <label></label>
               <button className="primary" type="submit">

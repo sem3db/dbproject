@@ -76,9 +76,14 @@ export default function ProductListScreen(props) {
             <tr>
               <th>ID</th>
               <th>NAME</th>
-              <th>PRICE</th>
               <th>CATEGORY</th>
+              <th>SUB-CATEGORY</th>
+              <th>SUPPLIER</th>
               <th>BRAND</th>
+              <th>COLOR</th>
+              <th>PRICE</th>
+              <th>Offer</th>
+              <th>STOCK</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
@@ -86,10 +91,15 @@ export default function ProductListScreen(props) {
             {products.map((product) => (
               <tr key={product._id}>
                 <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
+                <td>{product.product_name}</td>
+                <td>{product.category_name}</td>
+                <td>{product.subcat_name}</td>
+                <td>{product.supplier_name}</td>
                 <td>{product.brand}</td>
+                <td>{product.color}</td>
+                <td>{product.price}</td>
+                <td>{product.offer}</td>
+                <td>{product.no_stock}</td>
                 <td>
                   <button
                     type="button"
