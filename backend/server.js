@@ -1,10 +1,11 @@
-const express =require('express');
-const dotenv=require('dotenv');
-const colors = require('colors')
+const express = require("express");
+const dotenv = require("dotenv");
+const colors = require("colors");
 
-const userRouter=require( './routers/customerRouter.js');
-const bodyParser = require('body-parser');
-const productRouter=require('./routers/productRouter.js');
+const userRouter = require("./routers/customerRouter.js");
+const adminRouter = require("./routers/adminRouter");
+const bodyParser = require("body-parser");
+const productRouter = require("./routers/productRouter.js");
 
 dotenv.config();
 const app = express();
@@ -16,21 +17,21 @@ app.use(express.urlencoded({ extended: true }));
 // /api/products(category) -> PRODUCTS OF PARTICULAR category
 // /api/product/id -> PARTICULAR PRODUCT DETAILS
 
-const products = require("./data/products");
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-app.get("/api/product/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+// const products = require("./data/products");
+// app.get("/", (req, res) => {
+//   res.send("API is running");
+// });
+// app.get("/api/products", (req, res) => {
+//   res.json(products);
+// });
+// app.get("/api/product/:id", (req, res) => {
+//   const product = products.find((p) => p._id === req.params.id);
+//   res.json(product);
+// });
 // =================================================================================================================
-app.use('/api/customer', userRouter);
-app.use('/api/products', productRouter);
-
+app.use("/api/customer", userRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/products", productRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
@@ -38,6 +39,3 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running on port ${PORT}...`.yellow.bold));
-
-
-
