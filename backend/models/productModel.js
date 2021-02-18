@@ -18,7 +18,7 @@ async function findProductById(id){
 async function findVariants(id){
     try{       
 
-        const variants = await executeSQL('SELECT variant_Id , SKU , price, offer, color, no_stock FROM variant WHERE product_id =?',[parseInt(id)]);
+        const variants = await executeSQL('SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?',[parseInt(id)]);
         return ( variants);
 
     }catch(e){
@@ -42,6 +42,16 @@ async function findProductsByCategory(category){
 async function getProducts(){
     try{
         const productData = await executeSQL('SELECT product_id, product_name , description, weight, dimension, brand FROM product');
+        for (let index = 0; index < productData.length; index++) {
+            const product = productData[index];
+
+            const variants = await executeSQL('SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?',[parseInt(productData[index].product_id)]);
+        
+            product.imageUrl=variants[0].image_url;
+            product.price=variants[0].price;
+
+                        
+        }
         return(productData);
     }catch(e){
         console.log(e);
