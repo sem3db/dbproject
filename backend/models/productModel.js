@@ -6,11 +6,34 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 async function findProductById(id){
     try{       
 
-        const product = await executeSQL('SELECT product_name , description, weight, dimension, brand FROM product WHERE product_id =?',[id]);
+        const product = await executeSQL('SELECT product_name , description, weight, dimension, brand FROM product WHERE product_id =?',[parseInt(id)]);
         return ( product);
 
     }catch(e){
-        return("User Not Found");
+        return("Product Not Found");
+    }
+
+};
+
+async function findVariants(id){
+    try{       
+
+        const variants = await executeSQL('SELECT variant_Id , SKU , price, offer, color, no_stock FROM variant WHERE product_id =?',[parseInt(id)]);
+        return ( variants);
+
+    }catch(e){
+        return("Variants Not Found");
+    }
+
+};
+
+async function findProductsByCategory(category){
+    try{    
+        const category_products = await executeSQL('SELECT product_id, product_name , description, weight, dimension, brand FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=? LIMIT 1)',[category]);
+        return ( category_products);
+
+    }catch(e){
+        return("Category Not Found");
     }
 
 };
@@ -18,7 +41,7 @@ async function findProductById(id){
 
 async function getProducts(){
     try{
-        const productData = await executeSQL('SELECT product_name , description, weight, dimension, brand FROM product');
+        const productData = await executeSQL('SELECT product_id, product_name , description, weight, dimension, brand FROM product');
         return(productData);
     }catch(e){
         console.log(e);
@@ -31,4 +54,4 @@ async function getProducts(){
 
 
 
-module.exports = {findProductById,getProducts};
+module.exports = {findProductById,getProducts,findProductsByCategory,findVariants};

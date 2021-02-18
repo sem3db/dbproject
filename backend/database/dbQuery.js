@@ -7,7 +7,7 @@ function executeSQL(sql, placeholder) {
       // Use the connection
 
       if (!err) {
-        console.log("DataBase Connected".cyan.underline);
+        //console.log("DataBase Connected".cyan.underline);
       } else {
         console.log("DataBase Connection Failed...".red.bold);
         throw err;

@@ -26,8 +26,10 @@ import {
 const reducer = combineReducers({
   productList:producListReducer,
   productDetails:productDetailsReducer,
-    cart:cartReducer,
-    userLogin:userLoginReducer,
+  cart:cartReducer,
+  userLogin:userLoginReducer,
+  cart:cartReducer,
+  userLogin:userLoginReducer,
   productList:producListReducer,
   productDetails:productDetailsReducer,
   cart:cartReducer,
