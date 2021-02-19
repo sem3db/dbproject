@@ -23,6 +23,7 @@ import {
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
     const {loading, error, product} =productDetails
+
     // const variants=product.variants
     // console.log(variants && variants.size?variants.size:"")
     useEffect(() => {
@@ -47,7 +48,7 @@ import {
         <Col md={3}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h3>{product.name}</h3>
+              <h3>{product.product_name}</h3>
             </ListGroup.Item>
             <ListGroup.Item>
               <Variant type="radio" vari="size" arr={product.variants && product.variants.size?product.variants.size:[]}/>

@@ -77,7 +77,7 @@ export const createProduct = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = await axios.put(`/api/products/${product._id}`, product);
+      const { data } = await axios.put(`/api/products/${product.product_id}`, product);
       dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
     } catch (error) {
       const message =

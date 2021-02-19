@@ -35,7 +35,7 @@ export default function ProductEditScreen(props) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(listProductDetails(productId));
     } else {
-      setName(product.name);
+      setName(product.product_name);
       setPrice(product.price);
       setImage(product.image);
       setCategory(product.category);
