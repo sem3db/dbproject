@@ -1,7 +1,7 @@
 const express =require('express');
 const expressAsyncHandler =require('express-async-handler');
 const bcrypt =require('bcryptjs');
-const{findProductById,getProducts,findProductsByCategory,findVariants} =require( '../models/productModel.js');
+const{findProductById,getProducts,findProductsByCategory,findVariantByParams} =require( '../models/productModel.js');
 
 const productRouter = express.Router();
 
@@ -29,14 +29,23 @@ productRouter.get(
   '/:id',
   expressAsyncHandler(async (req, res) => {
     const product = await findProductById(req.params.id);
-    const variants=await findVariants(req.params.id);
     if (product) {
-      res.send({
-        Product:product,
-        Variants:variants
-      });
+      res.send(product);
     } else {
       res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+
+productRouter.get(
+  '/:id/:color/:size',
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByParams(req.params.id,req.params.color,req.params.size);
+    
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: 'Variant does not exist'});
     }
   })
 );
