@@ -4,8 +4,8 @@
   "description": "DataBase Project - Semester 4",
   "main": "index.js",
   "scripts": {
-    "test": "server.js",
-    "start": "node backend/server",
+    "test": "nodemon server.js",
+    "start": "nodemon backend/server",
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""

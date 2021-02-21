@@ -17,7 +17,7 @@ async function loginIn(email){
 
 };
 
-async function register(reg_id,email,password, fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId){   
+async function register(email,password, fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId){   
     
     try{
         const data = await customerExecuteSQL('SELECT email FROM registered_customer WHERE email = ?',[this.email]);
@@ -28,7 +28,7 @@ async function register(reg_id,email,password, fName,lName,zipCode,addressLine1,
         
         }else{
             
-            await customerExecuteSQL('INSERT INTO registered_customer VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[reg_id,email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId]);
+            await customerExecuteSQL('INSERT INTO registered_customer VALUES(?,?,?,?,?,?,?,?,?,?,?)',[email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId]);
             
             console.log(fName+" "+lName+ " successfuly added");
             return ("Customer added");
