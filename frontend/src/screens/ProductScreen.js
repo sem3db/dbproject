@@ -5,7 +5,7 @@ import Rating from "../components/Rating";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
 import Variant from "../components/Variant"
-import { listProductDetails } from "../action/productAction";
+import { detailsProduct, detailsProductVariant } from "../action/productAction";
 import {
   Row,
   Col,
@@ -18,23 +18,26 @@ import {
 
 
   const ProductScreen = ({history, match }) => {
-    const [qty, setQty]=useState(0)
-
+    const [qty, setQty]=useState(1)
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
     const {loading, error, product} =productDetails
+    console.log(product)
 
-    // const variants=product.variants
-    // console.log(variants && variants.size?variants.size:"")
     useEffect(() => {
-      dispatch(listProductDetails(match.params.id))
+      dispatch(detailsProduct(match.params.id))
     }, [dispatch, match]);
 
     const addToCartHandler =()=>{
       history.push(`/cart/${match.params.id}?qty=${qty}`)
     }
+    const change=(event,data)=>{
+      const y={...product.vary}
+      y[data]=event.target.value
+      dispatch(detailsProductVariant(2,y))
+    }
+    const varinatKeys=Object.keys(product.variants?product.variants:{})
 
-    
   return (
     <>
       <Link className="btn btn-dark my-3" to="/">
@@ -51,10 +54,10 @@ import {
               <h3>{product.product_name}</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Variant type="radio" vari="size" arr={product.variants && product.variants.size?product.variants.size:[]}/>
+              <Variant type="radio" vari={varinatKeys[0]} value={product.vary[varinatKeys[0]]} arr={product.variants && product.variants[varinatKeys[0]]?product.variants.size:[]} Change={change}/>
             </ListGroup.Item>
             <ListGroup.Item>
-            <Variant type="dropdown" vari="size" arr={product.variants && product.variants.color?product.variants.color:[]}/>
+            <Variant type="dropdown" vari={varinatKeys[1]} value={product.vary[varinatKeys[1]]} arr={product.variants && product.variants[varinatKeys[1]]?product.variants.color:[]} Change={change}/>
             </ListGroup.Item>
             <ListGroup.Item>
               <Rating

@@ -131,7 +131,27 @@ export const listOrders = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = await Axios.get('/api/orders');
+      // const { data } = await Axios.get('/api/orders');
+      const data = [
+        { _id: 1,
+          userName: 'Danuka',
+          createdAt: '2020/01/01 asd',
+          totalPrice: 1000,
+          isPaid: true,
+          paidAt: '2020/01/02 asd',
+          isDelivered: true,
+          deliveredAt: '2020/02/03 asd',
+        },
+        { _id: 2,
+          userName: 'Sandaruwan',
+          createdAt: '2021/01/01 asd',
+          totalPrice: 2000,
+          isPaid: true,
+          paidAt: '2021/01/02 asd',
+          isDelivered: false,
+          deliveredAt: '',
+        },
+      ];
       // console.log(data);
       dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
     } catch (error) {
