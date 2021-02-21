@@ -1,7 +1,7 @@
 const express =require('express');
 const expressAsyncHandler =require('express-async-handler');
 const bcrypt =require('bcryptjs');
-const{findProductById,getProducts,findProductsByCategory,findVariantByParams} =require( '../models/productModel.js');
+const{findProductById,getProducts,findProductsByCategory,findProductsBySubCategory,findVariantByParams} =require( '../models/productModel.js');
 
 const productRouter = express.Router();
 
@@ -21,6 +21,18 @@ productRouter.get(
       res.send(category_products);
     } else {
       res.status(404).send({ message: 'Category Not Found' });
+    }
+  })
+);
+
+productRouter.get(
+  '/categories/:category/:subcategory',
+  expressAsyncHandler(async (req, res) => {
+    const sub_category_products = await findProductsBySubCategory(req.params.category,req.params.subcategory);
+    if (sub_category_products) {
+      res.send(sub_category_products);
+    } else {
+      res.status(404).send({ message: 'Sub Category Not Found' });
     }
   })
 );

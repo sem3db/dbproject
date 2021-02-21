@@ -1,34 +1,5 @@
 let mysql = require('mysql');
 
-<<<<<<< HEAD
-// try{
-//     var pool = mysql.createPool({
-//         connectionLimit: 5,
-//         host: 'localhost',
-//         user: 'root',
-//         password: '', 
-//         database: 'cse_21'
-//     });
-// }catch(e){
-//     var pool = mysql.createPool({
-//         connectionLimit: 5,
-//         host: 'localhost',
-//         user: 'sem3db',
-//         password: 'pass', 
-//         database: 'dbproject'
-//     });
-// }
-
-var pool = mysql.createPool({
-    connectionLimit: 5,
-    host: 'localhost',
-    user: 'sem4db',
-    password: 'pass', 
-    database: 'dbproject'
-});
-
-module.exports=pool;
-=======
 var adminpool = mysql.createPool({
     connectionLimit: 5,
     host: 'localhost',
@@ -48,7 +19,6 @@ var customerpool = mysql.createPool({
 
 
 module.exports={adminpool,customerpool};
->>>>>>> e9ff792d859f92c39c23a24519d481fe58af14f8
 
 
 // let adminUser = {
