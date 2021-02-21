@@ -24,14 +24,41 @@ import {
   ORDER_DELIVER_FAIL,
 } from "../constants/orderConstants";
 
+// export const createOrder = (order) => async (dispatch, getState) => {
+//   dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
+//   try {
+//     // const {
+//     //   userSignin: { userInfo },
+//     // } = getState();
+//     const { data } = await Axios.post('/api/orders', order);
+//     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data.order });
+//     dispatch({ type: CART_EMPTY });
+//     localStorage.removeItem('cartItems');
+//   } catch (error) {
+//     dispatch({
+//       type: ORDER_CREATE_FAIL,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };
+
 export const createOrder = (order) => async (dispatch, getState) => {
-  dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
   try {
+    dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
     // const {
-    //   userSignin: { userInfo },
+    //   userLogin: { userInfo },
     // } = getState();
-    const { data } = await Axios.post('/api/orders', order);
-    dispatch({ type: ORDER_CREATE_SUCCESS, payload: data.order });
+    const config={
+      // headers:{
+      //   'Content-Type':'application/json'
+      //   Authorization:`Bearer` ${userInfo.token}
+      // }
+    }
+    const { data } = await Axios.post('/api/orders', order, config);
+    dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
     dispatch({ type: CART_EMPTY });
     localStorage.removeItem('cartItems');
   } catch (error) {
@@ -104,7 +131,27 @@ export const listOrders = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = await Axios.get('/api/orders');
+      // const { data } = await Axios.get('/api/orders');
+      const data = [
+        { _id: 1,
+          userName: 'Danuka',
+          createdAt: '2020/01/01 asd',
+          totalPrice: 1000,
+          isPaid: true,
+          paidAt: '2020/01/02 asd',
+          isDelivered: true,
+          deliveredAt: '2020/02/03 asd',
+        },
+        { _id: 2,
+          userName: 'Sandaruwan',
+          createdAt: '2021/01/01 asd',
+          totalPrice: 2000,
+          isPaid: true,
+          paidAt: '2021/01/02 asd',
+          isDelivered: false,
+          deliveredAt: '',
+        },
+      ];
       // console.log(data);
       dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
     } catch (error) {

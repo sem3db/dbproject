@@ -1,0 +1,54 @@
+const express =require('express');
+const expressAsyncHandler =require('express-async-handler');
+const bcrypt =require('bcryptjs');
+const{findProductById,getProducts,findProductsByCategory,findVariantByParams} =require( '../models/productModel.js');
+
+const productRouter = express.Router();
+
+productRouter.get(
+  '/',
+  expressAsyncHandler(async (req, res) => {
+    const products = await getProducts();
+    res.send(products);
+  })
+);
+
+productRouter.get(
+  '/categories/:category',
+  expressAsyncHandler(async (req, res) => {
+    const category_products = await findProductsByCategory(req.params.category);
+    if (category_products) {
+      res.send(category_products);
+    } else {
+      res.status(404).send({ message: 'Category Not Found' });
+    }
+  })
+);
+
+productRouter.get(
+  '/:id',
+  expressAsyncHandler(async (req, res) => {
+    const product = await findProductById(req.params.id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+
+productRouter.get(
+  '/:id/:color/:size',
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByParams(req.params.id,req.params.color,req.params.size);
+    
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: 'Variant does not exist'});
+    }
+  })
+);
+
+
+module.exports = productRouter;

@@ -69,13 +69,13 @@ export default function OrderListScreen(props) {
                     >
                       Details
                     </button>
-                    <button
+                    {/* <button
                       type="button"
                       className="small"
                       onClick={() => deleteHandler(order)}
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

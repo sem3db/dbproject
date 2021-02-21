@@ -4,15 +4,18 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProducts } from "../action/productAction";
+import { listProductsCat } from "../action/productAction";
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
+  const cat = match.params.cat ? match.params.cat:" "
   const productList=useSelector(state=>state.productList)
   const {loading, error, products} =productList
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch])
+    if(cat){
+      dispatch(listProductsCat(cat))
+    }
+  }, [dispatch,cat])
 
   return (
     <>

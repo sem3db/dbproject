@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Rating from "../components/Rating";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProductDetails } from "../action/productAction";
+import Variant from "../components/Variant"
+import { detailsProduct } from "../action/productAction";
 import {
   Row,
   Col,
@@ -22,15 +23,17 @@ import {
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
     const {loading, error, product} =productDetails
-
+    // const variants=product.variants
+    // console.log(variants && variants.size?variants.size:"")
     useEffect(() => {
-      dispatch(listProductDetails(match.params.id))
+      dispatch(detailsProduct(match.params.id))
     }, [dispatch, match]);
 
     const addToCartHandler =()=>{
       history.push(`/cart/${match.params.id}?qty=${qty}`)
     }
 
+    
   return (
     <>
       <Link className="btn btn-dark my-3" to="/">
@@ -45,6 +48,12 @@ import {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h3>{product.name}</h3>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Variant type="radio" vari="size" arr={product.variants && product.variants.size?product.variants.size:[]}/>
+            </ListGroup.Item>
+            <ListGroup.Item>
+            <Variant type="dropdown" vari="size" arr={product.variants && product.variants.color?product.variants.color:[]}/>
             </ListGroup.Item>
             <ListGroup.Item>
               <Rating
