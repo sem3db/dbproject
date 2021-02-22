@@ -180,7 +180,9 @@ export const createProduct = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = axios.delete(`/api/products/${productId}`);
+      // const { data } = axios.delete(`/api/products/${productId}`);
+      productdata.splice(productId-1,1);
+      const { data } = productdata;
       dispatch({ type: PRODUCT_DELETE_SUCCESS });
     } catch (error) {
       const message =
