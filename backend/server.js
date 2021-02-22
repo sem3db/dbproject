@@ -6,6 +6,7 @@ const userRouter = require("./routers/customerRouter.js");
 const adminRouter = require("./routers/adminRouter");
 const bodyParser = require("body-parser");
 const productRouter = require("./routers/productRouter.js");
+const orderRouter = require("./routers/orderRouter");
 
 dotenv.config();
 const app = express();
@@ -30,8 +31,9 @@ app.use(express.urlencoded({ extended: true }));
 // });
 // =================================================================================================================
 app.use("/api/customer", userRouter);
-app.use("/api/admin", adminRouter);
+app.use("/api/admin/", adminRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

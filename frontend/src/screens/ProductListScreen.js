@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createProduct,
   deleteProduct,
   listProducts,
-} from '../action/productAction';
-import Message from "../components/Message"
-import Loader from "../components/Loader"
+} from "../action/productAction";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 import {
   PRODUCT_CREATE_RESET,
   PRODUCT_DELETE_RESET,
-} from '../constants/productConstants';
-
+} from "../constants/productConstants";
 
 export default function ProductListScreen(props) {
   const productList = useSelector((state) => state.productList);
@@ -45,7 +44,7 @@ export default function ProductListScreen(props) {
   }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
 
   const deleteHandler = (product) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm("Are you sure to delete?")) {
       dispatch(deleteProduct(product._id));
     }
   };
@@ -90,9 +89,9 @@ export default function ProductListScreen(props) {
           <tbody>
             {products.map((product) => (
               <tr key={product._id}>
-                <td>{product._id}</td>
+                <td>{product.product_id}</td>
                 <td>{product.product_name}</td>
-                <td>{product.category_name}</td>
+                <td>{product.category}</td>
                 <td>{product.subcat_name}</td>
                 <td>{product.supplier_name}</td>
                 <td>{product.brand}</td>

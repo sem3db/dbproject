@@ -1,4 +1,4 @@
-const {adminpool,customerpool} = require("./config.js");
+const { adminpool, customerpool } = require("./config.js");
 
 function adminExecuteSQL(sql, placeholder) {
   return new Promise((res, rej) => {
@@ -60,4 +60,4 @@ function customerExecuteSQL(sql, placeholder) {
   });
 }
 
-module.exports = { adminExecuteSQL,customerExecuteSQL };
+module.exports = { adminExecuteSQL, customerExecuteSQL };
