@@ -8,12 +8,14 @@ import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
 import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
 import ShippingScreen from './screens/ShippingScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import ProductListScreen from './screens/ProductListScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const App=()=> {
   return (
@@ -24,10 +26,12 @@ const App=()=> {
         {/* <HomeScreen/> */}
         <Route path='/' component={HomeScreen} exact />
         <Route path='/products/:cat' component={HomeScreen} exact />
+        <Route path='/profile' component={ProfileScreen} exact />
         <Route path='/product/:id' component={ProductScreen} exact />
         <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
         <Route path='/cart/:id?' component={CartScreen}/>
         <Route path='/login' component={LoginScreen}/>
+        <Route path='/register' component={RegisterScreen}/>
         <Route path='/shipping' component={ShippingScreen}/>
         <Route path='/payment' component={PaymentScreen}/>
         <Route path='/placeorder' component={PlaceOrderScreen}/>

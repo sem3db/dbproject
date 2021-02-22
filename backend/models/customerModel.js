@@ -21,13 +21,12 @@ async function register(email,password, fName,lName,zipCode,addressLine1,address
     
     try{
         const data = await customerExecuteSQL('SELECT email FROM registered_customer WHERE email = ?',[this.email]);
-        
         if(data[0]){
-
+            console.log('o2')
             return ("Error");
         
         }else{
-            
+            console.log('o3')
             await customerExecuteSQL('INSERT INTO registered_customer VALUES(?,?,?,?,?,?,?,?,?,?,?)',[email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone,cardId]);
             
             console.log(fName+" "+lName+ " successfuly added");

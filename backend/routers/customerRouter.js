@@ -11,8 +11,8 @@ userRouter.post(
   '/signin',
   expressAsyncHandler(async (req, res) => {
     const login_cred = await loginIn(req.body.email);
+    console.log(login_cred)
     if (login_cred) {
-
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
         const token=generateToken(login_cred[0]);
         // res.header('auth-token',token).send({
@@ -34,10 +34,9 @@ userRouter.post(
 userRouter.post(
   '/register',
   expressAsyncHandler(async (req, res) => {
-
+    console.log(req.body)
     const salt=await bcrypt.genSalt(10);
     const hashedPassword =await bcrypt.hash(req.body.password,salt);
-    
     const createdUser = await register(req.body.email,hashedPassword, req.body.fName,req.body.lName,req.body.zipCode,req.body.addressLine1,req.body.addressLine2,req.body.city,req.body.state,req.body.phone);
     res.send({
       fName: createdUser.fName,
