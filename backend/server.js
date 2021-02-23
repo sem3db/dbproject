@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 const productRouter = require("./routers/productRouter.js");
 const orderRouter = require("./routers/orderRouter");
 
+const cartRouter = require("./routers/cartRouter.js");
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -34,6 +36,7 @@ app.use("/api/customer", userRouter);
 app.use("/api/admin/", adminRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/cart",  cartRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

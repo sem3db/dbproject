@@ -1,5 +1,5 @@
 //const {hash} = require("bcryptjs");
-const {customerExecuteSQL} = require("../database/dbQuery.js").customerExecuteSQL;
+const {adminExecuteSQL,customerExecuteSQL} = require("../database/dbQuery.js");
 
 
 //const ACCESS_TOKEN_SECRECT = "DBProject";
@@ -7,9 +7,9 @@ const {customerExecuteSQL} = require("../database/dbQuery.js").customerExecuteSQ
 async function addCartItem(userid,variant_id,product_id,quantity){
     try{
         const submitState = await customerExecuteSQL('call addToCart(?,?,?,?)',[userid,variant_id,product_id,quantity]).then();
-        console.log(submitState);
+        console.log(JSON.parse(JSON.stringify(submitState)));
     }catch(e){
-        console.log(JSON.parse(JSON.stringify(e))['error']);
+        console.log('Error :',JSON.parse(JSON.stringify(e))['error']);
     }
 }
 
