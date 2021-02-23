@@ -10,7 +10,7 @@ const cartRouter = express.Router();
 cartRouter.post('/',expressAsyncHandler(async (req, res) => {
 
     const customerID = req.params.customerID;
-    const cartItems = await getCartItems(customerID);
+    const cartItems = await getCartItems(customerID).then();
     res.send(cartItems);
   }));
 
@@ -22,7 +22,7 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
     const product = req.params.product;
     const quantity = req.params.quantity;
 
-    const submitState = await addCartItem(customerID,variant,product,quantity);
+    const submitState = await addCartItem(customerID,variant,product,quantity).then();
 
     res.send(submitState);
   }));
@@ -34,7 +34,7 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
     const variant = req.params.variant;
     const product = req.params.product;
 
-    const deleteState = await removeCartItem(customerID,variant,product);
+    const deleteState = await removeCartItem(customerID,variant,product).then();
 
     res.send(deleteState);
   }));
@@ -46,7 +46,7 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
     const product = req.params.product;
     const newQuantity = req.params.newQuantity;
 
-    const submitState = await changeItemQuantity(customerID,variant,product,newQuantity);
+    const submitState = await changeItemQuantity(customerID,variant,product,newQuantity).then();
 
     res.send(submitState);
   }));
