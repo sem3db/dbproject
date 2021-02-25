@@ -16,7 +16,7 @@ async function loginIn(email) {
   }
 }
 
-async function register(user_id, email, password, user_name, role, last_login) {
+async function register(email, password, user_name, role, last_login) {
   console.log("read");
   try {
     const data = await adminExecuteSQL(
@@ -30,7 +30,7 @@ async function register(user_id, email, password, user_name, role, last_login) {
     } else {
       await adminExecuteSQL(
         "INSERT INTO admin_login_details VALUES(?,?,?,?,?,?)",
-        [user_id, user_name, email, password, role, last_login]
+        [user_name, email, password, role, last_login]
       );
 
       return "New Admin added";

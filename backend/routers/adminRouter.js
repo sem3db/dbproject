@@ -32,7 +32,6 @@ adminRouter.post(
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     const createdAdmin = await register(
-      req.body.user_id,
       req.body.email,
       hashedPassword,
       req.body.user_name,

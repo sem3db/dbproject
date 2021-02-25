@@ -180,6 +180,83 @@ async function getProductsForAdmin() {
   }
 }
 
+async function createProduct(
+  product_name,
+  description,
+  weight,
+  dimension,
+  brand,
+  category_name,
+  // category_description,
+  subcategory_name,
+  supplier_name,
+  // contact_number,
+  // email,
+  variant_id,
+  SKU,
+  // image_url,
+  // image,
+  price,
+  offer,
+  color,
+  size,
+  no_stock
+) {
+  try {
+    const category_id = await adminExecuteSQL(
+      "SELECT category_id FROM category where category_name=?",
+      [category_name]
+    );
+
+    const subcategory_id = await adminExecuteSQL(
+      "SELECT subcat_id FROM subcategory where subcat_name=?",
+      [subcategory_name]
+    );
+
+    const supplier_id = await adminExecuteSQL(
+      "SELECT supplier_id FROM supplier where supplier_name=?",
+      [supplier_name]
+    );
+    const last_insert = await adminExecuteSQL(
+      "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
+      [
+        product_name,
+        category_id[0].category_id,
+        subcategory_id[0].subcat_id,
+        description,
+        weight,
+        dimension,
+        brand,
+        supplier_id[0].supplier_id,
+      ],
+      "return LAST_INSERT_ID()"
+    );
+
+    const last_insert_product_id = last_insert.insertId;
+
+    await adminExecuteSQL(
+      "INSERT INTO variant (variant_id, product_id, SKU, price, offer, color, size, no_stock) VALUES (?,?,?,?,?,?,?,?)",
+      [
+        variant_id,
+        last_insert_product_id,
+        SKU,
+        price,
+        offer,
+        color,
+        size,
+        no_stock,
+      ]
+    );
+
+    // insert image --------------------
+
+    return "new product added";
+  } catch (e) {
+    console.log(e);
+    return "Error";
+  }
+}
+
 module.exports = {
   findProductById,
   getProducts,
@@ -187,4 +264,5 @@ module.exports = {
   findProductsBySubCategory,
   findVariantByParams,
   getProductsForAdmin,
+  createProduct,
 };

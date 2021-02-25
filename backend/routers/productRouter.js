@@ -9,6 +9,7 @@ const {
   findProductsBySubCategory,
   findVariantByParams,
   getProductsForAdmin,
+  createProduct,
 } = require("../models/productModel.js");
 
 const productRouter = express.Router();
@@ -29,6 +30,31 @@ productRouter.get(
     const products = await getProductsForAdmin();
 
     res.send(products);
+  })
+);
+
+productRouter.post(
+  "/addProduct",
+  expressAsyncHandler(async (req, res) => {
+    const isAdded = await createProduct(
+      req.body.product_name,
+      req.body.description,
+      req.body.weight,
+      req.body.dimension,
+      req.body.brand,
+      req.body.category_name,
+      req.body.subcategory_name,
+      req.body.supplier_name,
+      req.body.variant_id,
+      req.body.SKU,
+      req.body.price,
+      req.body.offer,
+      req.body.color,
+      req.body.size,
+      req.body.no_stock
+    );
+
+    res.send(isAdded);
   })
 );
 

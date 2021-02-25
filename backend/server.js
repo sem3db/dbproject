@@ -20,11 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Route Middleware
-app.use('/api/customer', userRouter);
-app.use('/api/products', productRouter);
+app.use("/api/customer", userRouter);
+app.use("/api/products", productRouter);
 app.use("/api/admin/", adminRouter);
 app.use("/api/orders", orderRouter);
-app.use("/api/cart",  cartRouter);
+app.use("/api/cart", cartRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
