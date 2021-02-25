@@ -18,7 +18,8 @@ userRouter.post(
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
         
-        const token=generateToken(login_cred[0].email, login_cred[0].first_name);
+        const token=generateToken({email: login_cred[0].email, fName:login_cred[0].first_name });
+        
 
         res.header('auth-token',token).send({
           fName:login_cred[0].first_name,

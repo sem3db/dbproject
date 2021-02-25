@@ -15,7 +15,6 @@ const productRouter = express.Router();
 
 productRouter.get(
   "/",
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
 
