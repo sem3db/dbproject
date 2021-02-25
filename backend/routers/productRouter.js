@@ -10,6 +10,7 @@ const {
   findVariantByParams,
   getProductsForAdmin,
   createProduct,
+  findVariantById,
 } = require("../models/productModel.js");
 
 const productRouter = express.Router();
@@ -30,6 +31,15 @@ productRouter.get(
     const products = await getProductsForAdmin();
 
     res.send(products);
+  })
+);
+
+productRouter.get(
+  "/productlist/variants:id",
+  expressAsyncHandler(async (req, res) => {
+    console.log("fdf");
+    const variants = await findVariantById(req.params.id);
+    res.send(variants);
   })
 );
 

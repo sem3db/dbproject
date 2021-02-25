@@ -1,25 +1,26 @@
 import axios from "axios";
 import {
-    PRODUCT_LIST_REQUEST,
-    PRODUCT_LIST_SUCCESS,
-    PRODUCT_LIST_FAIL,
-    PRODUCT_DETAILS_REQUEST,
-    PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL,
-    PRODUCT_DETAILS_REQUEST1,
-    PRODUCT_DETAILS_SUCCESS1,
-    PRODUCT_DETAILS_FAIL1,
-    PRODUCT_CREATE_FAIL,
-    PRODUCT_CREATE_REQUEST,
-    PRODUCT_CREATE_SUCCESS,
-    PRODUCT_UPDATE_REQUEST,
-    PRODUCT_UPDATE_SUCCESS,
-    PRODUCT_UPDATE_FAIL,
-    PRODUCT_DELETE_REQUEST,
-    PRODUCT_DELETE_FAIL,
-    PRODUCT_DELETE_SUCCESS,
-} from '../constants/productConstants'
+  PRODUCT_LIST_REQUEST,
+  PRODUCT_LIST_SUCCESS,
+  PRODUCT_LIST_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_REQUEST1,
+  PRODUCT_DETAILS_SUCCESS1,
+  PRODUCT_DETAILS_FAIL1,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_SUCCESS,
+} from "../constants/productConstants";
 
+// frontend testing without backend
 const productdata = [
   {
     _id: 1,
@@ -64,12 +65,19 @@ const productdata = [
     image_url: "/images/p2.jpg",
   },
 ];
+// frontend testing without backend
 
 export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    // const {data} = await axios.get('/api/products')
+
+    // backend
     const { data } = await axios.get("/api/products/productlist");
+    // backend
+
+    // frontend testing without backend
+    // const data = productdata;
+    // frontend testing without backend
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -110,8 +118,15 @@ export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
-    // const {data} = await axios.get(`/api/product/${productId}`)
-    const data = productdata[productId - 1];
+
+    // backend
+    const { data } = await axios.get(`/api/product/${productId}`);
+    // backend
+
+    // frontend testing without backend
+    // const data = productdata[productId - 1];
+    // frontend testing without backend
+
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     console.log(error);
@@ -125,36 +140,61 @@ export const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
+export const detailsProductVariant = (productId, variants) => async (
+  dispatch
+) => {
+  dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
+    const { data } = await axios.post(`/api/products/v`, variants);
+    // const data = productdata[productId-1];
+    const h = { ...data, vary: variants };
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: PRODUCT_DETAILS_FAIL1,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const createProduct = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   try {
-    // const { data } = await axios.post(
-    //   '/api/products',
-    //   {},
-    // );
-    const newproduct = {
-      _id: productdata.length + 1,
-      product_name: "sample-p-name",
-      category_name: "sample-cat-name",
-      category_description: "sample-cat-description",
-      subcat_name: "sample-subcat-name",
-      description: "sample-p-description",
-      weight: "sample-p-weight",
-      dimension: "sample-p-dimension",
-      brand: "sample-p-brand",
-      supplier_name: "sample-s-name",
-      contact_number: "sample-s-contact",
-      email: "sample-s-email",
-      SKU: "sample-v-sku2",
-      price: "sample-v-price2",
-      offer: "sample-v-offer2",
-      color: "sample-v-color2",
-      size: "sample-v-size2",
-      no_stock: "sample-v-stock2",
-      image_url: "/images/p0.jpg",
-    };
-    productdata.push(newproduct);
-    const data = { product: newproduct };
+    // backend
+    const { data } = await axios.post("/api/products", {});
+    // backend
+
+    // frontend testing without backend
+    // const newproduct = {
+    //   _id: productdata.length + 1,
+    //   product_name: "sample-p-name",
+    //   category_name: "sample-cat-name",
+    //   category_description: "sample-cat-description",
+    //   subcat_name: "sample-subcat-name",
+    //   description: "sample-p-description",
+    //   weight: "sample-p-weight",
+    //   dimension: "sample-p-dimension",
+    //   brand: "sample-p-brand",
+    //   supplier_name: "sample-s-name",
+    //   contact_number: "sample-s-contact",
+    //   email: "sample-s-email",
+    //   SKU: "sample-v-sku2",
+    //   price: "sample-v-price2",
+    //   offer: "sample-v-offer2",
+    //   color: "sample-v-color2",
+    //   size: "sample-v-size2",
+    //   no_stock: "sample-v-stock2",
+    //   image_url: "/images/p0.jpg",
+    // };
+    // productdata.push(newproduct);
+    // const data = { product: newproduct };
+    // frontend testing without backend
+
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data.product,
@@ -173,9 +213,15 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-    // const { data } = await axios.put(`/api/products/${product._id}`, product);
-    productdata[product._id - 1] = product;
-    const { data } = productdata;
+    // backend
+    const { data } = await axios.put(`/api/products/${product._id}`, product);
+    // backend
+
+    // frontend testing without backend
+    // productdata[product._id - 1] = product;
+    // const { data } = productdata;
+    // frontend testing without backend
+
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -191,7 +237,15 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
+    // backend
     const { data } = axios.delete(`/api/products/${productId}`);
+    // backend
+
+    // frontend testing without backend
+    // productdata.splice(productId-1,1);
+    // const { data } = productdata;
+    // frontend testing without backend
+
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
     const message =
