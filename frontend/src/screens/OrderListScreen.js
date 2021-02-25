@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteOrder, listOrders } from '../action/orderActions';
+import { deleteOrder, deliverOrder, listOrders } from '../action/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { ORDER_DELETE_RESET } from '../constants/orderConstants';
+import { ORDER_DELETE_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen(props) {
     const orderList = useSelector((state) => state.orderList);
@@ -24,6 +24,25 @@ export default function OrderListScreen(props) {
         dispatch(deleteOrder(order._id));
       }
     };
+
+
+    const orderDeliver = useSelector((state) => state.orderDeliver);
+    const {
+      loading: loadingDeliver,
+      error: errorDeliver,
+      success: successDeliver,
+    } = orderDeliver;
+    useEffect(() => {
+      dispatch({ type: ORDER_DELIVER_RESET });
+      dispatch(listOrders());
+    }, [dispatch, successDeliver]);
+    const deliverHandler = (order) => {
+      if (window.confirm('Are you sure to deliver?')) {
+        dispatch(deliverOrder(order._id));
+      }
+    };
+
+
     return (
       <div className="admin">
         <h1>Orders</h1>
@@ -76,6 +95,13 @@ export default function OrderListScreen(props) {
                     >
                       Delete
                     </button> */}
+                    <button
+                      type="button"
+                      className="small"
+                      onClick={() => deliverHandler(order)}
+                    >
+                      Deliver
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -125,6 +125,27 @@ export const listOrderMine = () => async (dispatch, getState) => {
   }
 };
 
+
+const orderdata = [
+  { _id: 1,
+    userName: 'Danuka',
+    createdAt: '2020/01/01 asd',
+    totalPrice: 1000,
+    isPaid: true,
+    paidAt: '2020/01/02 asd',
+    isDelivered: true,
+    deliveredAt: '2020/02/03 asd',
+  },
+  { _id: 2,
+    userName: 'Sandaruwan',
+    createdAt: '2021/01/01 asd',
+    totalPrice: 2000,
+    isPaid: true,
+    paidAt: '2021/01/02 asd',
+    isDelivered: false,
+    deliveredAt: '',
+  },
+];
 export const listOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_REQUEST });
     // const {
@@ -132,26 +153,7 @@ export const listOrders = () => async (dispatch, getState) => {
     // } = getState();
     try {
       // const { data } = await Axios.get('/api/orders');
-      const data = [
-        { _id: 1,
-          userName: 'Danuka',
-          createdAt: '2020/01/01 asd',
-          totalPrice: 1000,
-          isPaid: true,
-          paidAt: '2020/01/02 asd',
-          isDelivered: true,
-          deliveredAt: '2020/02/03 asd',
-        },
-        { _id: 2,
-          userName: 'Sandaruwan',
-          createdAt: '2021/01/01 asd',
-          totalPrice: 2000,
-          isPaid: true,
-          paidAt: '2021/01/02 asd',
-          isDelivered: false,
-          deliveredAt: '',
-        },
-      ];
+      const data = orderdata;
       // console.log(data);
       dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
     } catch (error) {
@@ -185,10 +187,16 @@ export const listOrders = () => async (dispatch, getState) => {
     //   userSignin: { userInfo },
     // } = getState();
     try {
-      const { data } = Axios.put(
-        `/api/orders/${orderId}/deliver`,
-        {}
-      );
+      // const { data } = Axios.put(
+      //   `/api/orders/${orderId}/deliver`,
+      //   {}
+      // );
+      const order = orderdata[orderId-1];
+      order.isDelivered = true;
+      order.deliveredAt = '2020/02/22 asd';
+      const data = order; 
+      console.log(data);
+
       dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
     } catch (error) {
       const message =
