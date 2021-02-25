@@ -1,5 +1,5 @@
-import Axios from 'axios';
-import { CART_EMPTY } from '../constants/cartConstants';
+import Axios from "axios";
+import { CART_EMPTY } from "../constants/cartConstants";
 import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
@@ -51,16 +51,16 @@ export const createOrder = (order) => async (dispatch, getState) => {
     // const {
     //   userLogin: { userInfo },
     // } = getState();
-    const config={
+    const config = {
       // headers:{
       //   'Content-Type':'application/json'
       //   Authorization:`Bearer` ${userInfo.token}
       // }
-    }
-    const { data } = await Axios.post('/api/orders', order, config);
+    };
+    const { data } = await Axios.post("/api/orders", order, config);
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
     dispatch({ type: CART_EMPTY });
-    localStorage.removeItem('cartItems');
+    localStorage.removeItem("cartItems");
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,
@@ -135,7 +135,7 @@ export const listOrderMine = () => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-    const { data } = await Axios.get('/api/orders/mine');
+    const { data } = await Axios.get("/api/orders/mine");
     dispatch({ type: ORDER_MINE_LIST_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -147,75 +147,53 @@ export const listOrderMine = () => async (dispatch, getState) => {
 };
 
 export const listOrders = () => async (dispatch, getState) => {
-    dispatch({ type: ORDER_LIST_REQUEST });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      // const { data } = await Axios.get('/api/orders');
-      const data = [
-        { _id: 1,
-          userName: 'Danuka',
-          createdAt: '2020/01/01 asd',
-          totalPrice: 1000,
-          isPaid: true,
-          paidAt: '2020/01/02 asd',
-          isDelivered: true,
-          deliveredAt: '2020/02/03 asd',
-        },
-        { _id: 2,
-          userName: 'Sandaruwan',
-          createdAt: '2021/01/01 asd',
-          totalPrice: 2000,
-          isPaid: true,
-          paidAt: '2021/01/02 asd',
-          isDelivered: false,
-          deliveredAt: '',
-        },
-      ];
-      // console.log(data);
-      dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_LIST_FAIL, payload: message });
-    }
-  };
-  export const deleteOrder = (orderId) => async (dispatch, getState) => {
-    dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      const { data } = Axios.delete(`/api/orders/${orderId}`);
-      dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_DELETE_FAIL, payload: message });
-    }
-  };
-  
-  export const deliverOrder = (orderId) => async (dispatch, getState) => {
-    dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      const { data } = Axios.put(
-        `/api/orders/${orderId}/deliver`,
-        {}
-      );
-      dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_DELIVER_FAIL, payload: message });
-    }
-  };
+  dispatch({ type: ORDER_LIST_REQUEST });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+    const { data } = await Axios.get("/api/orders");
+
+    console.log(data);
+    dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_LIST_FAIL, payload: message });
+  }
+};
+export const deleteOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+    const { data } = Axios.delete(`/api/orders/${orderId}`);
+    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_DELETE_FAIL, payload: message });
+  }
+};
+
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+    const { data } = Axios.put(`/api/orders/${orderId}/deliver`, {});
+    dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_DELIVER_FAIL, payload: message });
+  }
+};
