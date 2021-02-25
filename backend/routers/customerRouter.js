@@ -39,8 +39,7 @@ userRouter.post(
     const hashedPassword =await bcrypt.hash(req.body.password,salt);
     const createdUser = await register(req.body.email,hashedPassword, req.body.fName,req.body.lName,req.body.zipCode,req.body.addressLine1,req.body.addressLine2,req.body.city,req.body.state,req.body.phone);
     res.send({
-      fName: createdUser.fName,
-      email: createdUser.email,      
+      result:createdUser
       //token: generateToken(createdUser),
     });
   })

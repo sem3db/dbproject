@@ -72,22 +72,43 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-export const detailsOrder = (orderId) => async (dispatch, getState) => {
+export const getOrderDetails = (orderId) => async (dispatch, getState) => {
+  try {
   dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId });
   // const {
-  //   userSignin: { userInfo },
+  //   userLogin: { userInfo },
   // } = getState();
-  try {
-    const { data } = await Axios.get(`/api/orders/${orderId}`);
+  const config={
+    // header:{
+    //   Authorization:`Bearer ${userInfo.token}`,
+    // },
+  }
+  
+    const { data } = await Axios.get(`/api/orders/${orderId}`,config);
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: ORDER_DETAILS_FAIL, payload: message });
+    dispatch({ type: ORDER_DETAILS_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message});
   }
 };
+
+// export const detailsOrder = (orderId) => async (dispatch, getState) => {
+//   dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId });
+//   // const {
+//   //   userSignin: { userInfo },
+//   // } = getState();
+//   try {
+//     const { data } = await Axios.get(`/api/orders/${orderId}`);
+//     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
+//   } catch (error) {
+//     const message =
+//       error.response && error.response.data.message
+//         ? error.response.data.message
+//         : error.message;
+//     dispatch({ type: ORDER_DETAILS_FAIL, payload: message });
+//   }
+// };
 
 export const payOrder = (order, paymentResult) => async (
   dispatch,
