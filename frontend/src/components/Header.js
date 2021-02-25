@@ -6,7 +6,7 @@ import {logout} from '../action/userActions'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const userLogin = useSelector(state =>state.userLogin)
+  const userLogin = useSelector(state =>state.userLogin)  
   const {userInfo} =userLogin
   const logoutHandler = ()=>{
     dispatch(logout())
@@ -56,6 +56,22 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+
+              {/* {userInfo && userInfo.isAdmin && ( */}
+              {"admin" && (
+                <NavDropdown title="Admin" id="admin-dropdown">
+                  <LinkContainer to="/dashboard">
+                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/productlist">
+                    <NavDropdown.Item>Product List</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/orderlist">
+                    <NavDropdown.Item>Order List</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
+
             </Nav>
           </Navbar.Collapse>
         </Container>
