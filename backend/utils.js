@@ -1,18 +1,13 @@
 const jwt =require('jsonwebtoken');
 
-const generateToken = (user_email, user_firstName) => {
+const generateToken = (user) => {
   return jwt.sign(
-    {
-      email: user_email,
-      fName: user_firstName
-    },
+    user,
     process.env.TOKEN_SECRET,
     {
       expiresIn: '30d',
     }
-  );
-  
-  
+  );  
 };
 
 const isAuth = (req, res, next) => {
@@ -26,7 +21,7 @@ const isAuth = (req, res, next) => {
       next();
   } catch (err) {
       res.status(400).send('Inavlid Token');
-  }
+  }  
 };
 
 
