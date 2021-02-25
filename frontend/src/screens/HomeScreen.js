@@ -11,6 +11,7 @@ const HomeScreen = ({match}) => {
   const cat = match.params.cat ? match.params.cat:" "
   const productList=useSelector(state=>state.productList)
   const {loading, error, products} =productList
+  console.log(products)
   useEffect(() => {
     if(cat){
       dispatch(listProductsCat(cat))

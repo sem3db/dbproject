@@ -1,21 +1,21 @@
 //const {hash} = require("bcryptjs");
-const {executeSQL} = require("../database/dbQuery.js");
+const {adminExecuteSQL,customerExecuteSQL} = require("../database/dbQuery.js");
 
 
 //const ACCESS_TOKEN_SECRECT = "DBProject";
 
 async function addCartItem(userid,variant_id,product_id,quantity){
     try{
-        const submitState = await executeSQL('call addToCart(?,?,?,?)',[userid,variant_id,product_id,quantity]).then();
-        console.log(submitState);
+        const submitState = await customerExecuteSQL('call addToCart(?,?,?,?)',[userid,variant_id,product_id,quantity]).then();
+        console.log(JSON.parse(JSON.stringify(submitState)));
     }catch(e){
-        console.log(JSON.parse(JSON.stringify(e))['error']);
+        console.log('Error :',JSON.parse(JSON.stringify(e))['error']);
     }
 }
 
 async function removeCartItem(userid,variant_id,product_id){
     try{
-        const deleteState = await executeSQL('call removeFromCart(?,?,?)',[userid,variant_id,product_id]).then();
+        const deleteState = await customerExecuteSQL('call removeFromCart(?,?,?)',[userid,variant_id,product_id]).then();
         console.log(deleteState);
     }catch(e){
         console.log(JSON.parse(JSON.stringify(e))['error']);
@@ -24,7 +24,7 @@ async function removeCartItem(userid,variant_id,product_id){
 
 async function changeItemQuantity(userid,variant_id,product_id,quantity){
     try{
-        const updateState = await executeSQL('call changeCartQuantity(?,?,?,?)',[userid,variant_id,product_id,quantity]).then();
+        const updateState = await customerExecuteSQL('call changeCartQuantity(?,?,?,?)',[userid,variant_id,product_id,quantity]).then();
         console.log(updateState);
     }catch(e){
         console.log(JSON.parse(JSON.stringify(e))['error']);
@@ -33,7 +33,7 @@ async function changeItemQuantity(userid,variant_id,product_id,quantity){
 
 async function getCartItems(userid){
     try{       
-        const fetched = await executeSQL('call getCartItems(?)',[userid]).then();
+        const fetched = await customerExecuteSQL('call getCartItems(?)',[userid]).then();
         var string1=JSON.stringify(fetched[0]);
         var json1 =  JSON.parse(string1);
         var string2=JSON.stringify(fetched[1]);

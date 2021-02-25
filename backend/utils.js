@@ -1,12 +1,12 @@
 const jwt =require('jsonwebtoken');
 
-const generateToken = (user) => {
+const generateToken = (user_email, user_firstName) => {
   return jwt.sign(
     {
-      fname: user.fName,
-      email: user.email,
+      email: user_email,
+      fName: user_firstName
     },
-    process.env.TOKEN_SECRET || 'somethingsecret',
+    process.env.TOKEN_SECRET,
     {
       expiresIn: '30d',
     }
@@ -16,17 +16,19 @@ const generateToken = (user) => {
 };
 
 const isAuth = (req, res, next) => {
-  const token =req.body.token;
-    if(!token) return res.status(401).send('Access Denied');
+  const token =req.header('auth-token');
+  
+  if(!token) return res.status(401).send('Access Denied');
 
-    try {
-        const verified =jwt.verify(token,process.env.TOKEN_SECRET  || 'somethingsecret');
-        //req.user=verified;
-        next();
-    } catch (err) {
-        res.status(400).send('Inavlid Token');
-    }
+  try {
+      const verified =jwt.verify(token,process.env.TOKEN_SECRET);
+      req.user=verified;
+      next();
+  } catch (err) {
+      res.status(400).send('Inavlid Token');
+  }
 };
 
-module.exports={generateToken,isAuth};
 
+
+module.exports={generateToken,isAuth};
