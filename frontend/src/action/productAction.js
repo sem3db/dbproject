@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_REQUEST1,
+  PRODUCT_DETAILS_SUCCESS1,
+  PRODUCT_DETAILS_FAIL1,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
@@ -136,6 +139,24 @@ export const detailsProduct = (productId) => async (dispatch) => {
     });
   }
 };
+
+export const detailsProductVariant = (productId,variants) => async (dispatch) =>{
+  dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
+  try{
+      dispatch({type:PRODUCT_DETAILS_REQUEST1})
+      const {data} = await axios.post(`/api/products/v`,variants)
+      // const data = productdata[productId-1];
+      const h={...data,vary:variants}
+      dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  }
+  catch(error){
+      console.log(error)
+      dispatch({
+          type:PRODUCT_DETAILS_FAIL1,
+          payload : error.response && error.response.data.message ? error.response.data.message: error.message
+      })
+  }
+}
 
 export const createProduct = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
