@@ -146,84 +146,97 @@ export const listOrderMine = () => async (dispatch, getState) => {
   }
 };
 
+// frontend testing without backend
+// const orderdata = [
+//   { order_id: 1,
+//     user: 'Danuka',
+//     createdAt: '2020/01/01 asd',
+//     total_payment: 1000,
+//     paidAt: '2020/01/02 asd',
+//     delivery_status: true,
+//     deliveredAt: '2020/02/03 asd',
+//   },
+//   { order_id: 2,
+//     user: 'Sandaruwan',
+//     createdAt: '2021/01/01 asd',
+//     total_payment: 2000,
+//     paidAt: '2021/01/02 asd',
+//     delivery_status: false,
+//     deliveredAt: '',
+//   },
+// ];
+// frontend testing without backend
 
-const orderdata = [
-  { _id: 1,
-    userName: 'Danuka',
-    createdAt: '2020/01/01 asd',
-    totalPrice: 1000,
-    isPaid: true,
-    paidAt: '2020/01/02 asd',
-    isDelivered: true,
-    deliveredAt: '2020/02/03 asd',
-  },
-  { _id: 2,
-    userName: 'Sandaruwan',
-    createdAt: '2021/01/01 asd',
-    totalPrice: 2000,
-    isPaid: true,
-    paidAt: '2021/01/02 asd',
-    isDelivered: false,
-    deliveredAt: '',
-  },
-];
 export const listOrders = () => async (dispatch, getState) => {
-    dispatch({ type: ORDER_LIST_REQUEST });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      // const { data } = await Axios.get('/api/orders');
-      const data = orderdata;
-      // console.log(data);
-      dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_LIST_FAIL, payload: message });
-    }
-  };
-  export const deleteOrder = (orderId) => async (dispatch, getState) => {
-    dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      const { data } = Axios.delete(`/api/orders/${orderId}`);
-      dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_DELETE_FAIL, payload: message });
-    }
-  };
-  
-  export const deliverOrder = (orderId) => async (dispatch, getState) => {
-    dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
-    // const {
-    //   userSignin: { userInfo },
-    // } = getState();
-    try {
-      // const { data } = Axios.put(
-      //   `/api/orders/${orderId}/deliver`,
-      //   {}
-      // );
-      const order = orderdata[orderId-1];
-      order.isDelivered = true;
-      order.deliveredAt = '2020/02/22 asd';
-      const data = order; 
-      console.log(data);
+  dispatch({ type: ORDER_LIST_REQUEST });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
 
-      dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_DELIVER_FAIL, payload: message });
-    }
-  };
+    // backend
+    const { data } = await Axios.get('/api/orders');
+    // backend
+
+    // frontend testing without backend
+    // const data = orderdata;
+    // frontend testing without backend
+
+    dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_LIST_FAIL, payload: message });
+  }
+};
+
+export const deleteOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+    const { data } = Axios.delete(`/api/orders/${orderId}`);
+    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_DELETE_FAIL, payload: message });
+  }
+};
+  
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+
+    // backend
+    const { data } = Axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {}
+    );
+    // backend
+
+    // frontend testing without backend
+    // const order = orderdata[orderId-1];
+    // order.delivery_status = true;
+    // order.deliveredAt = '2020/02/22 asd';
+    // const data = order; 
+    // console.log(data);
+    // frontend testing without backend
+
+    dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_DELIVER_FAIL, payload: message });
+  }
+};
