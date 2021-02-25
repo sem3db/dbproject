@@ -68,3 +68,5 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
         res.status(404).send({ message: "Invalid Request" });
     }    
   }));
+
+  module.exports=cartRouter;

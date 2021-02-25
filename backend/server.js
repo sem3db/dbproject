@@ -1,48 +1,28 @@
 const express = require("express");
+const app = express();
 const dotenv = require("dotenv");
 const colors = require("colors");
 
+const bodyParser = require("body-parser");
+
+//Import Routes
 const userRouter = require("./routers/customerRouter.js");
 const adminRouter = require("./routers/adminRouter");
-const bodyParser = require("body-parser");
 const productRouter = require("./routers/productRouter.js");
 const orderRouter = require("./routers/orderRouter");
-
 const cartRouter = require("./routers/cartRouter.js");
 
 dotenv.config();
-const app = express();
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
-// ============================USE THIS FORMAT TO RETRIVE PRODUCT DATA ===========================================
-// /api/products -> PRODUCT OVERVIEW (MOST DEMANDED, LATEST PRODUCTS)
-// /api/products(category) -> PRODUCTS OF PARTICULAR category
-// /api/product/id -> PARTICULAR PRODUCT DETAILS
+//Middleware
+app.use(express.json());
 
-const products = require("./data/products");
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p.product_id === req.params.id);
-  res.json(product);
-});
-app.post("/api/products/v", (req, res) => {
-  // console.log(req.body)
-  res.json({price:'34'});
-});
-// // =================================================================================================================
+//Route Middleware
 app.use('/api/customer', userRouter);
 app.use('/api/products', productRouter);
-
-// =================================================================================================================
-app.use("/api/customer", userRouter);
 app.use("/api/admin/", adminRouter);
-app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/cart",  cartRouter);
 

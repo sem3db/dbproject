@@ -1,6 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const { isAuth } = require("../utils.js");
 const {
   findProductById,
   getProducts,
@@ -14,6 +15,7 @@ const productRouter = express.Router();
 
 productRouter.get(
   "/",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
 

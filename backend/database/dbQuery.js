@@ -31,8 +31,7 @@ function adminExecuteSQL(sql, placeholder) {
 }
 
 function customerExecuteSQL(sql, placeholder) {
-  console.log(sql)
-  console.log(placeholder)
+  
   return new Promise((res, rej) => {
     customerpool.getConnection(function (err, connection) {
       // if (err) throw err; // not connected!
