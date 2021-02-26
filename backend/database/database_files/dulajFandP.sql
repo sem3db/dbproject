@@ -42,10 +42,18 @@ END$$
 DELIMITER ;
 
 
+
+
+#REFINED PROCEDURE registerCustomer
+
+USE `cse_21`;
+DROP procedure IF EXISTS `registerCustomer`;
+
 DELIMITER $$
+USE `cse_21`$$
 CREATE DEFINER=`admin`@`localhost` PROCEDURE `registerCustomer`(
-	in in_email varchar(100), 
-	in in_password varchar(255), 
+        in in_email varchar(100), 
+        in in_password varchar(255), 
     in in_first_name varchar(100), 
     in in_last_name varchar(100), 
     in in_zip_code varchar(5), 
@@ -54,24 +62,25 @@ CREATE DEFINER=`admin`@`localhost` PROCEDURE `registerCustomer`(
     in in_city varchar(30), 
     in in_state varchar(30), 
     in in_phone varchar(10),
-    out state varchar(30)
+    out state bool
 )
 BEGIN
-	declare emailexist int;
+        declare emailexist int;
     declare newcartid int;
     
     set emailexist = (select userAlreadyRegistered(in_email));
     if emailexist = 0 then 
-		select insertNewCart();        
+                set @tmp_var_1 = (select insertNewCart());
         SET newcartid = (Select getNextCartId());
         
-        select addNewRegCustomer(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, newcartid);
-		
-        set state="customer added";
-	else
-		set state="Email exists";
-	end if;
-    
+        set @tmp_var_2 = (select addNewRegCustomer(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, newcartid));
+
+        set state=true;
+        else
+                set state=false;
+        end if;
+        
 END$$
+
 DELIMITER ;
 
