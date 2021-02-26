@@ -69,5 +69,9 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
     }    
   }));
 
+<<<<<<< HEAD
 
   module.exports = cartRouter;
+=======
+  module.exports=cartRouter;
+>>>>>>> 72226ce4e02aade8fa740d2ce058d304a5acee06
