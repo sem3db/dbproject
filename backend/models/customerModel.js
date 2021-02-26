@@ -30,12 +30,15 @@ async function register(
 ) {
   try {
 
-    const submitState = await adminExecuteSQL("call registerCustomer(?,?,?,?,?,?,?,?,?,?);",[email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone]).then();
+    const submitState = await adminExecuteSQL("set @s =0;call registerCustomer(?,?,?,?,?,?,?,?,?,?,@s);select @s as state;",[email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone]).then();
 
-    console.log(JSON.parse(JSON.stringify(submitState)));
-    console.log(fName + " " + lName + " successfuly added");
-
-    return "Customer added";
+    if(JSON.parse(JSON.stringify(submitState[2][0])).state==1){
+        console.log(fName + " " + lName + " successfuly added");
+        return "Customer added";
+    }else{
+        console.log(fName + " " + lName + " culdn't add");
+        return "registration failed, user exists already";
+    }
     
   } catch (e) {
     console.log('Error :',JSON.parse(JSON.stringify(e))['error']);

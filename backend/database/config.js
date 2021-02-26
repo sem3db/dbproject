@@ -5,7 +5,8 @@ var adminpool = mysql.createPool({
   host: "localhost",
   user: "admin",
   password: "admin_password",
-  database: "cse_21"
+  database: "cse_21",
+  multipleStatements: true
 });
 
 var customerpool = mysql.createPool({
@@ -13,7 +14,8 @@ var customerpool = mysql.createPool({
   host: "localhost",
   user: "customer",
   password: "customer_password",
-  database: "cse_21"
+  database: "cse_21",
+  multipleStatements: true
 });
 
 module.exports = { adminpool, customerpool };
