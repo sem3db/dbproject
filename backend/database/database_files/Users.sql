@@ -37,4 +37,11 @@ GRANT SELECT ON `cse_21`.`subcategory` TO `customer`@`localhost`;
 
 GRANT SELECT ON `cse_21`.`variant` TO `customer`@`localhost`;
 
+
+#previledges for customer for func&procedures
+
+GRANT EXECUTE ON PROCEDURE cse_21.registerCustomer TO 'customer'@'localhost';
+
+GRANT EXECUTE ON FUNCTION cse_21.userAlreadyRegistered TO 'customer'@'localhost';
+
 FLUSH PRIVILEGES;
