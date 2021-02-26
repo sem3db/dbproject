@@ -3,8 +3,7 @@ const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const {
   loginIn,
-  register,
-  getCustomers,
+  register
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -59,13 +58,6 @@ userRouter.post(
   })
 );
 
-userRouter.get(
-  "/seed",
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const createdUsers = await getCustomers();
-    res.send({ createdUsers });
-  })
-);
+
 
 module.exports = userRouter;
