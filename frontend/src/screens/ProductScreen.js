@@ -53,12 +53,12 @@ import {
             <ListGroup.Item>
               <h3>{product.product_name}</h3>
             </ListGroup.Item>
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               <Variant type="radio" vari={varinatKeys[0]} value={product.vary[varinatKeys[0]]} arr={product.variants && product.variants[varinatKeys[0]]?product.variants.size:[]} Change={change}/>
             </ListGroup.Item>
             <ListGroup.Item>
             <Variant type="dropdown" vari={varinatKeys[1]} value={product.vary[varinatKeys[1]]} arr={product.variants && product.variants[varinatKeys[1]]?product.variants.color:[]} Change={change}/>
-            </ListGroup.Item>
+            </ListGroup.Item> */}
             <ListGroup.Item>
               <Rating
                 value={product.rating}
@@ -86,12 +86,12 @@ import {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                    {product.noStock > 0 ? "In Stock" : "Out of Stock"}
                   </Col>
                 </Row>
               </ListGroup.Item>
 
-              {product.countInStock>0 && (
+              {product.noStock>0 && (
                 <ListGroup.Item>
                   <Row>
                     <Col>Qty</Col>
@@ -99,7 +99,7 @@ import {
                     <Form.Control as='select' value={qty} onChange={(e)=>
                     setQty(e.target.value)}>
                       {
-                      [...Array(product.countInStock).keys()].map((x)=>(
+                      [...Array(product.noStock).keys()].map((x)=>(
                         <option key={x+1} value={x+1}>{x+1}</option>
                       ))}
                     </Form.Control>
@@ -113,7 +113,7 @@ import {
                   onClick={addToCartHandler}
                   className="btn-block btn-dark"
                   type="button"
-                  disabled={product.countInStock === 0}>
+                  disabled={product.noStock === 0}>
                   Add To Cart
                 </Button>
               </ListGroup.Item>

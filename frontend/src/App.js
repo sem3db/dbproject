@@ -1,6 +1,6 @@
-import React from "react";
-import { Container } from "react-bootstrap";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React from 'react';
+import {Container} from 'react-bootstrap';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -17,18 +17,6 @@ import ProductListScreen from './screens/ProductListScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import HomeScreen from "./screens/HomeScreen";
-import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/CartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import ShippingScreen from "./screens/ShippingScreen";
-import PaymentScreen from "./screens/PaymentScreen";
-import PlaceOrderScreen from "./screens/PlaceOrderScreen";
-import ProductListScreen from "./screens/ProductListScreen";
-import OrderListScreen from "./screens/OrderListScreen";
-import ProductEditScreen from "./screens/ProductEditScreen";
 
 const App = () => {
   return (
