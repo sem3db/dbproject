@@ -65,6 +65,7 @@ async function findVariantByParams(product_id, color, size) {
 
     return variant;
   } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
     return "Variant Not Found";
   }
 }
@@ -88,6 +89,7 @@ async function findProductsByCategory(category) {
     }
     return category_products;
   } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
     return "Category Not Found";
   }
 }
@@ -111,6 +113,7 @@ async function findProductsBySubCategory(category, subcategory) {
     }
     return category_products;
   } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
     return "Sub Category Not Found";
   }
 }
@@ -136,7 +139,7 @@ async function getProducts() {
     }
     return productData;
   } catch (e) {
-    console.log(e);
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
     return "Error";
   }
 }
