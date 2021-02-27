@@ -37,23 +37,6 @@ DROP TABLE `cse_21`.`image`;
 --productOrder table changes
 --
 
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = NULL WHERE (`order_id` = '1');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = NULL WHERE (`order_id` = '2');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = NULL WHERE (`order_id` = '3');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = NULL WHERE (`order_id` = '4');
-
-ALTER TABLE `cse_21`.`productorder` 
-CHANGE COLUMN `delivery_estimate` `delivery_estimate` INT NULL DEFAULT NULL ;
-
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '2' WHERE (`order_id` = '1');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '3' WHERE (`order_id` = '2');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '5' WHERE (`order_id` = '3');
-UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '3' WHERE (`order_id` = '4');
-
---delivery_estimate column 
---accept only INT values
---Reason:  order_date column added - depending on it, delivery_estimate is to store number of days to be delivered
-
 
 ALTER TABLE `cse_21`.`productorder` 
 ADD COLUMN `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `additional_notes`;
