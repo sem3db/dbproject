@@ -9,7 +9,12 @@ const {
   findVariantByParams,
   getProductsForAdmin,
   createProduct,
-  findVariantById,
+  editProduct,
+  deleteProduct,
+  findVariantsById,
+  addVariant,
+  editVariant,
+  deleteVariant,
 } = require("../models/productModel.js");
 
 const productRouter = express.Router();
@@ -33,11 +38,57 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/productlist/variants:id",
+  "/productlist/variants/:id",
   expressAsyncHandler(async (req, res) => {
-    console.log("fdf");
-    const variants = await findVariantById(req.params.id);
+    const variants = await findVariantsById(req.params.id);
+    console.log(req.params.id);
     res.send(variants);
+  })
+);
+
+productRouter.post(
+  "/productlist/variants/addvariant/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isAdded = await addVariant(
+      req.params.id,
+      req.body.variant_id,
+      req.body.SKU,
+      req.body.image_url,
+      req.body.price,
+      req.body.offer,
+      req.body.color,
+      req.body.size,
+      req.body.no_stock
+    );
+
+    res.send(isAdded);
+  })
+);
+
+productRouter.post(
+  "/productlist/variants/editvariant/:id/:vid",
+  expressAsyncHandler(async (req, res) => {
+    console.log(req.body);
+    const isEdited = await editVariant(
+      req.params.id,
+      req.params.vid,
+      req.body.SKU,
+      req.body.image_url,
+      req.body.price,
+      req.body.offer,
+      req.body.color,
+      req.body.size,
+      req.body.no_stock
+    );
+    res.send(isEdited);
+  })
+);
+
+productRouter.get(
+  "/productlist/variants/delete/:id/:vid",
+  expressAsyncHandler(async (req, res) => {
+    const isdeleted = await deleteVariant(req.params.id, req.params.vid);
+    res.send(isdeleted);
   })
 );
 
@@ -63,6 +114,29 @@ productRouter.post(
     );
 
     res.send(isAdded);
+  })
+);
+
+productRouter.post(
+  "/productlist/edit/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isEdited = await editProduct(
+      req.params.id,
+      req.body.description,
+      req.body.weight,
+      req.body.dimension,
+      req.body.brand
+    );
+
+    res.send(isEdited);
+  })
+);
+
+productRouter.get(
+  "/productlist/delete/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isdeleted = await deleteProduct(req.params.id);
+    res.send(isdeleted);
   })
 );
 
