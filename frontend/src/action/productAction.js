@@ -115,6 +115,7 @@ export const listProductsCat = (cat) => async (dispatch) => {
   }
 };
 export const detailsProduct = (productId) => async (dispatch) => {
+  
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });

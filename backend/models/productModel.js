@@ -49,7 +49,8 @@ async function findProductById(id) {
 
   } catch (e) {
       console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      return "Product Not Found";
+      // return "Product Not Found";
+      throw new Error('database failed to connect');
   }
 }
 

@@ -63,8 +63,14 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
+      console.log('ooooo')
+      console.log(product)
+      console.log('ooooo')
     } else {
+      // throw new Error('database failed to connect');
+      console.log('ooooo')
       res.status(404).send({ message: "Product Not Found" });
+      console.log('ooooo')
     }
   })
 );

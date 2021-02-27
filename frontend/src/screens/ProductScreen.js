@@ -43,7 +43,7 @@ import {
       <Link className="btn btn-dark my-3" to="/">
         Go Back
       </Link>
-      {loading?<Loader/>:error?<Message variant='danger' Children={error}/>:(
+      {loading?<Loader/>:error?<Message variant='danger' Children={error}>{error}</Message>:(
       <Row>
         <Col md={6}>
           <Image src={product.image} alt={product.name} fluid />
