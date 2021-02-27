@@ -1,5 +1,4 @@
-const { hash } = require("bcryptjs");
-const { adminExecuteSQL,customerExecuteSQL } = require("../database/dbQuery.js");
+const { customerExecuteSQL } = require("../database/dbQuery.js");
 
 const ACCESS_TOKEN_SECRECT = "DBProject";
 
@@ -29,24 +28,33 @@ async function register(
   phone
 ) {
   try {
+    const submitState = await customerExecuteSQL(
+      "set @s =0;call registerCustomer(?,?,?,?,?,?,?,?,?,?,@s);select @s as state;",
+      [
+        email,
+        password,
+        fName,
+        lName,
+        zipCode,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        phone,
+      ]
+    ).then();
 
-    const submitState = await customerExecuteSQL("set @s =0;call registerCustomer(?,?,?,?,?,?,?,?,?,?,@s);select @s as state;",[email,password,fName,lName,zipCode,addressLine1,addressLine2,city,state,phone]).then();
-
-    if(JSON.parse(JSON.stringify(submitState[2][0])).state==1){
-        console.log(fName + " " + lName + " Successfuly Added.");
-        return "Customer added";
-    }else{
-        console.log(fName + " " + lName + " already exists.");
-        return "Registration Failed, Customer Exists Already.";
+    if (JSON.parse(JSON.stringify(submitState[2][0])).state == 1) {
+      console.log(fName + " " + lName + " Successfuly Added.");
+      return "Customer added";
+    } else {
+      console.log(fName + " " + lName + " already exists.");
+      return "Registration Failed, Customer Exists Already.";
     }
-    
   } catch (e) {
-    console.log('Error :',JSON.parse(JSON.stringify(e))['error']);
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
     return "Invalid Inputs";
-    
   }
 }
 
-
-
-module.exports = { loginIn, register};
+module.exports = { loginIn, register };
