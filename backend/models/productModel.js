@@ -160,11 +160,11 @@ async function getVariant(product_id, variant_Id) {
   try {
     const variants = await adminExecuteSQL(
       "SELECT * FROM variant WHERE product_id=? AND variant_id=?",
-      [parseInt(product_id, variant_Id)]
+      [product_id, variant_Id]
     );
     return variants;
   } catch (e) {
-    return "variants not found";
+    return e;
   }
 }
 
