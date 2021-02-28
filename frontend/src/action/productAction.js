@@ -98,7 +98,10 @@ export const listProducts = () => async (dispatch) => {
 export const listProductsCat = (cat) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(`/api/products/${cat}`);
+    console.log(cat)
+    const { data } = await axios.get(`/api/products/categories/${cat}`);
+    console.log('aaaaaaaaaaaaaaaaaaa')
+    console.log(data)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,

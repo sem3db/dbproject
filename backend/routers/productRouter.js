@@ -33,6 +33,7 @@ productRouter.get(
 productRouter.get(
   "/categories/:category",
   expressAsyncHandler(async (req, res) => {
+    console.log('jjjjjjj')
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);

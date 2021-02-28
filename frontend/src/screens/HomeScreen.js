@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, NavDropdown , Nav} from "react-bootstrap";
+import { Row, Col, NavDropdown , Dropdown, Nav, Card, ListGroup, SplitButton, ButtonGroup, Button} from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
@@ -10,9 +10,10 @@ import { listProductsCat } from "../action/productAction";
 const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
   const cat = match.params.cat ? match.params.cat:" "
+  console.log(cat)
   const productList=useSelector(state=>state.productList)
   const {loading, error, products} =productList
-  console.log(products)
+  const cats={consumer_electronics:['laptop','smart phone','dongal'],  kitchen_appliances:["rice cooker","oven", "electric kettle", "heater"], camera:["Canon","Sony"], phone:["samsung","apple","nokia"], laptop:[], router:[],furniture:[]}
   useEffect(() => {
     if(cat){
       dispatch(listProductsCat(cat))
@@ -23,25 +24,26 @@ const HomeScreen = ({match}) => {
     <>
       <Row>
         <Col md={2}>
-
-        <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">Product type</h5>
-          <LinkContainer to="/products/camera">
-                <Nav.Link className="btn btn">Camera<span class="badge badge-pill badge-light float-right">120</span></Nav.Link>
+        <Card>
+          <Card.Body className="py-3 px-1">
+          <Card.Title><h6><strong>Product Catagaries</strong></h6></Card.Title>
+          {Object.keys(cats).map((cat) => (
+            <Dropdown as={ButtonGroup} className="btn btn-sm p-0" style={{width:"100%"}} block>
+              <LinkContainer to={`/products/${cat}`} className="p-1" style={{width:"85%"}}>
+              <Button className="btn btn-sm" style={{width:"100%"}} variant="outline-dark"><p className='p-0, m-0' style={{whiteSpace: 'nowrap', overflow: 'hidden', textTransform: 'capitalize'}}>{cat.replace('_'," ")}</p></Button>
+            </LinkContainer>
+              <Dropdown.Toggle split className="btn btn-sm" id="dropdown-split-basic" variant="outline-dark"/>
+              <Dropdown.Menu>
+            {cats[cat].map((c)=>(
+              <LinkContainer to={`/products/${cat}-${c}`} className="p-1" style={{width:"100%"}}>
+                <Dropdown.Item className="btn btn-outline-dark btn-sm"><p className='p-0, m-0' style={{whiteSpace: 'nowrap', overflow: 'hidden', textTransform: 'capitalize'}}>{c.replace('_'," ")}</p></Dropdown.Item>
               </LinkContainer>
-              <LinkContainer to="/products/phone">
-                <Nav.Link className="btn btn">Phone<span class="badge badge-pill badge-light float-right">120</span></Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/products/laptop">
-                <Nav.Link className="btn btn">Laptop<span class="badge badge-pill badge-light float-right">120</span></Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/products/watch">
-                <Nav.Link className="btn btn">Watch<span class="badge badge-pill badge-light float-right">120</span></Nav.Link>
-              </LinkContainer>
-        </div>
-      </div>
-
+            ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          ))}
+          </Card.Body>
+        </Card>
         </Col>
         <Col md={10}>
         {loading ? (

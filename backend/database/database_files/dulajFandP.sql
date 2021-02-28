@@ -1,7 +1,3 @@
---
---functions
---
-
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `addNewRegCustomer`(in_email varchar(100), in_password varchar(255), in_first_name varchar(100), in_last_name varchar(100), in_zip_code varchar(5), in_address_line_1 varchar(30), in_address_line_2 varchar(30), in_city varchar(30), in_state varchar(30), in_phone varchar(10), in_cart_id int ) RETURNS int
     DETERMINISTIC
@@ -45,10 +41,6 @@ SELECT EXISTS(SELECT * FROM registered_customer WHERE email = in_email) INTO sta
 RETURN state;
 END$$
 DELIMITER ;
-
---
---procedures
---
 
 DELIMITER $$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `registerCustomer`(
@@ -94,10 +86,6 @@ BEGIN
     SELECT subcat_name FROM subcategory WHERE subcategory.subcat_id=(SELECT subcat_id FROM product WHERE product.product_id =product_id) AND subcategory.category_id=(SELECT category_id FROM product WHERE product.product_id =product_id);
 END$$
 DELIMITER ;
-
---
---previledges for customer for func&procedures
---
 
 GRANT EXECUTE ON PROCEDURE cse_21.registerCustomer TO 'customer'@'localhost';
 
