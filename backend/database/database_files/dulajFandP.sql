@@ -100,17 +100,29 @@ END$$
 DELIMITER ;
 
 --get a product using its product id
+USE `cse_21`;
+DROP procedure IF EXISTS `getProductById`;
+
+USE `cse_21`;
+DROP procedure IF EXISTS `cse_21`.`getProductById`;
+;
+
 DELIMITER $$
+USE `cse_21`$$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `getProductById`(IN product_id integer)
 BEGIN
 	SELECT product_name, description, weight, dimension, brand FROM product WHERE product.product_id =product_id;
     SELECT DISTINCT color FROM variant WHERE variant.product_id =product_id;
     SELECT DISTINCT size FROM variant WHERE variant.product_id =product_id;
-    SELECT SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE variant.product_id =product_id LIMIT 1;
+    SELECT variant_id, SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE variant.product_id =product_id LIMIT 1;
     SELECT category_name FROM category WHERE category.category_id=(SELECT category_id FROM product WHERE product.product_id =product_id);
     SELECT subcat_name FROM subcategory WHERE subcategory.subcat_id=(SELECT subcat_id FROM product WHERE product.product_id =product_id) AND subcategory.category_id=(SELECT category_id FROM product WHERE product.product_id =product_id);
 END$$
+
 DELIMITER ;
+;
+
+
 
 --
 --previledges for customer for func&procedures
