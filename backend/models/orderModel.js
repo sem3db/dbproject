@@ -8,7 +8,7 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 async function getOrders() {
   try {
     const orderData = await adminExecuteSQL(
-      "SELECT order_id, customer_id, customer_type, total_payment,delivery_status FROM ProductOrder"
+      "SELECT order_id, customer_id, customer_type, total_payment,delivery_status, order_date FROM ProductOrder"
     );
     for (let index = 0; index < orderData.length; index++) {
       const order = orderData[index];

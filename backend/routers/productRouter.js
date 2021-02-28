@@ -42,19 +42,17 @@ productRouter.get(
   "/productlist/variants/:id",
   expressAsyncHandler(async (req, res) => {
     const variants = await findVariantsById(req.params.id);
-    console.log(req.params.id);
     res.send(variants);
   })
 );
 
-// productRouter.get(
-//   "/productlist/variants/:id",
-//   expressAsyncHandler(async (req, res) => {
-//     const variants = await findVariantsById(req.params.id);
-//     console.log(req.params.id);
-//     res.send(variants);
-//   })
-// );
+productRouter.get(
+  "/productlist/variants/edit/:id/:vid",
+  expressAsyncHandler(async (req, res) => {
+    const variantDetails = await getVariant(req.params.id, req.params.vid);
+    res.send(variantDetails);
+  })
+);
 
 productRouter.post(
   "/productlist/variants/addvariant/:id",
