@@ -20,6 +20,7 @@ const HomeScreen = ({match}) => {
       dispatch(listProductsCat(cat))
     }
     else{
+      console.log('lklk')
       dispatch(listProducts())
     }
   }, [dispatch,cat])

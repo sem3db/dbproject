@@ -69,6 +69,7 @@ const productdata = [
 
 export const listProducts = () => async (dispatch) => {
   try {
+    console.log('pkpk')
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     const { data } = await axios.get("/api/products");

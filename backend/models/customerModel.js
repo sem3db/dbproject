@@ -46,14 +46,21 @@ async function register(
 
     if (JSON.parse(JSON.stringify(submitState[2][0])).state == 1) {
       console.log(fName + " " + lName + " Successfuly Added.");
-      return "Customer added";
+      console.log(JSON.parse(JSON.stringify(submitState[2][0])).state)
+      return {fName,lName};
     } else {
       console.log(fName + " " + lName + " already exists.");
-      return "Registration Failed, Customer Exists Already.";
+      throw ('Registration Failed, Customer Exists Already.')
     }
   } catch (e) {
-    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-    return "Invalid Inputs";
+    if(e=='Registration Failed, Customer Exists Already.'){
+      console.log(e)
+      throw new Error(e)
+    }
+    else{
+      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+      throw new Error('Invalid Inputs')
+    }
   }
 }
 

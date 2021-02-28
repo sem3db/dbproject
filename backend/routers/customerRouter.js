@@ -47,7 +47,8 @@ userRouter.post(
       req.body.phone
     );
     res.send({
-      result: createdUser,
+      first_name: createdUser.fName,
+      last_name: createdUser.lName,
       //token: generateToken(createdUser),
     });
   })
