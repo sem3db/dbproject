@@ -21,7 +21,7 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className=".d-none">
+            {/* <Nav className=".d-none">
               <LinkContainer to="/products/camera">
                 <Nav.Link className="btn btn-secondary">Camera</Nav.Link>
               </LinkContainer>
@@ -34,7 +34,7 @@ const Header = () => {
               <LinkContainer to="/products/watch">
                 <Nav.Link className="btn btn-secondary">Watch</Nav.Link>
               </LinkContainer>
-            </Nav>
+            </Nav> */}
 
             <Nav className="ml-auto">
               <LinkContainer to="/cart">
@@ -52,7 +52,8 @@ const Header = () => {
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>
-                    <i className="fas fa-user"></i> Sign In
+                    <i className="fas fa-user"></i>
+                    Sign In
                   </Nav.Link>
                 </LinkContainer>
               )}
@@ -77,6 +78,7 @@ const Header = () => {
         </Container>
       </Navbar>
     </header>
+    
   );
 };
 

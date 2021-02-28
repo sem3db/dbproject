@@ -17,11 +17,13 @@ const {
   updateVariant,
   deleteVariant,
 } = require("../models/productModel.js");
+const { isAuth } = require("../utils.js");
 
 const productRouter = express.Router();
 
 productRouter.get(
   "/",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
 
@@ -31,9 +33,9 @@ productRouter.get(
 
 productRouter.get(
   "/productlist",
+  
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
-
     res.send(products);
   })
 );
@@ -149,8 +151,9 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/categories/:category",
+  "/category/:category",
   expressAsyncHandler(async (req, res) => {
+    console.log('')
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);
@@ -161,7 +164,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/categories/:category/:subcategory",
+  "/category/:category/:subcategory",
   expressAsyncHandler(async (req, res) => {
     const sub_category_products = await findProductsBySubCategory(
       req.params.category,
@@ -181,8 +184,14 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
+      console.log('ooooo')
+      console.log(product)
+      console.log('ooooo')
     } else {
+      // throw new Error('database failed to connect');
+      console.log('ooooo')
       res.status(404).send({ message: "Product Not Found" });
+      console.log('ooooo')
     }
   })
 );

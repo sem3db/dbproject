@@ -3,6 +3,8 @@ const app = express();
 const dotenv = require("dotenv");
 const colors = require("colors");
 
+const products = require("./data/products");
+
 const bodyParser = require("body-parser");
 
 //Import Routes
@@ -21,6 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //Middleware
 app.use(express.json());
+
+// app.get("/api/products", (req, res) => {
+// res.json(products);
+// });
 
 //Route Middleware
 app.use("/api/customer", userRouter);
