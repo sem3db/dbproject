@@ -124,4 +124,11 @@ GRANT EXECUTE ON PROCEDURE cse_21.getProductById TO 'customer'@'localhost';
 
 GRANT EXECUTE ON FUNCTION cse_21.getAverageRatingForProduct TO 'customer'@'localhost';
 
+GRANT EXECUTE ON FUNCTION cse_21.insertNewCart TO 'customer'@'localhost';
+
+GRANT EXECUTE ON FUNCTION cse_21.getNextCartId TO 'customer'@'localhost';
+
+GRANT EXECUTE ON FUNCTION cse_21.addNewRegCustomer TO 'customer'@'localhost';
+
+
 FLUSH PRIVILEGES;

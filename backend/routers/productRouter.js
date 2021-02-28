@@ -9,11 +9,13 @@ const {
   findVariantByParams,
   getProductsForAdmin,
 } = require("../models/productModel.js");
+const { isAuth } = require("../utils.js");
 
 const productRouter = express.Router();
 
 productRouter.get(
   "/",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
 
@@ -23,6 +25,7 @@ productRouter.get(
 
 productRouter.get(
   "/productlist",
+  
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
 
