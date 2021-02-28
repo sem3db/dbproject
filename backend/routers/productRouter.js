@@ -25,15 +25,14 @@ productRouter.get(
   "/productlist",
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
-
     res.send(products);
   })
 );
 
 productRouter.get(
-  "/categories/:category",
+  "/category/:category",
   expressAsyncHandler(async (req, res) => {
-    console.log('jjjjjjj')
+    console.log('')
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);
@@ -44,7 +43,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/categories/:category/:subcategory",
+  "/category/:category/:subcategory",
   expressAsyncHandler(async (req, res) => {
     const sub_category_products = await findProductsBySubCategory(
       req.params.category,

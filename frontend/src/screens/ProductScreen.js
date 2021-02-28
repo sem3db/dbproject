@@ -21,9 +21,7 @@ import {
     const [qty, setQty]=useState(1)
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
-    const {loading, error, product} =productDetails
-    console.log(product)
-
+    const {loading, error, product, variant} =productDetails
     useEffect(() => {
       dispatch(detailsProduct(match.params.id))
     }, [dispatch, match]);
@@ -65,9 +63,9 @@ import {
                 text={`${product.numReviews} reviews`}
               />
             </ListGroup.Item>
-            <ListGroup.Item>Price: LKR {product.price}</ListGroup.Item>
+            <ListGroup.Item>Price: LKR {variant.price}</ListGroup.Item>
             <ListGroup.Item>
-              Description: LKR {product.description}
+              Description:{product.description}
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -78,7 +76,7 @@ import {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>LKR {product.price}</strong>
+                    <strong>LKR {variant.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -86,12 +84,14 @@ import {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    {product.noStock > 0 ? "In Stock" : "Out of Stock"}
+                    {variant.noStock > 0 ? "In Stock" : "Out of Stock"}
                   </Col>
                 </Row>
               </ListGroup.Item>
 
-              {product.noStock>0 && (
+{console.log('dd'),
+console.log(product.noStock)}
+              {variant.noStock>0 && (
                 <ListGroup.Item>
                   <Row>
                     <Col>Qty</Col>
@@ -99,7 +99,7 @@ import {
                     <Form.Control as='select' value={qty} onChange={(e)=>
                     setQty(e.target.value)}>
                       {
-                      [...Array(product.noStock).keys()].map((x)=>(
+                      [...Array(variant.noStock).keys()].map((x)=>(
                         <option key={x+1} value={x+1}>{x+1}</option>
                       ))}
                     </Form.Control>
@@ -113,7 +113,7 @@ import {
                   onClick={addToCartHandler}
                   className="btn-block btn-dark"
                   type="button"
-                  disabled={product.noStock === 0}>
+                  disabled={variant.noStock === 0}>
                   Add To Cart
                 </Button>
               </ListGroup.Item>

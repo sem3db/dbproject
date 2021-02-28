@@ -49,8 +49,6 @@ async function findProductById(id) {
 
   } catch (e) {
       console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      // return "Product Not Found";
-      throw new Error('database failed to connect');
   }
 }
 
@@ -65,8 +63,7 @@ async function findVariantByParams(product_id, color, size) {
 
     return variant;
   } catch (e) {
-    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-    return "Variant Not Found";
+      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 
@@ -90,7 +87,6 @@ async function findProductsByCategory(category) {
     return category_products;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-    return "Category Not Found";
   }
 }
 
@@ -114,33 +110,29 @@ async function findProductsBySubCategory(category, subcategory) {
     return category_products;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-    return "Sub Category Not Found";
   }
 }
 
 async function getProducts() {
   try {
     const productData = await customerExecuteSQL(
-      "SELECT product_id, product_name , description, weight, dimension, brand FROM product"
+      "SELECT product_id, product_name FROM product"
     );
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
       const variants = await customerExecuteSQL(
-        "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
+        "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
         [parseInt(productData[index].product_id)]
       );
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
-      product.color = variants[0].color;
-      product.offer = variants[0].offer;
-      product.no_stock = variants[0].no_stock;
+      product.rating = (await customerExecuteSQL("SELECT getAverageRatingForProduct(?) AS rating",[parseInt(productData[index].product_id)]))[0].rating;
     }
     return productData;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-    return "Error";
   }
 }
 

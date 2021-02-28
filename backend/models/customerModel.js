@@ -11,7 +11,7 @@ async function loginIn(email) {
 
     return credential;
   } catch (e) {
-    return "User Not Found";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 

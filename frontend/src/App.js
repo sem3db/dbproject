@@ -26,6 +26,7 @@ const App = () => {
       <Container>
         {/* <HomeScreen/> */}
         <Route path='/' component={HomeScreen} exact />
+        <Route path='/products' component={HomeScreen} exact />
         <Route path='/products/:cat' component={HomeScreen} exact />
         <Route path='/profile' component={ProfileScreen} exact />
         <Route path='/product/:id' component={ProductScreen} exact />

@@ -71,20 +71,13 @@ export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    // backend
-    const { data } = await axios.get("/api/products/productlist");
-    // backend
-
-    // frontend testing without backend
-    // const data = productdata;
-    // frontend testing without backend
+    const { data } = await axios.get("/api/products");
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
@@ -96,18 +89,21 @@ export const listProducts = () => async (dispatch) => {
 };
 
 export const listProductsCat = (cat) => async (dispatch) => {
+  cat=cat.split("-").join('/')
+  console.log('l1')
+  console.log(cat)
+  console.log('l1')
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    console.log(cat)
-    const { data } = await axios.get(`/api/products/categories/${cat}`);
-    console.log('aaaaaaaaaaaaaaaaaaa')
-    console.log(data)
+    if(cat){
+      console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+    }
+    const { data } = await axios.get(`/api/products/category/${cat}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
@@ -118,7 +114,6 @@ export const listProductsCat = (cat) => async (dispatch) => {
   }
 };
 export const detailsProduct = (productId) => async (dispatch) => {
-  
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
@@ -133,7 +128,6 @@ export const detailsProduct = (productId) => async (dispatch) => {
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:

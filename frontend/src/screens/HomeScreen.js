@@ -1,22 +1,26 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, NavDropdown , Dropdown, Nav, Card, ListGroup, SplitButton, ButtonGroup, Button} from "react-bootstrap";
+import { Row, Col, NavDropdown , Dropdown, Nav, Card, ListGroup, SplitButton, ButtonGroup, Button, Form} from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
 import {LinkContainer} from 'react-router-bootstrap'
-import { listProductsCat } from "../action/productAction";
+import { listProductsCat, listProducts } from "../action/productAction";
 
 const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
-  const cat = match.params.cat ? match.params.cat:" "
-  console.log(cat)
+  const cat = match.params.cat ? match.params.cat:""
   const productList=useSelector(state=>state.productList)
   const {loading, error, products} =productList
-  const cats={consumer_electronics:['laptop','smart phone','dongal'],  kitchen_appliances:["rice cooker","oven", "electric kettle", "heater"], camera:["Canon","Sony"], phone:["samsung","apple","nokia"], laptop:[], router:[],furniture:[]}
+  const cats={consumer_electronics:['laptop','smart phone','dongal'],  kitchen_appliances:["rice cooker","oven", "electric kettle", "heater"],
+   camera:["DSLR","Mirrorless"], phone:["samsung","apple","nokia"], laptop:['asus','dell','toshiba','hp','lenovo'], USB:['kingston','imation'],furniture:['chair,table'],
+  books:[],headphone:[],tablets:[]}
   useEffect(() => {
     if(cat){
       dispatch(listProductsCat(cat))
+    }
+    else{
+      dispatch(listProducts())
     }
   }, [dispatch,cat])
 
@@ -25,7 +29,7 @@ const HomeScreen = ({match}) => {
       <Row>
         <Col md={2}>
         <Card>
-          <Card.Body className="py-3 px-1">
+          <Card.Body className="pt-3 pb-1 px-1">
           <Card.Title><h6><strong>Product Catagaries</strong></h6></Card.Title>
           {Object.keys(cats).map((cat) => (
             <Dropdown as={ButtonGroup} className="btn btn-sm p-0" style={{width:"100%"}} block>
@@ -44,6 +48,25 @@ const HomeScreen = ({match}) => {
           ))}
           </Card.Body>
         </Card>
+        <Card>
+          <Card.Body className="pt-3 pb-1 px-1">
+          <Form.Group controlId="formBasicRange">
+            <Form.Label>Price Range</Form.Label><Form.Control type="range" min={0} max={100}/>
+          </Form.Group>
+          <Row>
+            <Col md={6} className='pr-1'>
+            <Form.Label>Min</Form.Label>
+              <Form.Control size="sm" type="number" placeholder="0"></Form.Control>
+            </Col>
+            <Col md={6} className='pl-1'>
+            <Form.Label>Max</Form.Label>
+              <Form.Control size="sm" type="number" placeholder="1,0000"></Form.Control>
+            </Col>
+          </Row>
+          <Button className="btn btn-block btn-sm mt-3" variant='outline-dark'>Apply</Button>
+          </Card.Body>
+        </Card>
+       
         </Col>
         <Col md={10}>
         {loading ? (
@@ -51,6 +74,8 @@ const HomeScreen = ({match}) => {
       ) : error ? (
         <Message variant="danger" Children={error} />
       ) : (
+        <>
+        <h1>Latest Products</h1>
         <Row>
           {products.map((product) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
@@ -58,10 +83,11 @@ const HomeScreen = ({match}) => {
             </Col>
           ))}
         </Row>
+        </>
       )}
         </Col>
       </Row>
-      <h1>Latest Products</h1>
+      
       
     </>
   );

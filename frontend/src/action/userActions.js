@@ -32,7 +32,7 @@ export const logout=(dispatch)=>{
     dispatch({type:USER_LOGOUT})
 }
 
-export const register = (email, password, fName,lName="",zipCode="",addressLine1="",addressLine2="",city="",state="",phone="")=>async(dispatch)=>{
+export const register = (email, password, fName,lName,zipCode,addressLine1,addressLine2,city,state,phone)=>async(dispatch)=>{
     try{
         dispatch({
             type:USER_REGISTER_REQUEST
@@ -43,9 +43,6 @@ export const register = (email, password, fName,lName="",zipCode="",addressLine1
             }
         }
         const {data} =await axios.post('/api/customer/register',{email,password, fName,lName,zipCode,addressLine1,addressLine2,city,state,phone},config)
-        console.log('ss')
-        console.log(data)
-        console.log('ss')
         dispatch({
             type:USER_REGISTER_SUCCESS,
             payload:data

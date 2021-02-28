@@ -20,7 +20,6 @@ RETURN next_cart_id ;
 END$$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `insertNewCart`() RETURNS int
     DETERMINISTIC
@@ -41,6 +40,18 @@ SELECT EXISTS(SELECT * FROM registered_customer WHERE email = in_email) INTO sta
 RETURN state;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getAverageRatingForProduct`(in_product_id integer) RETURNS int
+    DETERMINISTIC
+BEGIN
+	declare averagerating integer;
+    select avg(review_state) into averagerating from review where review.product_id=in_product_id;
+
+RETURN averagerating;
+END$$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `registerCustomer`(
@@ -74,7 +85,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `getProductById`(IN product_id integer)
 BEGIN
@@ -92,5 +102,7 @@ GRANT EXECUTE ON PROCEDURE cse_21.registerCustomer TO 'customer'@'localhost';
 GRANT EXECUTE ON FUNCTION cse_21.userAlreadyRegistered TO 'customer'@'localhost';
 
 GRANT EXECUTE ON PROCEDURE cse_21.getProductById TO 'customer'@'localhost';
+
+GRANT EXECUTE ON FUNCTION cse_21.getAverageRatingForProduct TO 'customer'@'localhost';
 
 FLUSH PRIVILEGES;
