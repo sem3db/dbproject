@@ -23,20 +23,21 @@ const productRouter = express.Router();
 
 productRouter.get(
   "/",
+<<<<<<< HEAD
   //isAuth,
+=======
+  // isAuth,
+>>>>>>> d5e5f7433a1a4a8845bdd62b6dd0001148be2c8e
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
-
     res.send(products);
   })
 );
 
 productRouter.get(
   "/productlist",
-  
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
-
     res.send(products);
   })
 );
@@ -45,19 +46,17 @@ productRouter.get(
   "/productlist/variants/:id",
   expressAsyncHandler(async (req, res) => {
     const variants = await findVariantsById(req.params.id);
-    console.log(req.params.id);
     res.send(variants);
   })
 );
 
-// productRouter.get(
-//   "/productlist/variants/:id",
-//   expressAsyncHandler(async (req, res) => {
-//     const variants = await findVariantsById(req.params.id);
-//     console.log(req.params.id);
-//     res.send(variants);
-//   })
-// );
+productRouter.get(
+  "/productlist/variants/edit/:id/:vid",
+  expressAsyncHandler(async (req, res) => {
+    const variantDetails = await getVariant(req.params.id, req.params.vid);
+    res.send(variantDetails);
+  })
+);
 
 productRouter.post(
   "/productlist/variants/addvariant/:id",
@@ -154,8 +153,9 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/categories/:category",
+  "/category/:category",
   expressAsyncHandler(async (req, res) => {
+    console.log('')
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);
@@ -166,7 +166,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/categories/:category/:subcategory",
+  "/category/:category/:subcategory",
   expressAsyncHandler(async (req, res) => {
     const sub_category_products = await findProductsBySubCategory(
       req.params.category,
@@ -186,8 +186,14 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
+      console.log('ooooo')
+      console.log(product)
+      console.log('ooooo')
     } else {
+      // throw new Error('database failed to connect');
+      console.log('ooooo')
       res.status(404).send({ message: "Product Not Found" });
+      console.log('ooooo')
     }
   })
 );

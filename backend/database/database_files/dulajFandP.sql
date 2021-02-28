@@ -1,9 +1,3 @@
---
---functions
---
-
-
---add a new customer record to registered customer table
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `addNewRegCustomer`(in_email varchar(100), in_password varchar(255), in_first_name varchar(100), in_last_name varchar(100), in_zip_code varchar(5), in_address_line_1 varchar(30), in_address_line_2 varchar(30), in_city varchar(30), in_state varchar(30), in_phone varchar(10), in_cart_id int ) RETURNS int
     DETERMINISTIC
@@ -13,7 +7,7 @@ RETURN 1;
 END$$
 DELIMITER ;
 
---get the cartID of next cart to be added
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `getNextCartId`() RETURNS int
     DETERMINISTIC
@@ -26,7 +20,6 @@ RETURN next_cart_id ;
 END$$
 DELIMITER ;
 
---add a new cart rcord to cart table
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `insertNewCart`() RETURNS int
     DETERMINISTIC
@@ -36,7 +29,7 @@ RETURN 1;
 END$$
 DELIMITER ;
 
---check customer is already registered or not
+
 DELIMITER $$
 CREATE DEFINER=`admin`@`localhost` FUNCTION `userAlreadyRegistered`(`in_email` VARCHAR(100)) RETURNS int
     DETERMINISTIC
@@ -48,7 +41,6 @@ RETURN state;
 END$$
 DELIMITER ;
 
---average rating for a product
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `getAverageRatingForProduct`(in_product_id integer) RETURNS int
     DETERMINISTIC
@@ -61,12 +53,6 @@ END$$
 DELIMITER ;
 
 
---
---procedures
---
-
-
---register a customer
 DELIMITER $$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `registerCustomer`(
 	in in_email varchar(100), 
@@ -123,10 +109,6 @@ DELIMITER ;
 ;
 
 
-
---
---previledges for customer for func&procedures
---
 
 GRANT EXECUTE ON PROCEDURE cse_21.registerCustomer TO 'customer'@'localhost';
 

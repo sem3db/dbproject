@@ -15,7 +15,7 @@ import {userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
-} from './reducers/userreducers'
+} from './reducers/userReducers'
 
 import {
   orderCreateReducer,
