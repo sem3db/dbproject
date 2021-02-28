@@ -64,4 +64,56 @@ async function register(
   }
 }
 
-module.exports = { loginIn, register };
+
+async function findCustomerById(id) {
+  try {
+    const customerFetched = await customerExecuteSQL("SELECT email , password, first_name, last_name, zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
+      parseInt(id),
+    ]).then();
+
+    return customerFetched[0];
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+
+async function updateCustomer(
+  custometId,
+  password,
+  fName,
+  lName,
+  zipCode,
+  addressLine1,
+  addressLine2,
+  city,
+  state,
+  phone
+) {
+
+  try {
+    await customerExecuteSQL("UPDATE registered_customer SET password=?, first_name=?, last_name=?, zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
+      [
+        password,
+        fName,
+        lName,
+        zipCode,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        phone,
+        custometId
+      ]
+    );
+
+    console.log(fName + " " + lName + " Successfuly Updated.");
+    return {fName,lName};
+  } catch (e) {
+      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+      throw new Error('Invalid Inputs')
+  }
+  
+}
+
+module.exports = { loginIn, register,findCustomerById ,updateCustomer};
