@@ -20,9 +20,12 @@ import {
     PRODUCT_DETAILS_SUCCESS1,
     PRODUCT_DETAILS_FAIL1,
     PRODUCT_DETAILS_REQUEST1,
+    VARIANT_LIST_REQUEST,
+    VARIANT_LIST_SUCCESS,
+    VARIANT_LIST_FAIL,
 } from '../constants/productConstants'
 
-export const producListReducer =(state={products:[]},action)=>{
+export const productListReducer =(state={products:[]},action)=>{
     switch(action.type){
        case PRODUCT_LIST_REQUEST:
             return {loading:true, products:[]}
@@ -112,5 +115,21 @@ export const productDeleteReducer = (state = {}, action) => {
         return {};
         default:
         return state;
+    }
+};
+
+
+
+
+export const variantListReducer =(state={variants:[]},action)=>{
+    switch(action.type){
+       case VARIANT_LIST_REQUEST:
+            return {loading:true, variants:[]}
+       case VARIANT_LIST_SUCCESS:
+           return {loading:false, variants:action.payload}
+       case VARIANT_LIST_FAIL:
+           return {loading:false, error: action.payload}
+       default:
+           return state
     }
 };

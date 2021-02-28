@@ -3,11 +3,12 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import {
-  producListReducer,
+  productListReducer,
   productDetailsReducer,
   productCreateReducer,
   productDeleteReducer,
   productUpdateReducer,
+  variantListReducer,
 } from './reducers/productreducers'
 
 import {cartReducer} from './reducers/cartreducers'
@@ -26,22 +27,46 @@ import {
   orderMineListReducer,
   orderPayReducer,
 } from "./reducers/orderReducers";
+import {
+  categoryListReducer,
+  categoryDetailsReducer,
+  categoryCreateReducer,
+  categoryDeleteReducer,
+  categoryUpdateReducer,
+  subcategoryListReducer,
+} from "./reducers/categoryReducers";
 
 const reducer = combineReducers({
-  productList:producListReducer,
-  productDetails:productDetailsReducer,
-  productList:producListReducer,
+  productList: productListReducer,
+  productDetails: productDetailsReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
+  variantList: variantListReducer,
+  // variantDetails: variantDetailsReducer,
+  // variantCreate: variantCreateReducer,
+  // variantUpdate: variantUpdateReducer,
+  // variantDelete: variantDeleteReducer,
+  categoryList: categoryListReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryCreate: categoryCreateReducer,
+  categoryUpdate: categoryUpdateReducer,
+  categoryDelete: categoryDeleteReducer,
+  subcategoryList: subcategoryListReducer,
+  // subcategoryDetails: subcategoryDetailsReducer,
+  // subcategoryCreate: subcategoryCreateReducer,
+  // subcategoryUpdate: subcategoryUpdateReducer,
+  // subcategoryDelete: subcategoryDeleteReducer,
+  // supplierList: supplierListReducer,
+  // supplierDetails: supplierDetailsReducer,
+  // supplierCreate: supplierCreateReducer,
+  // supplierUpdate: supplierUpdateReducer,
+  // supplierDelete: supplierDeleteReducer,
   cart:cartReducer,
   userLogin:userLoginReducer,
   userRegister:userRegisterReducer,
   userDetails:userDetailsReducer,
   userUpdateProfile:userUpdateProfileReducer,
-  cart:cartReducer,
-  userLogin:userLoginReducer,
-  cart:cartReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
