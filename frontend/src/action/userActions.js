@@ -67,7 +67,7 @@ export const getUserDetails = (id)=>async(dispatch,getState)=>{
         dispatch({
             type:USER_DETAILS_REQUEST
         })
-        
+        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvv')
         const {userLogin:{userInfo}}=getState()
         const config={
             headers:{
@@ -75,7 +75,7 @@ export const getUserDetails = (id)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const {data} =await axios.get(`/api/customer/${id}`,config)
+        const {data} =await axios.get(`/api/customer/4`,config)
         console.log(data)
         dispatch({
             type:USER_DETAILS_SUCCESS,
