@@ -9,12 +9,12 @@ const {
   findVariantByParams,
   getProductsForAdmin,
   createProduct,
-  editProduct,
+  updateProduct,
   deleteProduct,
   getVariant,
   findVariantsById,
   addVariant,
-  editVariant,
+  updateVariant,
   deleteVariant,
 } = require("../models/productModel.js");
 
@@ -79,7 +79,7 @@ productRouter.post(
   "/productlist/variants/editvariant/:id/:vid",
   expressAsyncHandler(async (req, res) => {
     console.log(req.body);
-    const isEdited = await editVariant(
+    const isEdited = await updateVariant(
       req.params.id,
       req.params.vid,
       req.body.SKU,
@@ -130,7 +130,7 @@ productRouter.post(
 productRouter.post(
   "/productlist/edit/:id",
   expressAsyncHandler(async (req, res) => {
-    const isEdited = await editProduct(
+    const isEdited = await updateProduct(
       req.params.id,
       req.body.description,
       req.body.weight,
