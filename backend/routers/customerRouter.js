@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const {
   loginIn,
   register,
-  findCustomerById
+  findCustomerById,
+  updateCustomer
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -64,6 +65,31 @@ userRouter.get(
     } else {     
       res.status(404).send({ message: "Customer Not Found" });      
     }
+  })
+);
+
+userRouter.put(
+  "/update/:custometId",
+  expressAsyncHandler(async (req, res) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const createdUser = await updateCustomer(
+      req.params.custometId,
+      hashedPassword,
+      req.body.fName,
+      req.body.lName,
+      req.body.zipCode,
+      req.body.addressLine1,
+      req.body.addressLine2,
+      req.body.city,
+      req.body.state,
+      req.body.phone
+    );
+    res.send({
+      first_name: createdUser.fName,
+      last_name: createdUser.lName,
+      //token: generateToken(createdUser),
+    });
   })
 );
 
