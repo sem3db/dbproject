@@ -7,22 +7,24 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 
 async function findProductById(id) {
   try {
-    const productFetched = await customerExecuteSQL('call getProductById(?)',[parseInt(id)]).then();
+    const productFetched = await customerExecuteSQL("call getProductById(?)", [
+      parseInt(id),
+    ]).then();
 
-    var productDetail=JSON.parse(JSON.stringify(productFetched[0][0]));
-    var colors=JSON.parse(JSON.stringify(productFetched[1]));
-    var sizes=JSON.parse(JSON.stringify(productFetched[2]));
-    var a_variant=JSON.parse(JSON.stringify(productFetched[3][0]));
-    var category=JSON.parse(JSON.stringify(productFetched[4][0]));
-    var sub_category=JSON.parse(JSON.stringify(productFetched[5][0]));
+    var productDetail = JSON.parse(JSON.stringify(productFetched[0][0]));
+    var colors = JSON.parse(JSON.stringify(productFetched[1]));
+    var sizes = JSON.parse(JSON.stringify(productFetched[2]));
+    var a_variant = JSON.parse(JSON.stringify(productFetched[3][0]));
+    var category = JSON.parse(JSON.stringify(productFetched[4][0]));
+    var sub_category = JSON.parse(JSON.stringify(productFetched[5][0]));
 
     var dis_colors = [];
-    for(i=0;i<colors.length;i++){
+    for (i = 0; i < colors.length; i++) {
       dis_colors.push(colors[i].color);
     }
 
-    var dis_sizes=[];
-    for(i=0;i<sizes.length;i++){
+    var dis_sizes = [];
+    for (i = 0; i < sizes.length; i++) {
       dis_sizes.push(sizes[i].size);
     }
 
@@ -35,21 +37,20 @@ async function findProductById(id) {
     product.brand = productDetail.brand;
     product.category = category.category_name;
     product.subCategory = sub_category.subcat_name;
-    product.colors=dis_colors;
-    product.sizes=dis_sizes;
-    product.Onevariant={
-      color:a_variant.color,
-      size:a_variant.size,
-      noStock:a_variant.no_stock,
-      imageUrl:a_variant.image_url,
-      price:a_variant.price
-    };    
+    product.colors = dis_colors;
+    product.sizes = dis_sizes;
+    product.Onevariant = {
+      color: a_variant.color,
+      size: a_variant.size,
+      noStock: a_variant.no_stock,
+      imageUrl: a_variant.image_url,
+      price: a_variant.price,
+    };
 
     return product;
-
   } catch (e) {
-      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      return "Product Not Found";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    return "Product Not Found";
   }
 }
 
@@ -155,7 +156,19 @@ async function getProducts() {
   }
 }
 
-//--------------------------------------------------------------------------------
+//-------------------------admin - variants -------------------------------------------------------
+
+async function getVariant(product_id, variant_Id) {
+  try {
+    const variants = await adminExecuteSQL(
+      "SELECT * FROM variant WHERE product_id=? AND variant_id=?",
+      [parseInt(product_id, variant_Id)]
+    );
+    return variants;
+  } catch (e) {
+    return "variants not found";
+  }
+}
 
 async function addVariant(
   product_id,
@@ -231,6 +244,8 @@ async function deleteVariant(product_id, variant_id) {
   }
 }
 
+//--------------------admin - products -----------------------------------------------------------------------
+
 async function getProductsForAdmin() {
   try {
     const productData = await adminExecuteSQL("SELECT * FROM product");
@@ -281,15 +296,10 @@ async function createProduct(
   dimension,
   brand,
   category_name,
-  // category_description,
   subcategory_name,
   supplier_name,
-  // contact_number,
-  // email,
   variant_id,
   SKU,
-  // image_url,
-  // image,
   price,
   offer,
   color,
@@ -365,13 +375,7 @@ async function editProduct(product_id, description, weight, dimension, brand) {
 
 async function deleteProduct(product_id) {
   try {
-    await adminExecuteSQL("DELETE FROM variant WHERE product_id=?", [
-      product_id,
-    ]);
-    await adminExecuteSQL("DELETE FROM product WHERE product_id=?", [
-      product_id,
-    ]);
-
+    await adminExecuteSQL("call deleteProduct(?)", [product_id]);
     return "Product is deleted";
   } catch (e) {
     return "Error";
@@ -388,6 +392,7 @@ module.exports = {
   createProduct,
   editProduct,
   deleteProduct,
+  getVariant,
   findVariantsById,
   addVariant,
   deleteVariant,

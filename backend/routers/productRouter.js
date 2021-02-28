@@ -11,6 +11,7 @@ const {
   createProduct,
   editProduct,
   deleteProduct,
+  getVariant,
   findVariantsById,
   addVariant,
   editVariant,
@@ -45,6 +46,15 @@ productRouter.get(
     res.send(variants);
   })
 );
+
+// productRouter.get(
+//   "/productlist/variants/:id",
+//   expressAsyncHandler(async (req, res) => {
+//     const variants = await findVariantsById(req.params.id);
+//     console.log(req.params.id);
+//     res.send(variants);
+//   })
+// );
 
 productRouter.post(
   "/productlist/variants/addvariant/:id",

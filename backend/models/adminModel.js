@@ -17,23 +17,15 @@ async function loginIn(email) {
 }
 
 async function register(email, password, user_name, role, last_login) {
-  console.log("read");
   try {
-    const data = await adminExecuteSQL(
-      "SELECT email_address FROM admin_login_details WHERE email_address = ?",
-      [this.email]
+    const submitState = await adminExecuteSQL(
+      "set @s= 0; call registerAdmin(?,?,?,?,?,@s); select @s as state",
+      [email, password, user_name, role, last_login]
     );
-    console.log(data);
-
-    if (data[0]) {
-      return "Error";
+    if (submitState[2][0].state == 1) {
+      return "new admin is added";
     } else {
-      await adminExecuteSQL(
-        "INSERT INTO admin_login_details VALUES(?,?,?,?,?,?)",
-        [user_name, email, password, role, last_login]
-      );
-
-      return "New Admin added";
+      return "admin already exists";
     }
   } catch (e) {
     console.log(e);

@@ -40,9 +40,7 @@ adminRouter.post(
     );
 
     res.send({
-      user_name: createdAdmin.user_name,
-      email: createdAdmin.email,
-      // token: generateToken(createdAdmin),
+      createdAdmin,
     });
   })
 );
