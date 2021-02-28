@@ -1,10 +1,10 @@
-import React, {useState, useEffect } from "react";
-import { Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../components/Rating";
-import Message from "../components/Message"
-import Loader from "../components/Loader"
-import Variant from "../components/Variant"
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import Variant from "../components/Variant";
 import { detailsProduct, detailsProductVariant } from "../action/productAction";
 import {
   Row,
@@ -13,9 +13,8 @@ import {
   ListGroup,
   Card,
   Button,
-  Form
+  Form,
 } from "react-bootstrap";
-
 
   const ProductScreen = ({history, match }) => {
     const [qty, setQty]=useState(1)
@@ -88,13 +87,10 @@ import {
                   </Col>
                 </Row>
               </ListGroup.Item>
-
-{console.log('dd'),
-console.log(product.noStock)}
               {variant.noStock>0 && (
                 <ListGroup.Item>
                   <Row>
-                    <Col>Qty</Col>
+                    <Col>Price:</Col>
                     <Col>
                     <Form.Control as='select' value={qty} onChange={(e)=>
                     setQty(e.target.value)}>

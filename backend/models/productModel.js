@@ -7,22 +7,24 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 
 async function findProductById(id) {
   try {
-    const productFetched = await customerExecuteSQL('call getProductById(?)',[parseInt(id)]).then();
+    const productFetched = await customerExecuteSQL("call getProductById(?)", [
+      parseInt(id),
+    ]).then();
 
-    var productDetail=JSON.parse(JSON.stringify(productFetched[0][0]));
-    var colors=JSON.parse(JSON.stringify(productFetched[1]));
-    var sizes=JSON.parse(JSON.stringify(productFetched[2]));
-    var a_variant=JSON.parse(JSON.stringify(productFetched[3][0]));
-    var category=JSON.parse(JSON.stringify(productFetched[4][0]));
-    var sub_category=JSON.parse(JSON.stringify(productFetched[5][0]));
+    var productDetail = JSON.parse(JSON.stringify(productFetched[0][0]));
+    var colors = JSON.parse(JSON.stringify(productFetched[1]));
+    var sizes = JSON.parse(JSON.stringify(productFetched[2]));
+    var a_variant = JSON.parse(JSON.stringify(productFetched[3][0]));
+    var category = JSON.parse(JSON.stringify(productFetched[4][0]));
+    var sub_category = JSON.parse(JSON.stringify(productFetched[5][0]));
 
     var dis_colors = [];
-    for(i=0;i<colors.length;i++){
+    for (i = 0; i < colors.length; i++) {
       dis_colors.push(colors[i].color);
     }
 
-    var dis_sizes=[];
-    for(i=0;i<sizes.length;i++){
+    var dis_sizes = [];
+    for (i = 0; i < sizes.length; i++) {
       dis_sizes.push(sizes[i].size);
     }
 
@@ -35,20 +37,19 @@ async function findProductById(id) {
     product.brand = productDetail.brand;
     product.category = category.category_name;
     product.subCategory = sub_category.subcat_name;
-    product.colors=dis_colors;
-    product.sizes=dis_sizes;
-    product.Onevariant={
-      color:a_variant.color,
-      size:a_variant.size,
-      noStock:a_variant.no_stock,
-      imageUrl:a_variant.image_url,
-      price:a_variant.price
-    };    
+    product.colors = dis_colors;
+    product.sizes = dis_sizes;
+    product.Onevariant = {
+      color: a_variant.color,
+      size: a_variant.size,
+      noStock: a_variant.no_stock,
+      imageUrl: a_variant.image_url,
+      price: a_variant.price,
+    };
 
     return product;
-
   } catch (e) {
-      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 
@@ -63,26 +64,44 @@ async function findVariantByParams(product_id, color, size) {
 
     return variant;
   } catch (e) {
-      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+async function findVariantsById(product_id) {
+  try {
+    const variants = await adminExecuteSQL(
+      "SELECT * FROM variant WHERE product_id=?",
+      [parseInt(product_id)]
+    );
+    return variants;
+  } catch (e) {
+    return "variants not found";
   }
 }
 
 async function findProductsByCategory(category) {
   try {
     const category_products = await customerExecuteSQL(
-      "SELECT product_id, product_name , description, weight, dimension, brand FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
+      "SELECT product_id, product_name FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
       [category]
     );
     for (let index = 0; index < category_products.length; index++) {
       const product = category_products[index];
 
       const variants = await customerExecuteSQL(
-        "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
+        "SELECT image_url ,price FROM variant WHERE product_id =?",
         [parseInt(category_products[index].product_id)]
       );
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(category_products[index].product_id)]
+        )
+      )[0].rating;
     }
     return category_products;
   } catch (e) {
@@ -93,7 +112,7 @@ async function findProductsByCategory(category) {
 async function findProductsBySubCategory(category, subcategory) {
   try {
     const category_products = await customerExecuteSQL(
-      "SELECT product_id, product_name , description, weight, dimension, brand FROM product WHERE category_id =(SELECT category_id FROM category WHERE category_name=?) AND subcat_id=(SELECT subcat_id FROM subcategory WHERE subcat_name=? AND category_id =(SELECT category_id FROM category WHERE category_name=?))",
+      "SELECT product_id, product_name FROM product WHERE category_id =(SELECT category_id FROM category WHERE category_name=?) AND subcat_id=(SELECT subcat_id FROM subcategory WHERE subcat_name=? AND category_id =(SELECT category_id FROM category WHERE category_name=?))",
       [category, subcategory, category]
     );
     for (let index = 0; index < category_products.length; index++) {
@@ -106,6 +125,12 @@ async function findProductsBySubCategory(category, subcategory) {
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(category_products[index].product_id)]
+        )
+      )[0].rating;
     }
     return category_products;
   } catch (e) {
@@ -128,7 +153,12 @@ async function getProducts() {
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
-      product.rating = (await customerExecuteSQL("SELECT getAverageRatingForProduct(?) AS rating",[parseInt(productData[index].product_id)]))[0].rating;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(productData[index].product_id)]
+        )
+      )[0].rating;
     }
     return productData;
   } catch (e) {
@@ -136,11 +166,99 @@ async function getProducts() {
   }
 }
 
+//-------------------------admin - variants -------------------------------------------------------
+
+async function getVariant(product_id, variant_Id) {
+  try {
+    const variants = await adminExecuteSQL(
+      "SELECT * FROM variant WHERE product_id=? AND variant_id=?",
+      [parseInt(product_id, variant_Id)]
+    );
+    return variants;
+  } catch (e) {
+    return "variants not found";
+  }
+}
+
+async function addVariant(
+  product_id,
+  variant_id,
+  SKU,
+  image_url,
+  price,
+  offer,
+  color,
+  size,
+  no_stock
+) {
+  try {
+    await adminExecuteSQL("INSERT INTO variant values(?,?,?,?,?,?,?,?,?)", [
+      variant_id,
+      product_id,
+      SKU,
+      image_url,
+      price,
+      offer,
+      color,
+      size,
+      no_stock,
+    ]);
+    return "new variant is added";
+  } catch (e) {
+    return "Error";
+  }
+}
+
+async function updateVariant(
+  product_id,
+  variant_id,
+  SKU,
+  image_url,
+  price,
+  offer,
+  color,
+  size,
+  no_stock
+) {
+  try {
+    await adminExecuteSQL(
+      "UPDATE variant set SKU=?, image_url=?, price=?, offer=? color=?, size=?, no_stock=? WHERE product_id=? AND variant_id=?",
+      [
+        SKU,
+        image_url,
+        price,
+        offer,
+        color,
+        size,
+        no_stock,
+        product_id,
+        variant_id,
+      ]
+    );
+    return "success";
+  } catch (e) {
+    return e;
+  }
+}
+
+async function deleteVariant(product_id, variant_id) {
+  try {
+    await adminExecuteSQL(
+      "DELETE FROM variant WHERE variant_id=? AND product_id=?",
+      [variant_id, product_id]
+    );
+
+    return "variant is deleted";
+  } catch (e) {
+    return "Error";
+  }
+}
+
+//--------------------admin - products -----------------------------------------------------------------------
+
 async function getProductsForAdmin() {
   try {
-    const productData = await adminExecuteSQL(
-      "SELECT product_id, product_name , category_id, subcat_id, supplier_id, description, weight, dimension, brand FROM product"
-    );
+    const productData = await adminExecuteSQL("SELECT * FROM product");
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
@@ -148,6 +266,7 @@ async function getProductsForAdmin() {
         "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
         [parseInt(productData[index].product_id)]
       );
+      //console.log(variants[0]);
 
       const category = await adminExecuteSQL(
         "SELECT category_name from category where category_id=?",
@@ -180,6 +299,105 @@ async function getProductsForAdmin() {
   }
 }
 
+async function createProduct(
+  product_name,
+  description,
+  weight,
+  dimension,
+  brand,
+  category_name,
+  subcategory_name,
+  supplier_name,
+  variant_id,
+  SKU,
+  price,
+  offer,
+  color,
+  size,
+  no_stock
+) {
+  try {
+    const category_id = await adminExecuteSQL(
+      "SELECT category_id FROM category where category_name=?",
+      [category_name]
+    );
+
+    const subcategory_id = await adminExecuteSQL(
+      "SELECT subcat_id FROM subcategory where subcat_name=?",
+      [subcategory_name]
+    );
+
+    const supplier_id = await adminExecuteSQL(
+      "SELECT supplier_id FROM supplier where supplier_name=?",
+      [supplier_name]
+    );
+    const last_insert = await adminExecuteSQL(
+      "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
+      [
+        product_name,
+        category_id[0].category_id,
+        subcategory_id[0].subcat_id,
+        description,
+        weight,
+        dimension,
+        brand,
+        supplier_id[0].supplier_id,
+      ],
+      "return LAST_INSERT_ID()"
+    );
+
+    const last_insert_product_id = last_insert.insertId;
+
+    await adminExecuteSQL(
+      "INSERT INTO variant (variant_id, product_id, SKU, price, offer, color, size, no_stock) VALUES (?,?,?,?,?,?,?,?)",
+      [
+        variant_id,
+        last_insert_product_id,
+        SKU,
+        price,
+        offer,
+        color,
+        size,
+        no_stock,
+      ]
+    );
+
+    // insert image --------------------
+
+    return "new product is added";
+  } catch (e) {
+    console.log(e);
+    return "Error";
+  }
+}
+
+async function updateProduct(
+  product_id,
+  description,
+  weight,
+  dimension,
+  brand
+) {
+  try {
+    await adminExecuteSQL(
+      "UPDATE product set description=?, weight=?, dimension=?, brand=? WHERE product_id=?",
+      [description, weight, dimension, brand, product_id]
+    );
+    return "success";
+  } catch (e) {
+    return "Error";
+  }
+}
+
+async function deleteProduct(product_id) {
+  try {
+    await adminExecuteSQL("call deleteProduct(?)", [product_id]);
+    return "Product is deleted";
+  } catch (e) {
+    return "Error";
+  }
+}
+
 module.exports = {
   findProductById,
   getProducts,
@@ -187,4 +405,12 @@ module.exports = {
   findProductsBySubCategory,
   findVariantByParams,
   getProductsForAdmin,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getVariant,
+  findVariantsById,
+  addVariant,
+  deleteVariant,
+  updateVariant,
 };

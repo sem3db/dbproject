@@ -18,7 +18,7 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_SUCCESS,
-} from '../constants/productConstants';
+} from "../constants/productConstants";
 
 // frontend testing without backend
 const productdata = [
@@ -96,7 +96,6 @@ export const listProductsCat = (cat) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     if(cat){
-      console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
     }
     const { data } = await axios.get(`/api/products/category/${cat}`);
     dispatch({
@@ -138,33 +137,33 @@ export const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
-export const detailsProductVariant = (productId,variants) => async (dispatch) =>{
+export const detailsProductVariant = (productId, variants) => async (
+  dispatch
+) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
-  try{
-      dispatch({type:PRODUCT_DETAILS_REQUEST1})
-      const {data} = await axios.post(`/api/products/v`,variants)
-      // const data = productdata[productId-1];
-      const h={...data,vary:variants}
-      dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
+    const { data } = await axios.post(`/api/products/v`, variants);
+    // const data = productdata[productId-1];
+    const h = { ...data, vary: variants };
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: PRODUCT_DETAILS_FAIL1,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
-  catch(error){
-      console.log(error)
-      dispatch({
-          type:PRODUCT_DETAILS_FAIL1,
-          payload : error.response && error.response.data.message ? error.response.data.message: error.message
-      })
-  }
-}
+};
 
 export const createProduct = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   try {
-
     // backend
-    const { data } = await axios.post(
-      '/api/products',
-      {},
-    );
+    const { data } = await axios.post("/api/products", {});
     // backend
 
     // frontend testing without backend
@@ -193,7 +192,6 @@ export const createProduct = () => async (dispatch, getState) => {
     // const data = { product: newproduct };
     // frontend testing without backend
 
-
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data.product,
@@ -212,7 +210,6 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-
     // backend
     const { data } = await axios.put(`/api/products/${product._id}`, product);
     // backend
@@ -237,11 +234,10 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-    
     // backend
     const { data } = axios.delete(`/api/products/${productId}`);
     // backend
-    
+
     // frontend testing without backend
     // productdata.splice(productId-1,1);
     // const { data } = productdata;

@@ -1,4 +1,7 @@
-const { adminExecuteSQL,customerExecuteSQL } = require("../database/dbQuery.js");
+const {
+  adminExecuteSQL,
+  customerExecuteSQL,
+} = require("../database/dbQuery.js");
 
 const ACCESS_TOKEN_SECRECT = "DBProject";
 
@@ -32,28 +35,51 @@ async function getOrders() {
   }
 }
 
-async function moveToOrder_registered(cust_id,paymethod,delstat,delmethod,estim,note){
-    try{
-        const moveState = await customerExecuteSQL('call moveToOrder_reg(?,?,?,?,?,?)',[cust_id,paymethod,delstat,delmethod,estim,note]).then();
-        console.log(moveState);
-        return moveState;
-    }catch(e){
-        console.log(JSON.parse(JSON.stringify(e))['error']);
-        return "Error";
-    }
+async function moveToOrder_registered(
+  cust_id,
+  paymethod,
+  delstat,
+  delmethod,
+  estim,
+  note
+) {
+  try {
+    const moveState = await customerExecuteSQL(
+      "call moveToOrder_reg(?,?,?,?,?,?)",
+      [cust_id, paymethod, delstat, delmethod, estim, note]
+    ).then();
+    console.log(moveState);
+    return moveState;
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "Error";
+  }
 }
 
-async function moveToOrder_guest(cust_id,paymethod,delstat,delmethod,estim,note,productlist){
-    try{
-        const moveState = await customerExecuteSQL('call moveToOrder_gst(?,?,?,?,?,?,?)',[cust_id,paymethod,delstat,delmethod,estim,note,productlist]).then();
-        console.log(moveState);
-        return moveState;
-    }catch(e){
-        console.log(JSON.parse(JSON.stringify(e))['error']);
-        return "ERROR";
-    }
+async function moveToOrder_guest(
+  cust_id,
+  paymethod,
+  delstat,
+  delmethod,
+  estim,
+  note,
+  productlist
+) {
+  try {
+    const moveState = await customerExecuteSQL(
+      "call moveToOrder_gst(?,?,?,?,?,?,?)",
+      [cust_id, paymethod, delstat, delmethod, estim, note, productlist]
+    ).then();
+    console.log(moveState);
+    return moveState;
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
 }
 
 module.exports = {
-  getOrders,moveToOrder_registered,moveToOrder_guest
+  getOrders,
+  moveToOrder_registered,
+  moveToOrder_guest,
 };

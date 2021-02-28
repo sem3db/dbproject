@@ -12,6 +12,7 @@ const generateToken = (user) => {
 };
 
 const isAuth = (req, res, next) => {
+  
   const token =req.header('auth-token');
   
   if(!token) return res.status(401).send('Access Denied');
@@ -23,6 +24,7 @@ const isAuth = (req, res, next) => {
   } catch (err) {
       res.status(400).send('Inavlid Token');
   }  
+  
 };
 
 
