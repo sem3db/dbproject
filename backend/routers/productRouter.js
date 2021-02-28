@@ -23,11 +23,7 @@ const productRouter = express.Router();
 
 productRouter.get(
   "/",
-<<<<<<< HEAD
   //isAuth,
-=======
-  // isAuth,
->>>>>>> d5e5f7433a1a4a8845bdd62b6dd0001148be2c8e
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
     res.send(products);
@@ -186,14 +182,9 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
-      console.log('ooooo')
-      console.log(product)
-      console.log('ooooo')
-    } else {
-      // throw new Error('database failed to connect');
-      console.log('ooooo')
+    } else {     
       res.status(404).send({ message: "Product Not Found" });
-      console.log('ooooo')
+      
     }
   })
 );

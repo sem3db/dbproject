@@ -64,4 +64,17 @@ async function register(
   }
 }
 
-module.exports = { loginIn, register };
+
+async function findCustomerById(id) {
+  try {
+    const customerFetched = await customerExecuteSQL("SELECT email , password, first_name, last_name, zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
+      parseInt(id),
+    ]).then();
+
+    return customerFetched[0];
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+module.exports = { loginIn, register,findCustomerById };

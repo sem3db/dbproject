@@ -3,7 +3,8 @@ const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const {
   loginIn,
-  register
+  register,
+  findCustomerById
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -53,6 +54,19 @@ userRouter.post(
     });
   })
 );
+
+userRouter.get(
+  "/:custometId",
+  expressAsyncHandler(async (req, res) => {
+    const customer = await findCustomerById(req.params.custometId);
+    if (customer) {
+      res.send(customer);
+    } else {     
+      res.status(404).send({ message: "Customer Not Found" });      
+    }
+  })
+);
+
 
 
 
