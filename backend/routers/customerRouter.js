@@ -3,8 +3,7 @@ const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const {
   loginIn,
-  register,
-  getCustomers,
+  register
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -14,18 +13,14 @@ userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
     const login_cred = await loginIn(req.body.email);
-
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
-        
-        const token=generateToken(login_cred[0].email, login_cred[0].first_name);
-
+        const token=generateToken({email: login_cred[0].email, fName:login_cred[0].first_name });
         res.header('auth-token',token).send({
-          fName:login_cred[0].first_name,
+          first_name:login_cred[0].first_name,
           email: login_cred[0].email,
           token: token
         });
-        
         return;
       }
     }
@@ -36,7 +31,7 @@ userRouter.post(
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const createdUser = await register(
@@ -58,13 +53,6 @@ userRouter.post(
   })
 );
 
-userRouter.get(
-  "/seed",
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const createdUsers = await getCustomers();
-    res.send({ createdUsers });
-  })
-);
+
 
 module.exports = userRouter;

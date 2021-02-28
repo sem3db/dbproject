@@ -55,19 +55,19 @@ export const listProducts = () => async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     // backend
-    // const { data } = await axios.get("/api/products/productlist");
+    const { data } = await axios.get("/api/productlist");
     // backend
 
     // frontend testing without backend
-    const data = productdata;
+    // const data = productdata;
     // frontend testing without backend
+
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
@@ -79,15 +79,20 @@ export const listProducts = () => async (dispatch) => {
 };
 
 export const listProductsCat = (cat) => async (dispatch) => {
+  cat=cat.split("-").join('/')
+  console.log('l1')
+  console.log(cat)
+  console.log('l1')
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(`/api/products/${cat}`);
+    if(cat){
+    }
+    const { data } = await axios.get(`/api/products/category/${cat}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
@@ -103,16 +108,15 @@ export const detailsProduct = (productId) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     // backend
-    // const {data} = await axios.get(`/api/product/${productId}`)
+    const {data} = await axios.get(`/api/products/${productId}`)
     // backend
 
     // frontend testing without backend
-    const data = productdata[productId - 1];
+    // const data = productdata[productId - 1];
     // frontend testing without backend
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:
@@ -123,51 +127,50 @@ export const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
-export const detailsProductVariant = (productId,variants) => async (dispatch) =>{
+export const detailsProductVariant = (productId, variants) => async (
+  dispatch
+) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
-  try{
-      dispatch({type:PRODUCT_DETAILS_REQUEST1})
-      const {data} = await axios.post(`/api/products/v`,variants)
-      // const data = productdata[productId-1];
-      const h={...data,vary:variants}
-      dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
+    const { data } = await axios.post(`/api/products/v`, variants);
+    // const data = productdata[productId-1];
+    const h = { ...data, vary: variants };
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: PRODUCT_DETAILS_FAIL1,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
-  catch(error){
-      console.log(error)
-      dispatch({
-          type:PRODUCT_DETAILS_FAIL1,
-          payload : error.response && error.response.data.message ? error.response.data.message: error.message
-      })
-  }
-}
+};
 
 export const createProduct = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   try {
-
     // backend
-    // const { data } = await axios.post(
-    //   '/api/products/',
-    //   {},
-    // );
+    const { data } = await axios.post("/api/products", {});
     // backend
 
     // frontend testing without backend
-    const newproduct = {
-      product_id: productdata.length + 1,
-      product_name: "sampleproduct",
-      category_name: "",
-      subcat_name: "",
-      description: "sampledescription",
-      weight: "sampleweight",
-      dimension: "sampledimension",
-      brand: "samplebrand",
-      supplier_name: "",
-    };
-    productdata.push(newproduct);
-    const data = { product: newproduct };
+    // const newproduct = {
+    //   product_id: productdata.length + 1,
+    //   product_name: "sampleproduct",
+    //   category_name: "",
+    //   subcat_name: "",
+    //   description: "sampledescription",
+    //   weight: "sampleweight",
+    //   dimension: "sampledimension",
+    //   brand: "samplebrand",
+    //   supplier_name: "",
+    // };
+    // productdata.push(newproduct);
+    // const data = { product: newproduct };
     // frontend testing without backend
-
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -187,14 +190,13 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-
     // backend
-    // const { data } = await axios.put(`/api/products/${product.product_id}`, product);
+    const { data } = await axios.put(`/api/products/${product.product_id}`, product);
     // backend
 
     // frontend testing without backend
-    productdata[product.product_id - 1] = product;
-    const { data } = productdata[product.product_id - 1];
+    // productdata[product.product_id - 1] = product;
+    // const { data } = productdata[product.product_id - 1];
     // frontend testing without backend
 
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
@@ -212,14 +214,13 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-    
     // backend
-    // const { data } = axios.delete(`/api/products/${productId}`);
+    const { data } = axios.delete(`/api/products/${productId}`);
     // backend
-    
+
     // frontend testing without backend
-    productdata.splice(productId-1,1);
-    const { data } = productdata;
+    // productdata.splice(productId-1,1);
+    // const { data } = productdata;
     // frontend testing without backend
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
@@ -265,11 +266,11 @@ export const listVariants = (productId) => async (dispatch) =>{
   try {
 
       // backend
-      // const { data } = await axios.get("/api/${categoryId}/subcategorylist");
+      const { data } = await axios.get("/api/product/${productId}/variantlist");
       // backend
 
       // frontend testing without backend
-      const data = variantdata;
+      // const data = variantdata;
       // frontend testing without backend
 
       dispatch({

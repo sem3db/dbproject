@@ -25,3 +25,12 @@ As experts of database design, you are hired first analyse the requirement and p
 Your task is to model the database design to encapsulate these requirement. It should consider all entities and relationships given in the description. Moreover you need to identify the places where procedures, functions and triggers can be employed to guarantee ACID properties. Foreign keys and primary keys must be set to maintain consistency. Indexing should be done when necessary.
 
 Additionally, the you must get a domain idea by reading related material and take assumptions when not explicitly provided. The database must be populated with at least 40 products, with variants and at least 10 different categories. These data insertions can be done manually and no need of UI components just for the task of data input.
+
+## Important notices
+
+### calling function "moveToOrder_guest" << parameter "productlist"
+
+the parameter "productlist" must be provided as a **JSON array** 
+
+ex:-    1.  '[{"variant_id":"2","product_id":"2","quantity":"3"},{"variant_id":"3","product_id":"1","quantity":"4"}]'
+        2.  '[{"variant_id":"5","product_id":"1","quantity":"1"},{"variant_id":"2","product_id":"1","quantity":"2"},{"variant_id":"1","product_id":"3","quantity":"1"}]'

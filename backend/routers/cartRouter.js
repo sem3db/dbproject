@@ -11,7 +11,6 @@ cartRouter.post('/',expressAsyncHandler(async (req, res) => {
 
     const customerID = req.params.customerID;
     
-    
     if (customerID) {
         const cartItems = await getCartItems(customerID).then();
         res.send(cartItems);
@@ -69,4 +68,5 @@ cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
     }    
   }));
 
-  module.exports=cartRouter;
+
+  module.exports = cartRouter;

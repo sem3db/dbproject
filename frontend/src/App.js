@@ -1,6 +1,6 @@
-import React from 'react';
-import {Container} from 'react-bootstrap';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import React from "react";
+import { Container } from "react-bootstrap";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -28,27 +28,28 @@ const App = () => {
       <main className='py-3'>
         <Container>
           {/* <HomeScreen/> */}
-          <Route path='/' component={HomeScreen} exact />
-          <Route path='/products/:cat' component={HomeScreen} exact />
-          <Route path='/profile' component={ProfileScreen} exact />
-          <Route path='/product/:id' component={ProductScreen} exact />
-          <Route path='/cart/:id?' component={CartScreen}/>
-          <Route path='/login' component={LoginScreen}/>
-          <Route path='/register' component={RegisterScreen}/>
-          <Route path='/shipping' component={ShippingScreen}/>
-          <Route path='/payment' component={PaymentScreen}/>
-          <Route path='/placeorder' component={PlaceOrderScreen}/>
-          <Route path='/order/:id' component={OrderScreen}/>
-          {/* AdminRoute */}
-          <Route path='/dashboard' component={DashBoardScreen}></Route>
-          <Route path='/productlist' component={ProductListScreen}></Route>
-          {/* <Route path='/product/:id/view' component={ProductViewScreen} exact ></Route> */}
-          <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
-          <Route path='/product/:id/variantlist' component={VariantListScreen}></Route>
-          {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
-          <Route path='/product/:id/variant/:vid/edit' component={VariantEditScreen} exact ></Route>
-          <Route path='/orderlist' component={OrderListScreen}></Route>
-          {/* AdminRoute */}
+        <Route path='/' component={HomeScreen} exact />
+        <Route path='/products' component={HomeScreen} exact />
+        <Route path='/products/:cat' component={HomeScreen} exact />
+        <Route path='/profile' component={ProfileScreen} exact />
+        <Route path='/product/:id' component={ProductScreen} exact />
+        <Route path='/cart/:id?' component={CartScreen}/>
+        <Route path='/login' component={LoginScreen}/>
+        <Route path='/register' component={RegisterScreen}/>
+        <Route path='/shipping' component={ShippingScreen}/>
+        <Route path='/payment' component={PaymentScreen}/>
+        <Route path='/placeorder' component={PlaceOrderScreen}/>
+        <Route path='/order/:id' component={OrderScreen}/>
+        {/* AdminRoute */}
+        <Route path='/dashboard' component={DashBoardScreen}></Route>
+        <Route path='/productlist' component={ProductListScreen}></Route>
+        {/* <Route path='/product/:id/view' component={ProductViewScreen} exact ></Route> */}
+        <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
+        <Route path='/product/:id/variantlist' component={VariantListScreen}></Route>
+        {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
+        <Route path='/product/:id/variant/:vid/edit' component={VariantEditScreen} exact ></Route>
+        <Route path='/orderlist' component={OrderListScreen}></Route>
+        {/* AdminRoute */}
         </Container>
       </main>
       <Footer />
