@@ -83,19 +83,25 @@ async function findVariantsById(product_id) {
 async function findProductsByCategory(category) {
   try {
     const category_products = await customerExecuteSQL(
-      "SELECT product_id, product_name , description, weight, dimension, brand FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
+      "SELECT product_id, product_name FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
       [category]
     );
     for (let index = 0; index < category_products.length; index++) {
       const product = category_products[index];
 
       const variants = await customerExecuteSQL(
-        "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
+        "SELECT image_url ,price FROM variant WHERE product_id =?",
         [parseInt(category_products[index].product_id)]
       );
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(category_products[index].product_id)]
+        )
+      )[0].rating;
     }
     return category_products;
   } catch (e) {
@@ -106,7 +112,7 @@ async function findProductsByCategory(category) {
 async function findProductsBySubCategory(category, subcategory) {
   try {
     const category_products = await customerExecuteSQL(
-      "SELECT product_id, product_name , description, weight, dimension, brand FROM product WHERE category_id =(SELECT category_id FROM category WHERE category_name=?) AND subcat_id=(SELECT subcat_id FROM subcategory WHERE subcat_name=? AND category_id =(SELECT category_id FROM category WHERE category_name=?))",
+      "SELECT product_id, product_name FROM product WHERE category_id =(SELECT category_id FROM category WHERE category_name=?) AND subcat_id=(SELECT subcat_id FROM subcategory WHERE subcat_name=? AND category_id =(SELECT category_id FROM category WHERE category_name=?))",
       [category, subcategory, category]
     );
     for (let index = 0; index < category_products.length; index++) {
@@ -119,6 +125,12 @@ async function findProductsBySubCategory(category, subcategory) {
 
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(category_products[index].product_id)]
+        )
+      )[0].rating;
     }
     return category_products;
   } catch (e) {
