@@ -2,6 +2,20 @@ const { adminExecuteSQL } = require("../database/dbQuery.js");
 
 const ACCESS_TOKEN_SECRECT = "DBProject";
 
+//report 2
+async function productsWithMostNumberOfSales(from, to) {
+  try {
+    const product = await adminExecuteSQL(
+      " SELECT SUM(quantity) AS quantity, product_id, product_name, description, weight, dimension, brand FROM productorder NATURAL JOIN order_product natural join product WHERE order_date between ? AND ? GROUP BY product_id ORDER BY quantity DESC LIMIT 5",
+      [from, to]
+    );
+    return product;
+  } catch (e) {
+    return "Error";
+  }
+}
+
+//report 3
 async function productCategoryWithMostOrders() {
   try {
     const category = await adminExecuteSQL(
@@ -13,6 +27,15 @@ async function productCategoryWithMostOrders() {
   }
 }
 
+//report 4
+async function timePeriodWithMostIneterest(product_id) {
+  try {
+  } catch (e) {
+    return "Error";
+  }
+}
+
 module.exports = {
   productCategoryWithMostOrders,
+  productsWithMostNumberOfSales,
 };
