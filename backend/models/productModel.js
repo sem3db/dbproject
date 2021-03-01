@@ -30,23 +30,25 @@ async function findProductById(id) {
 
     const product = {};
     const Product = {};
-    Product.product_id = id;
-    Product.product_name = productDetail.product_name;
-    Product.description = productDetail.description;
-    Product.weight = productDetail.weight;
-    Product.dimension = productDetail.dimension;
-    Product.brand = productDetail.brand;
-    Product.category = category.category_name;
-    Product.subCategory = sub_category.subcat_name;
-    Product.rating = (
-      await customerExecuteSQL(
-        "SELECT getAverageRatingForProduct(?) AS rating",
-        [parseInt(id)]
-      )
-    )[0].rating;
+      Product.product_id = id;
+      Product.product_name = productDetail.product_name;
+      Product.description = productDetail.description;
+      Product.weight = productDetail.weight;
+      Product.dimension = productDetail.dimension;
+      Product.brand = productDetail.brand;
+      Product.category = category.category_name;
+      Product.subCategory = sub_category.subcat_name;
+      Product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(id)]
+        )
+      )[0].rating;
     product.Product = Product;
-    product.colors = dis_colors;
-    product.sizes = dis_sizes;
+    product.Variants={
+      "colors": dis_colors,
+      "sizes" : dis_sizes
+    };
     product.Onevariant = {
       variantId: a_variant.variant_id,
       color: a_variant.color,
@@ -91,6 +93,7 @@ async function findVariantsById(product_id) {
 
 async function findProductsByCategory(category) {
   try {
+    
     const category_products = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
       [category]
@@ -112,7 +115,8 @@ async function findProductsByCategory(category) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
+    
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -141,7 +145,8 @@ async function findProductsBySubCategory(category, subcategory) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
+    
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -149,7 +154,38 @@ async function findProductsBySubCategory(category, subcategory) {
 
 async function getProducts() {
   try {
-    const ProductList = {};
+    
+    const productData = await customerExecuteSQL(
+      "SELECT product_id, product_name FROM product"
+    );
+    for (let index = 0; index < productData.length; index++) {
+      const product = productData[index];
+
+      const variants = await customerExecuteSQL(
+        "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
+        [parseInt(productData[index].product_id)]
+      );
+
+      product.imageUrl = variants[0].image_url;
+      product.price = variants[0].price;
+      product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(productData[index].product_id)]
+        )
+      )[0].rating;
+    }
+
+    return getProductTemplate(productData);
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+
+
+async function getProductTemplate(product_list){
+  const ProductList = {};
 
     const Categories = await customerExecuteSQL(
       "SELECT DISTINCT category_name FROM category"
@@ -172,32 +208,9 @@ async function getProducts() {
 
     ProductList.Categories = disCatNSubcat;
 
-    const productData = await customerExecuteSQL(
-      "SELECT product_id, product_name FROM product"
-    );
-    for (let index = 0; index < productData.length; index++) {
-      const product = productData[index];
-
-      const variants = await customerExecuteSQL(
-        "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
-        [parseInt(productData[index].product_id)]
-      );
-
-      product.imageUrl = variants[0].image_url;
-      product.price = variants[0].price;
-      product.rating = (
-        await customerExecuteSQL(
-          "SELECT getAverageRatingForProduct(?) AS rating",
-          [parseInt(productData[index].product_id)]
-        )
-      )[0].rating;
-    }
-    ProductList.Products = productData;
+    ProductList.Products=product_list;
 
     return ProductList;
-  } catch (e) {
-    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-  }
 }
 
 //-------------------------admin - variants -------------------------------------------------------
