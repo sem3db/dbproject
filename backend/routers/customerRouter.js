@@ -17,12 +17,17 @@ userRouter.post(
     const login_cred = await loginIn(req.body.email);
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
+
         const token=generateToken({email: login_cred[0].email, fName:login_cred[0].first_name });
-        res.header('auth-token',token).send({
+
+        res.send({
           first_name:login_cred[0].first_name,
           email: login_cred[0].email,
           token: token
         });
+
+        
+
         return;
       }
     }

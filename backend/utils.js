@@ -12,18 +12,26 @@ const generateToken = (user) => {
 };
 
 const isAuth = (req, res, next) => {
-  
-  const token =req.header('auth-token');
-  
-  if(!token) return res.status(401).send('Access Denied');
 
-  try {
-      const verified =jwt.verify(token,process.env.TOKEN_SECRET);
-      req.user=verified;
-      next();
-  } catch (err) {
-      res.status(400).send('Inavlid Token');
-  }  
+  const authorization = req.headers.authorization;
+  if (authorization) {
+    const token = authorization.slice(7, authorization.length); // Bearer XXXXXX
+    jwt.verify(
+      token,
+      process.env.TOKEN_SECRET,
+      (err, decode) => {
+        if (err) {
+          res.status(401).send({ message: 'Invalid Token' });
+        } else {
+          req.user = decode;
+          next();
+        }
+      }
+    );
+  } else {
+    res.status(401).send({ message: 'No Token' });
+  }
+  
   
 };
 
