@@ -5,13 +5,89 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 //report 1
 async function quaterlySalesReport(year) {
   try {
-    // const await adminExecuteSQL(
-    //   "SELECT order_id, product_name,brand, product_price,quantity,product_offer, total_payment, order_date FROM productorder NATURAL JOIN order_product NATURAL JOIN product WHERE YEAR(order_date)=? AND MONTH(order_date) BETWEEN 1 AND 3",
-    //   [year]
-    // );
+
+    const report={};
+
+    const Categories = await adminExecuteSQL(
+      "SELECT DISTINCT category_id, category_name FROM category"
+    );
+
+    const orders_by_category_q1=await getOneQuaterSales(year,1);
+    const orders_by_category_q2=await getOneQuaterSales(year,2);
+    const orders_by_category_q3=await getOneQuaterSales(year,3);
+    const orders_by_category_q4=await getOneQuaterSales(year,4);
+
+
+    for(var c=0; c<Categories.length;c++){
+      var cat_id=Categories[c].category_id;
+      var cat_name=Categories[c].category_name;
+      report[cat_name]={
+        "Q1":orders_by_category_q1[cat_id.toString()],
+        "Q2":orders_by_category_q2[cat_id.toString()],
+        "Q3":orders_by_category_q3[cat_id.toString()], 
+        "Q4":orders_by_category_q4[cat_id.toString()]
+      };
+    }
+
+    return report;
+    
   } catch (e) {
-    return "Error";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
+}
+
+async function getOneQuaterSales(year,quater){
+  let orders_of_quater;
+  switch (quater) {
+    case 1:
+      orders_of_quater = await adminExecuteSQL(
+        "SELECT order_id FROM productorder WHERE DATE(order_date) BETWEEN '?-01-01' AND '?-03-31' ",
+        [parseInt(year), parseInt(year)]
+      );
+
+      break;
+    case 2:
+      orders_of_quater = await adminExecuteSQL(
+        "SELECT order_id FROM productorder WHERE DATE(order_date) BETWEEN '?-04-01' AND '?-06-30' ",
+        [parseInt(year), parseInt(year)]
+      );
+      break;
+    case 3:
+       orders_of_quater = await adminExecuteSQL(
+        "SELECT order_id FROM productorder WHERE DATE(order_date) BETWEEN '?-07-01' AND '?-09-30' ",
+        [parseInt(year), parseInt(year)]
+      );
+      break;
+    case 4:
+      orders_of_quater = await adminExecuteSQL(
+        "SELECT order_id FROM productorder WHERE DATE(order_date) BETWEEN '?-10-01' AND '?-12-31' ",
+        [parseInt(year), parseInt(year)]
+      );
+      break;
+  
+    default:
+      break;
+  }
+  
+  var orders_by_cat={};
+
+  for (var i = 0; i < orders_of_quater.length; i++) {
+    var ordered_products = (await adminExecuteSQL(
+      "SELECT (SELECT product.category_id from product where product.product_id=order_product.product_id) as category, sum(order_product.product_price)  as order_tot_price FROM order_product WHERE order_product.order_id=? group by category ",
+      [parseInt(orders_of_quater[i].order_id)]
+    ));
+
+    for(var j=0;j<ordered_products.length;j++){
+      var ordered_cat_product=ordered_products[j];
+      if(ordered_cat_product.category in orders_by_cat){
+        orders_by_cat[ordered_cat_product.category]+=ordered_cat_product.order_tot_price;
+      }
+      else{
+        orders_by_cat[ordered_cat_product.category]=ordered_cat_product.order_tot_price;
+      }
+    }
+  }
+  return orders_by_cat;
 }
 
 //report 2
@@ -23,7 +99,7 @@ async function productsWithMostNumberOfSales(from, to) {
     );
     return product;
   } catch (e) {
-    return "Error";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 
@@ -35,7 +111,7 @@ async function productCategoryWithMostOrders() {
     );
     return category[0].category_name;
   } catch (e) {
-    return "Error";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 
@@ -43,11 +119,12 @@ async function productCategoryWithMostOrders() {
 async function timePeriodWithMostIneterest(product_id) {
   try {
   } catch (e) {
-    return "Error";
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 
 module.exports = {
+  quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
 };
