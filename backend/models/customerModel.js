@@ -122,30 +122,20 @@ async function getShippingAddress(id) {
 
     const CustomerInfo = {};
 
-    const States = await customerExecuteSQL(
-      "SELECT DISTINCT state FROM registered_customer"
+    const MainCities = await customerExecuteSQL(
+      "SELECT DISTINCT city_name FROM main_city"
     );
 
-    var disStateNCity = {};
-    for (var i = 0; i < States.length; i++) {
-      var Cities = await customerExecuteSQL(
-        "SELECT DISTINCT city FROM registered_customer WHERE state=?",
-        [States[i].state]
-      );
-
-      var discity=[];
-      for (var j = 0; j < Cities.length;j++) {
-        discity.push(Cities[j].city);
-      }
-      disStateNCity[States[i].state]=discity;
+    var maincitylist=[];
+    for (var i=0; i<MainCities.length;i++){
+      maincitylist.push(MainCities[i].city_name);
     }
 
-
-    CustomerInfo.States = disStateNCity;
+    CustomerInfo.MainCities = maincitylist;
 
     const addressFetched = await customerExecuteSQL("SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
       parseInt(id),
-    ]).then();
+    ]);
 
     
 

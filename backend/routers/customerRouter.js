@@ -7,7 +7,8 @@ const {
   findCustomerById,
   updateCustomer,
   getShippingAddress,
-  updateShippingAddress
+  updateShippingAddress,
+  
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 

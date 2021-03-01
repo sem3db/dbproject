@@ -7,6 +7,7 @@ const {
   findProductsByCategory,
   findProductsBySubCategory,
   findVariantByParams,
+  findVariantByIds,
   getProductsForAdmin,
   createProduct,
   updateProduct,
@@ -47,7 +48,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/productlist/variants/edit/:id/:vid",
+  "/productlist/variants/:id/:vid",
   expressAsyncHandler(async (req, res) => {
     const variantDetails = await getVariant(req.params.id, req.params.vid);
     res.send(variantDetails);
@@ -111,14 +112,7 @@ productRouter.post(
       req.body.brand,
       req.body.category_name,
       req.body.subcategory_name,
-      req.body.supplier_name,
-      req.body.variant_id,
-      req.body.SKU,
-      req.body.price,
-      req.body.offer,
-      req.body.color,
-      req.body.size,
-      req.body.no_stock
+      req.body.supplier_name
     );
 
     res.send(isAdded);
@@ -151,7 +145,7 @@ productRouter.get(
 productRouter.get(
   "/category/:category",
   expressAsyncHandler(async (req, res) => {
-    console.log('')
+    console.log("");
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);
@@ -182,9 +176,8 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
-    } else {     
+    } else {
       res.status(404).send({ message: "Product Not Found" });
-      
     }
   })
 );
@@ -196,6 +189,22 @@ productRouter.get(
       req.params.id,
       req.params.color,
       req.params.size
+    );
+
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: "Variant does not exist" });
+    }
+  })
+);
+
+productRouter.get(
+  "/:productId/:variantId",
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByIds(
+      req.params.productId,
+      req.params.variantId
     );
 
     if (variant) {
