@@ -7,6 +7,7 @@ const {
   findProductsByCategory,
   findProductsBySubCategory,
   findVariantByParams,
+  findVariantByIds,
   getProductsForAdmin,
   createProduct,
   updateProduct,
@@ -188,6 +189,22 @@ productRouter.get(
       req.params.id,
       req.params.color,
       req.params.size
+    );
+
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: "Variant does not exist" });
+    }
+  })
+);
+
+productRouter.get(
+  "/:productId/:variantId",
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByIds(
+      req.params.productId,
+      req.params.variantId
     );
 
     if (variant) {
