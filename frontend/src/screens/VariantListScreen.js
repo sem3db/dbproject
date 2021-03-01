@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    createVariant,
+    deleteVariant,
     listVariants,
 } from "../action/productAction";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import { VARIANT_CREATE_RESET, VARIANT_DELETE_RESET } from "../constants/variantConstants";
 
 export default function VariantListScreen(props) {
     const productId = props.match.params.id;
@@ -12,55 +15,54 @@ export default function VariantListScreen(props) {
     const variantList = useSelector((state) => state.variantList);
     const { loading, error, variants } = variantList;
 
-//   const variantCreate = useSelector((state) => state.variantCreate);
-//   const {
-//     loading: loadingCreate,
-//     error: errorCreate,
-//     success: successCreate,
-//     variant: createdVariant,
-//   } = variantCreate;
+  const variantCreate = useSelector((state) => state.variantCreate);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    variant: createdVariant,
+  } = variantCreate;
 
-// todo
-//   const variantDelete = useSelector((state) => state.variantDelete);
-//   const {
-//     loading: loadingDelete,
-//     error: errorDelete,
-//     success: successDelete,
-//   } = variantDelete;
+  const variantDelete = useSelector((state) => state.variantDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = variantDelete;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // if (successCreate) {
-    //   dispatch({ type: VARIANT_CREATE_RESET });
-    //   props.history.push(`/product/${productId}/variant/${createdVariant.variant_id}/edit`);
-    // }
-    // if (successDelete) {
-    //   dispatch({ type: VARIANT_DELETE_RESET });
-    // }
+    if (successCreate) {
+      dispatch({ type: VARIANT_CREATE_RESET });
+      props.history.push(`/product/${productId}/variant/${createdVariant.variant_id}/edit`);
+    }
+    if (successDelete) {
+      dispatch({ type: VARIANT_DELETE_RESET });
+    }
     dispatch(listVariants(productId));
-  }, [productId, dispatch, props.history]);
+  }, [productId, successCreate,successDelete, createVariant, dispatch, props.history]);
 
   const deleteHandler = (variant) => {
-    // if (window.confirm("Are you sure to delete?")) {
-    //   dispatch(deleteVariant(variant.variant_id));
-    // }
+    if (window.confirm("Are you sure to delete?")) {
+      dispatch(deleteVariant(productId,variant.variant_id));
+    }
   };
   const createHandler = () => {
-    // dispatch(createVariant());
+    dispatch(createVariant(productId));
   };
   return (
     <div className="admin">
       <div className="row">
         <h1>Variants List - Product {productId}</h1>
-        {/* <button type="button" className="primary" onClick={createHandler}>
+        <button type="button" className="primary" onClick={createHandler}>
           Create Variant
-        </button> */}
+        </button>
       </div>
 
-      {/* {loadingDelete && <Loader></Loader>} */}
-      {/* {errorDelete && <Message variant="danger">{errorDelete}</Message>} */}
-      {/* {loadingCreate && <Loader></Loader>} */}
-      {/* {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
+      {loadingDelete && <Loader></Loader>}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loadingCreate && <Loader></Loader>}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
         <Loader></Loader>
       ) : error ? (

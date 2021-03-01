@@ -169,7 +169,7 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     
-    const {data} = await axios.get(`/api/products/productlist/${productId}`)
+    const {data} = await axios.get(`/api/products/${productId}`)
     
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -278,8 +278,8 @@ export const detailsVariant = (productId,variantId) => async (dispatch) => {
     
     // const {data} = await axios.get(`/api/products/productlist/${productId}/variants/${variantId}`)
     const {data} = await axios.get(`/api/products/productlist/variants/${productId}/${variantId}`)
-    
-    dispatch({ type: VARIANT_DETAILS_SUCCESS, payload: data });
+
+    dispatch({ type: VARIANT_DETAILS_SUCCESS, payload: data[0] });
   } catch (error) {
     dispatch({
       type: VARIANT_DETAILS_FAIL,
@@ -324,7 +324,7 @@ export const updateVariant = (productId,variant) => async (dispatch, getState) =
   // } = getState();
   try {
 
-    const { data } = await axios.post(`/api/products/productlist/variants/editvariant/${productId}/${variant.variant_id}`, variant);
+    const { data } = await axios.put(`/api/products/productlist/variants/editvariant/${productId}/${variant.variant_id}`, variant);
 
     dispatch({ type: VARIANT_UPDATE_SUCCESS, payload: data });
   } catch (error) {

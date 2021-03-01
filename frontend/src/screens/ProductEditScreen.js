@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listCategories, listSubcategories } from '../action/categoryActions';
-import { detailsProductAdmin, updateProduct } from '../action/productAction';
+import axios from 'axios';
+import {
+  detailsProductAdmin,
+  updateProduct
+} from '../action/productAction';
+import { listCategories } from '../action/categoryActions';
+import { listSubcategories } from '../action/subcategoryActions';
+import { listSuppliers } from '../action/supplierActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
@@ -17,8 +23,8 @@ export default function ProductEditScreen(props) {
   const [subcat_name, setSubcat_name] = useState('');
   const [supplier_name, setSupplier_name] = useState('');
 
-  const productDetails = useSelector((state) => state.productDetails);
-  const { loading, error, product } = productDetails;
+  const productDetailsAdmin = useSelector((state) => state.productDetailsAdmin);
+  const { loading, error, product } = productDetailsAdmin;
 
   const productUpdate = useSelector((state) => state.productUpdate);
   const {
@@ -27,19 +33,21 @@ export default function ProductEditScreen(props) {
     success: successUpdate,
   } = productUpdate;
 
-  // Todo
   const categoryList = useSelector((state) => state.categoryList);
   const { loading: catloading, error: caterror, categories:categories } = categoryList;
-  // Todo
-  // Todo
-  const subcategoryList = useSelector((state) => state.subcategoryList);
-  const { loading: scatloading, error: scaterror, subcategories:subcategories } = subcategoryList;
-  // Todo
-  // Todo
-  const supplierlist = [{supplier_id:1,supplier_name:'xxx'},{supplier_id:2,supplier_name:'yyy'}]
-  // const supplierList = useSelector((state) => state.supplierList);
-  // Todo
 
+  const subcategoryList = useSelector((state) => state.subcategoryList);
+  const { loading: scatloading, error: scaterror, subcategories } = subcategoryList;
+  
+  const supplierList = useSelector((state) => state.supplierList);
+  const { loading: suploading, error: superror, suppliers } = supplierList;
+
+  let categoryId = null;
+  categories.forEach(c => {
+    if (category_name === c.category_name){
+      categoryId = c.category_id;
+    }
+  })
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,8 +57,11 @@ export default function ProductEditScreen(props) {
     if (!catloading && !caterror) {
       dispatch(listCategories());
     }
-    if (!scatloading && !scaterror) {
-      dispatch(listSubcategories());
+    if (categoryId !== null || !scatloading && !scaterror) {
+      dispatch(listSubcategories(categoryId));
+    }
+    if (!suploading && !superror) {
+      dispatch(listSuppliers());
     }
     if (!product || product.product_id!=productId || successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
@@ -65,7 +76,13 @@ export default function ProductEditScreen(props) {
       setSubcat_name(product.subcat_name);
       setSupplier_name(product.supplier_name);
     }
-  }, [product, dispatch, productId, successUpdate, catloading, caterror, scatloading, scaterror, props.history]);
+  }, [product, dispatch, productId, successUpdate, props.history]);
+
+  useEffect(() => {
+    if (categoryId !== null) {
+      dispatch(listSubcategories(categoryId));
+    }
+  }, [categoryId, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -91,8 +108,8 @@ export default function ProductEditScreen(props) {
           <h1>Edit Product {productId}</h1>
         </div>
         {loadingUpdate && <Loader></Loader>}
-        {catloading && <Loader></Loader>}
-        {caterror && <Message variant="danger">{caterror}</Message>}
+        {/* {catloading && <Loader></Loader>} */}
+        {/* {caterror && <Message variant="danger">{caterror}</Message>} */}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader></Loader>
@@ -201,7 +218,7 @@ export default function ProductEditScreen(props) {
                 required
               >
                 <option value="" disabled selected>select the supplier</option>
-                {supplierlist.map(supplier => <option key={supplier.supplier_id}> {supplier.supplier_name} </option> )}
+                {suppliers.map(supplier => <option key={supplier.supplier_id}> {supplier.supplier_name} </option> )}
               </select>
             </div>
 
