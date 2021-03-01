@@ -116,4 +116,82 @@ async function updateCustomer(
   
 }
 
-module.exports = { loginIn, register,findCustomerById ,updateCustomer};
+
+async function getShippingAddress(id) {
+  try {
+
+    const CustomerInfo = {};
+
+    const States = await customerExecuteSQL(
+      "SELECT DISTINCT state FROM registered_customer"
+    );
+
+    var disStateNCity = {};
+    for (var i = 0; i < States.length; i++) {
+      var Cities = await customerExecuteSQL(
+        "SELECT DISTINCT city FROM registered_customer WHERE state=?",
+        [States[i].state]
+      );
+
+      var discity=[];
+      for (var j = 0; j < Cities.length;j++) {
+        discity.push(Cities[j].city);
+      }
+      disStateNCity[States[i].state]=discity;
+    }
+
+
+    CustomerInfo.States = disStateNCity;
+
+    const addressFetched = await customerExecuteSQL("SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
+      parseInt(id),
+    ]).then();
+
+    
+
+    CustomerInfo.Customer=addressFetched[0];
+
+    return CustomerInfo;
+    
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+async function updateShippingAddress(
+  custometId,
+  zipCode,
+  addressLine1,
+  addressLine2,
+  city,
+  state,
+  phone
+) {
+
+  try {
+    await customerExecuteSQL("UPDATE registered_customer SET zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
+      [
+        zipCode,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        phone,
+        custometId
+      ]
+    );
+
+    return ("Shipping Address Successfuly Updated.");
+
+  } catch (e) {
+      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+      throw new Error('Invalid Inputs')
+  }
+  
+}
+
+
+
+
+
+module.exports = { loginIn, register,findCustomerById ,updateCustomer,getShippingAddress,updateShippingAddress};
