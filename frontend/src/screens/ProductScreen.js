@@ -26,7 +26,7 @@ import {
     }, [dispatch, match]);
 
     const addToCartHandler =()=>{
-      history.push(`/cart/${match.params.id}?qty=${qty}`)
+      history.push(`/cart/${match.params.id}-${variant.variantId}?qty=${qty}`)
     }
     const change=(event,data)=>{
       const y={...product.vary}

@@ -22,14 +22,14 @@ import {
     PRODUCT_DETAILS_REQUEST1,
 } from '../constants/productConstants'
 
-export const producListReducer =(state={products:[]},action)=>{
+export const producListReducer =(state={products:[], ca:{}},action)=>{
     switch(action.type){
        case PRODUCT_LIST_REQUEST:
-            return {loading:true, products:[]}
+            return {...state,loading:true, products:[]}
        case PRODUCT_LIST_SUCCESS:
-           return {loading:false, products:action.payload}
+           return {...state,loading:false, products:action.payload.Products, ca:action.payload.Categories}
        case PRODUCT_LIST_FAIL:
-           return {loading:false, error: action.payload}
+           return {...state,loading:false, error: action.payload}
        default:
            return state
     }
@@ -45,7 +45,7 @@ export const productDetailsReducer =(state={product:{}, variant:{}, loading:true
             return {
                 ...state,
                 loading:false, 
-                product:action.payload,
+                product:action.payload.Product,
                 variant:action.payload.Onevariant
             }
         case PRODUCT_DETAILS_FAIL:
