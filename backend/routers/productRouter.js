@@ -26,14 +26,12 @@ productRouter.get(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
-
     res.send(products);
   })
 );
 
 productRouter.get(
   "/productlist",
-  
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
     res.send(products);
@@ -44,19 +42,17 @@ productRouter.get(
   "/productlist/variants/:id",
   expressAsyncHandler(async (req, res) => {
     const variants = await findVariantsById(req.params.id);
-    console.log(req.params.id);
     res.send(variants);
   })
 );
 
-// productRouter.get(
-//   "/productlist/variants/:id",
-//   expressAsyncHandler(async (req, res) => {
-//     const variants = await findVariantsById(req.params.id);
-//     console.log(req.params.id);
-//     res.send(variants);
-//   })
-// );
+productRouter.get(
+  "/productlist/variants/edit/:id/:vid",
+  expressAsyncHandler(async (req, res) => {
+    const variantDetails = await getVariant(req.params.id, req.params.vid);
+    res.send(variantDetails);
+  })
+);
 
 productRouter.post(
   "/productlist/variants/addvariant/:id",
@@ -186,14 +182,9 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
-      console.log('ooooo')
-      console.log(product)
-      console.log('ooooo')
-    } else {
-      // throw new Error('database failed to connect');
-      console.log('ooooo')
+    } else {     
       res.status(404).send({ message: "Product Not Found" });
-      console.log('ooooo')
+      
     }
   })
 );

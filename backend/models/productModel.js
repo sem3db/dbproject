@@ -29,17 +29,28 @@ async function findProductById(id) {
     }
 
     const product = {};
-    product.product_id = id;
-    product.product_name = productDetail.product_name;
-    product.description = productDetail.description;
-    product.weight = productDetail.weight;
-    product.dimension = productDetail.dimension;
-    product.brand = productDetail.brand;
-    product.category = category.category_name;
-    product.subCategory = sub_category.subcat_name;
-    product.colors = dis_colors;
-    product.sizes = dis_sizes;
+    const Product = {};
+      Product.product_id = id;
+      Product.product_name = productDetail.product_name;
+      Product.description = productDetail.description;
+      Product.weight = productDetail.weight;
+      Product.dimension = productDetail.dimension;
+      Product.brand = productDetail.brand;
+      Product.category = category.category_name;
+      Product.subCategory = sub_category.subcat_name;
+      Product.rating = (
+        await customerExecuteSQL(
+          "SELECT getAverageRatingForProduct(?) AS rating",
+          [parseInt(id)]
+        )
+      )[0].rating;
+    product.Product = Product;
+    product.Variants={
+      "colors": dis_colors,
+      "sizes" : dis_sizes
+    };
     product.Onevariant = {
+      variantId: a_variant.variant_id,
       color: a_variant.color,
       size: a_variant.size,
       noStock: a_variant.no_stock,
@@ -82,6 +93,7 @@ async function findVariantsById(product_id) {
 
 async function findProductsByCategory(category) {
   try {
+    
     const category_products = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product WHERE category_Id =(SELECT category_id FROM category WHERE category_name=?)",
       [category]
@@ -103,7 +115,8 @@ async function findProductsByCategory(category) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
+    
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -119,7 +132,7 @@ async function findProductsBySubCategory(category, subcategory) {
       const product = category_products[index];
 
       const variants = await customerExecuteSQL(
-        "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
+        "SELECT image_url ,price FROM variant WHERE product_id =?",
         [parseInt(category_products[index].product_id)]
       );
 
@@ -132,7 +145,8 @@ async function findProductsBySubCategory(category, subcategory) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
+    
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -140,6 +154,7 @@ async function findProductsBySubCategory(category, subcategory) {
 
 async function getProducts() {
   try {
+    
     const productData = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product"
     );
@@ -160,10 +175,42 @@ async function getProducts() {
         )
       )[0].rating;
     }
-    return productData;
+
+    return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
+}
+
+
+
+async function getProductTemplate(product_list){
+  const ProductList = {};
+
+    const Categories = await customerExecuteSQL(
+      "SELECT DISTINCT category_name FROM category"
+    );
+
+    var disCatNSubcat = {};
+    for (var i = 0; i < Categories.length; i++) {
+      var SubCategories = await customerExecuteSQL(
+        "SELECT DISTINCT subcat_name FROM subcategory WHERE category_id=(SELECT category_id FROM category WHERE category_name=?)",
+        [Categories[i].category_name]
+      );
+
+      var dissubcat=[];
+      for (var j = 0; j < SubCategories.length;j++) {
+        dissubcat.push(SubCategories[j].subcat_name);
+      }
+      disCatNSubcat[Categories[i].category_name]=dissubcat;
+    }
+
+
+    ProductList.Categories = disCatNSubcat;
+
+    ProductList.Products=product_list;
+
+    return ProductList;
 }
 
 //-------------------------admin - variants -------------------------------------------------------
@@ -172,11 +219,11 @@ async function getVariant(product_id, variant_Id) {
   try {
     const variants = await adminExecuteSQL(
       "SELECT * FROM variant WHERE product_id=? AND variant_id=?",
-      [parseInt(product_id, variant_Id)]
+      [product_id, variant_Id]
     );
     return variants;
   } catch (e) {
-    return "variants not found";
+    return e;
   }
 }
 
