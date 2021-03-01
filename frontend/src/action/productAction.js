@@ -38,32 +38,6 @@ import {
   VARIANT_DELETE_SUCCESS,
 } from '../constants/variantConstants';
 
-// frontend testing without backend
-// const productdata = [
-//   {
-//     product_id: 1,
-//     product_name: "p-name",
-//     category_name: "AAAA",
-//     subcat_name: "aaa",
-//     description: "p-description",
-//     weight: "p-weight",
-//     dimension: "p-dimension",
-//     brand: "p-brand",
-//     supplier_name: "xxx",
-//   },
-//   {
-//     product_id: 2,
-//     product_name: "p-name2",
-//     category_name: "BBBB",
-//     subcat_name: "bbb",
-//     description: "p-description2",
-//     weight: "p-weight2",
-//     dimension: "p-dimension2",
-//     brand: "p-brand2",
-//     supplier_name: "yyy",
-//   },
-// ];
-// frontend testing without backend
 
 export const listProducts = () => async (dispatch) => {
   try {
@@ -161,21 +135,21 @@ export const listProductsAdmin = () => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
 
-    // const { data } = await axios.get(`/api/products/productlist`);
-    const data = [
-      {
-        product_id: 1,
-        product_name: "ssdsd",
-        category_name: "dvsvs",
-        subcat_name: "sdvsv",
-        brand: "svsv",
-        supplier_name: "sdvsvs",
-        weight: "sdvsdvs",
-        dimension: "vsdvdsv",
-        description: "svsdvsd",
-      }
-    ]
-    
+    const { data } = await axios.get(`/api/products/productlist`);
+    // const data = [
+    //   {
+    //     product_id: 1,
+    //     product_name: "ssdsd",
+    //     category_name: "dvsvs",
+    //     subcat_name: "sdvsv",
+    //     brand: "svsv",
+    //     supplier_name: "sdvsvs",
+    //     weight: "sdvsdvs",
+    //     dimension: "vsdvdsv",
+    //     description: "svsdvsd",
+    //   }
+    // ]
+
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
