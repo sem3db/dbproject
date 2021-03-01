@@ -1,8 +1,8 @@
-import React, {useEffect } from "react";
-import { Link} from "react-router-dom";
+import React, {useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link} from "react-router-dom";
 import Message from "../components/Message"
-// import Loader from "../components/Loader"
+import Loader from "../components/Loader"
 import { addToCart , removeFromCart} from "../action/cartAction";
 import {
   Row,
@@ -15,14 +15,16 @@ import {
 } from "react-bootstrap";
 
 const CartScreen = ({match,location,history})=>{
-    const productId = match.params.id
+    const Id = match.params.id?match.params.id.split('-'):[]
+    const productId=Id[0]
+    const variantId=Id[1]
     const qty = location.search ? Number(location.search.split('=')[1]):1
     const dispatch = useDispatch()
     const cart = useSelector(state=>state.cart)
     const {cartItems} = cart
     useEffect(()=>{
         if(productId){
-            dispatch(addToCart(productId,qty))
+            dispatch(addToCart(productId,variantId,qty))
         }
     },[dispatch,productId,qty])
 
@@ -54,7 +56,7 @@ const CartScreen = ({match,location,history})=>{
                             </Col>
                             <Col md={2}>
                                 <Form.Control as='select' value={item.qty} onChange={(e)=>dispatch(addToCart(item.product,Number(e.target.value)))}>
-                                    {[...Array(item.countInStock).keys()].map((x)=>(
+                                    {[...Array(item.noStock).keys()].map((x)=>(
                                         <option key={x+1} value={x+1}>{x+1}</option>
                                     ))}
                                 </Form.Control>

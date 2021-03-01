@@ -11,10 +11,14 @@ const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
   const cat = match.params.cat ? match.params.cat:""
   const productList=useSelector(state=>state.productList)
-  const {loading, error, products} =productList
-  const cats={consumer_electronics:['laptop','smart phone','dongal'],  kitchen_appliances:["rice cooker","oven", "electric kettle", "heater"],
-   camera:["DSLR","Mirrorless"], phone:["samsung","apple","nokia"], laptop:['asus','dell','toshiba','hp','lenovo'], USB:['kingston','imation'],furniture:['chair,table'],
-  books:[],headphone:[],tablets:[]}
+  const {loading, error, products, ca} =productList
+  // const cats={consumer_electronics:['laptop','smart phone','dongal'],  kitchen_appliances:["rice cooker","oven", "electric kettle", "heater"],
+  //  camera:["DSLR","Mirrorless"], phone:["samsung","apple","nokia"], laptop:['asus','dell','toshiba','hp','lenovo'], USB:['kingston','imation'],furniture:['chair,table'],
+  // books:[],headphone:[],tablets:[]}
+  const cats=ca
+  console.log(cats)
+  console.log(ca)
+  console.log(Object.keys(ca))
   useEffect(() => {
     if(cat){
       dispatch(listProductsCat(cat))

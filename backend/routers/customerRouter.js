@@ -28,9 +28,6 @@ userRouter.post(
           email: login_cred[0].email,
           token: token
         });
-
-        
-
         return;
       }
     }

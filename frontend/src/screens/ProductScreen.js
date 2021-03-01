@@ -20,20 +20,19 @@ import {
     const [qty, setQty]=useState(1)
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
-    const {loading, error, product, variant} =productDetails
+    const {loading, error, product, variant, variants} =productDetails
     useEffect(() => {
       dispatch(detailsProduct(match.params.id))
     }, [dispatch, match]);
 
     const addToCartHandler =()=>{
-      history.push(`/cart/${match.params.id}?qty=${qty}`)
+      history.push(`/cart/${match.params.id}-${variant.variantId}?qty=${qty}`)
     }
     const change=(event,data)=>{
-      const y={...product.vary}
+      const y={...variant}
       y[data]=event.target.value
       dispatch(detailsProductVariant(2,y))
     }
-    const varinatKeys=Object.keys(product.variants?product.variants:{})
 
   return (
     <>
@@ -50,12 +49,12 @@ import {
             <ListGroup.Item>
               <h3>{product.product_name}</h3>
             </ListGroup.Item>
-            {/* <ListGroup.Item>
-              <Variant type="radio" vari={varinatKeys[0]} value={product.vary[varinatKeys[0]]} arr={product.variants && product.variants[varinatKeys[0]]?product.variants.size:[]} Change={change}/>
+            <ListGroup.Item>
+              <Variant type="radio" vari={'size'} value={variant['size']} arr={variants['sizes']} Change={change}/>
             </ListGroup.Item>
             <ListGroup.Item>
-            <Variant type="dropdown" vari={varinatKeys[1]} value={product.vary[varinatKeys[1]]} arr={product.variants && product.variants[varinatKeys[1]]?product.variants.color:[]} Change={change}/>
-            </ListGroup.Item> */}
+            <Variant type="dropdown" vari={'color'} value={variant['color']} arr={variants['colors']} Change={change}/>
+            </ListGroup.Item>
             <ListGroup.Item>
               <Rating
                 value={product.rating}
