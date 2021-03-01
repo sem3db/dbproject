@@ -48,7 +48,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/productlist/variants/edit/:id/:vid",
+  "/productlist/variants/:id/:vid",
   expressAsyncHandler(async (req, res) => {
     const variantDetails = await getVariant(req.params.id, req.params.vid);
     res.send(variantDetails);
