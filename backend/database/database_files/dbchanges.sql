@@ -27,3 +27,30 @@ ADD COLUMN `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `additiona
 
 ALTER TABLE `cse_21`.`productorder` 
 CHANGE COLUMN `order_date` `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `order_id`;
+
+
+
+--new table main_city
+CREATE TABLE `cse_21`.`main_city` (
+  `city_id` INT NOT NULL AUTO_INCREMENT,
+  `city_name` VARCHAR(200) NULL,
+  PRIMARY KEY (`city_id`));
+
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Gampaha');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Colombo');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Kaluthara');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Kurunegala');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Anuradhapura');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Jaffna');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Galle');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Mathara');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Ja-Ela');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Chilaw');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Puttlam');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Kandy');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Kegalle');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Panadura');
+INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Mannar');
+
+
+

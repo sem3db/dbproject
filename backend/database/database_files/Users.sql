@@ -37,5 +37,7 @@ GRANT SELECT ON `cse_21`.`subcategory` TO `customer`@`localhost`;
 
 GRANT SELECT ON `cse_21`.`variant` TO `customer`@`localhost`;
 
+GRANT SELECT ON `cse_21`.`main_city` TO `customer`@`localhost`;
+
 
 FLUSH PRIVILEGES;
