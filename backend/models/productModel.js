@@ -45,8 +45,10 @@ async function findProductById(id) {
       )
     )[0].rating;
     product.Product = Product;
-    product.colors = dis_colors;
-    product.sizes = dis_sizes;
+    product.Variants = {
+      colors: dis_colors,
+      sizes: dis_sizes,
+    };
     product.Onevariant = {
       variantId: a_variant.variant_id,
       color: a_variant.color,
@@ -112,7 +114,7 @@ async function findProductsByCategory(category) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -141,7 +143,7 @@ async function findProductsBySubCategory(category, subcategory) {
         )
       )[0].rating;
     }
-    return category_products;
+    return getProductTemplate(category_products);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -149,28 +151,6 @@ async function findProductsBySubCategory(category, subcategory) {
 
 async function getProducts() {
   try {
-    const ProductList = {};
-
-    const Categories = await customerExecuteSQL(
-      "SELECT DISTINCT category_name FROM category"
-    );
-
-    var disCatNSubcat = {};
-    for (var i = 0; i < Categories.length; i++) {
-      var SubCategories = await customerExecuteSQL(
-        "SELECT DISTINCT subcat_name FROM subcategory WHERE category_id=(SELECT category_id FROM category WHERE category_name=?)",
-        [Categories[i].category_name]
-      );
-
-      var dissubcat = [];
-      for (var j = 0; j < SubCategories.length; j++) {
-        dissubcat.push(SubCategories[j].subcat_name);
-      }
-      disCatNSubcat[Categories[i].category_name] = dissubcat;
-    }
-
-    ProductList.Categories = disCatNSubcat;
-
     const productData = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product"
     );
@@ -191,12 +171,39 @@ async function getProducts() {
         )
       )[0].rating;
     }
-    ProductList.Products = productData;
 
-    return ProductList;
+    return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
+}
+
+async function getProductTemplate(product_list) {
+  const ProductList = {};
+
+  const Categories = await customerExecuteSQL(
+    "SELECT DISTINCT category_name FROM category"
+  );
+
+  var disCatNSubcat = {};
+  for (var i = 0; i < Categories.length; i++) {
+    var SubCategories = await customerExecuteSQL(
+      "SELECT DISTINCT subcat_name FROM subcategory WHERE category_id=(SELECT category_id FROM category WHERE category_name=?)",
+      [Categories[i].category_name]
+    );
+
+    var dissubcat = [];
+    for (var j = 0; j < SubCategories.length; j++) {
+      dissubcat.push(SubCategories[j].subcat_name);
+    }
+    disCatNSubcat[Categories[i].category_name] = dissubcat;
+  }
+
+  ProductList.Categories = disCatNSubcat;
+
+  ProductList.Products = product_list;
+
+  return ProductList;
 }
 
 //-------------------------admin - variants -------------------------------------------------------
@@ -295,23 +302,13 @@ async function getProductsForAdmin() {
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
-      const category = await adminExecuteSQL(
-        "SELECT category_name from category where category_id=?",
-        [parseInt(product.category_id)]
+      const dataFetched = await adminExecuteSQL(
+        "call getProductForAdmin(?,?,?)",
+        [product.category_id, product.subcat_id, product.supplier_id]
       );
-
-      const subcategory = await adminExecuteSQL(
-        "SELECT subcat_name from subcategory where subcat_id=?",
-        [product.subcat_id]
-      );
-
-      const supplier = await adminExecuteSQL(
-        "SELECT supplier_name from supplier where supplier_id=?",
-        [product.supplier_id]
-      );
-      product.category = category[0].category_name;
-      product.subcat_name = subcategory[0].subcat_name;
-      product.supplier_name = supplier[0].supplier_name;
+      product.category = dataFetched[0][0].category_name;
+      product.subcat_name = dataFetched[1][0].subcat_name;
+      product.supplier_name = dataFetched[2][0].supplier_name;
     }
     return productData;
   } catch (e) {

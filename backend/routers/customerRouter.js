@@ -5,7 +5,9 @@ const {
   loginIn,
   register,
   findCustomerById,
-  updateCustomer
+  updateCustomer,
+  getShippingAddress,
+  updateShippingAddress
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -17,12 +19,17 @@ userRouter.post(
     const login_cred = await loginIn(req.body.email);
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
+
         const token=generateToken({email: login_cred[0].email, fName:login_cred[0].first_name });
-        res.header('auth-token',token).send({
+
+        res.send({
           first_name:login_cred[0].first_name,
           email: login_cred[0].email,
           token: token
         });
+
+        
+
         return;
       }
     }
@@ -90,6 +97,36 @@ userRouter.put(
       last_name: createdUser.lName,
       //token: generateToken(createdUser),
     });
+  })
+);
+
+
+userRouter.get(
+  "/:custometId/shipment",
+  expressAsyncHandler(async (req, res) => {
+    const address = await getShippingAddress(req.params.custometId);
+    if (address) {
+      res.send(address);
+    } else {     
+      res.status(404).send({ message: "Customer does not have a Shipping Address." });      
+    }
+  })
+);
+
+
+userRouter.put(
+  "/:custometId/shipment",
+  expressAsyncHandler(async (req, res) => {
+    const newaddress = await updateShippingAddress(
+      req.params.custometId,
+      req.body.zipCode,
+      req.body.addressLine1,
+      req.body.addressLine2,
+      req.body.city,
+      req.body.state,
+      req.body.phone
+    );
+    res.send(newaddress);
   })
 );
 
