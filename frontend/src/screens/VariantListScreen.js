@@ -21,12 +21,12 @@ export default function VariantListScreen(props) {
 //   } = variantCreate;
 
 // todo
-//   const productDelete = useSelector((state) => state.productDelete);
+//   const variantDelete = useSelector((state) => state.variantDelete);
 //   const {
 //     loading: loadingDelete,
 //     error: errorDelete,
 //     success: successDelete,
-//   } = productDelete;
+//   } = variantDelete;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function VariantListScreen(props) {
     //   dispatch({ type: VARIANT_DELETE_RESET });
     // }
     dispatch(listVariants(productId));
-  }, [dispatch, props.history]);
+  }, [productId, dispatch, props.history]);
 
   const deleteHandler = (variant) => {
     // if (window.confirm("Are you sure to delete?")) {

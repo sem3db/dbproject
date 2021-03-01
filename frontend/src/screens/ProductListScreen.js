@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createProduct,
   deleteProduct,
-  listProducts,
+  listProductsAdmin,
 } from "../action/productAction";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -40,7 +40,7 @@ export default function ProductListScreen(props) {
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
+    dispatch(listProductsAdmin());
   }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
 
   const deleteHandler = (product) => {

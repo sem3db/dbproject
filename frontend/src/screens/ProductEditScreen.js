@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listCategories, listSubcategories } from '../action/categoryActions';
-import { detailsProduct, updateProduct } from '../action/productAction';
+import { detailsProductAdmin, updateProduct } from '../action/productAction';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
@@ -54,7 +54,7 @@ export default function ProductEditScreen(props) {
     }
     if (!product || product.product_id!=productId || successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
-      dispatch(detailsProduct(productId));
+      dispatch(detailsProductAdmin(productId));
     } else {
       setProduct_name(product.product_name);
       setDescription(product.description);
