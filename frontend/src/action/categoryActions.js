@@ -15,10 +15,13 @@ import {
   CATEGORY_DELETE_REQUEST,
   CATEGORY_DELETE_FAIL,
   CATEGORY_DELETE_SUCCESS,
+} from '../constants/categoryConstants';
+
+import {
+  SUBCATEGORY_LIST_FAIL,
   SUBCATEGORY_LIST_REQUEST,
   SUBCATEGORY_LIST_SUCCESS,
-  SUBCATEGORY_LIST_FAIL,
-} from '../constants/categoryConstants';
+} from '../constants/subcategoryConstants';
 
 // frontend testing without backend
 const categorydata = [

@@ -5,10 +5,16 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   productListReducer,
   productDetailsReducer,
+  productListReducerAdmin,
+  productDetailsReducerAdmin,
   productCreateReducer,
   productDeleteReducer,
   productUpdateReducer,
   variantListReducer,
+  variantDetailsReducer,
+  variantCreateReducer,
+  variantUpdateReducer,
+  variantDeleteReducer,
 } from './reducers/productreducers'
 
 import {cartReducer} from './reducers/cartreducers'
@@ -27,41 +33,53 @@ import {
   orderMineListReducer,
   orderPayReducer,
 } from "./reducers/orderReducers";
+
 import {
   categoryListReducer,
   categoryDetailsReducer,
   categoryCreateReducer,
   categoryDeleteReducer,
   categoryUpdateReducer,
-  subcategoryListReducer,
 } from "./reducers/categoryReducers";
+
+import {
+  subcategoryCreateReducer,
+  subcategoryDeleteReducer,
+  subcategoryDetailsReducer,
+  subcategoryListReducer,
+  subcategoryUpdateReducer,
+} from "./reducers/subcategoryReducers";
+
+import { supplierCreateReducer, supplierDeleteReducer, supplierDetailsReducer, supplierListReducer, supplierUpdateReducer } from "./reducers/supplierReducers";
 
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productListAdmin: productListReducerAdmin,
+  productDetailsAdmin: productDetailsReducerAdmin,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
   variantList: variantListReducer,
-  // variantDetails: variantDetailsReducer,
-  // variantCreate: variantCreateReducer,
-  // variantUpdate: variantUpdateReducer,
-  // variantDelete: variantDeleteReducer,
+  variantDetails: variantDetailsReducer,
+  variantCreate: variantCreateReducer,
+  variantUpdate: variantUpdateReducer,
+  variantDelete: variantDeleteReducer,
   categoryList: categoryListReducer,
   categoryDetails: categoryDetailsReducer,
   categoryCreate: categoryCreateReducer,
   categoryUpdate: categoryUpdateReducer,
   categoryDelete: categoryDeleteReducer,
   subcategoryList: subcategoryListReducer,
-  // subcategoryDetails: subcategoryDetailsReducer,
-  // subcategoryCreate: subcategoryCreateReducer,
-  // subcategoryUpdate: subcategoryUpdateReducer,
-  // subcategoryDelete: subcategoryDeleteReducer,
-  // supplierList: supplierListReducer,
-  // supplierDetails: supplierDetailsReducer,
-  // supplierCreate: supplierCreateReducer,
-  // supplierUpdate: supplierUpdateReducer,
-  // supplierDelete: supplierDeleteReducer,
+  subcategoryDetails: subcategoryDetailsReducer,
+  subcategoryCreate: subcategoryCreateReducer,
+  subcategoryUpdate: subcategoryUpdateReducer,
+  subcategoryDelete: subcategoryDeleteReducer,
+  supplierList: supplierListReducer,
+  supplierDetails: supplierDetailsReducer,
+  supplierCreate: supplierCreateReducer,
+  supplierUpdate: supplierUpdateReducer,
+  supplierDelete: supplierDeleteReducer,
   cart:cartReducer,
   userLogin:userLoginReducer,
   userRegister:userRegisterReducer,

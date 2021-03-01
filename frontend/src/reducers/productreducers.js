@@ -23,6 +23,21 @@ import {
     VARIANT_LIST_REQUEST,
     VARIANT_LIST_SUCCESS,
     VARIANT_LIST_FAIL,
+    VARIANT_DETAILS_REQUEST,
+    VARIANT_DETAILS_SUCCESS,
+    VARIANT_DETAILS_FAIL,
+    VARIANT_CREATE_REQUEST,
+    VARIANT_CREATE_SUCCESS,
+    VARIANT_CREATE_FAIL,
+    VARIANT_CREATE_RESET,
+    VARIANT_UPDATE_REQUEST,
+    VARIANT_UPDATE_SUCCESS,
+    VARIANT_UPDATE_FAIL,
+    VARIANT_UPDATE_RESET,
+    VARIANT_DELETE_REQUEST,
+    VARIANT_DELETE_SUCCESS,
+    VARIANT_DELETE_FAIL,
+    VARIANT_DELETE_RESET,
 } from '../constants/productConstants'
 
 export const productListReducer =(state={products:[]},action)=>{
@@ -74,64 +89,146 @@ export const productDetailsReducer =(state={product:{}, variant:{}, loading:true
     }
 };
 
-   
+
+
+export const productListReducerAdmin = (state = { loading: true, products: [] },action) => {
+    switch (action.type) {
+      case PRODUCT_LIST_REQUEST:
+        return { loading: true };
+      case PRODUCT_LIST_SUCCESS:
+        return { loading: false, products: action.payload };
+      case PRODUCT_LIST_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+};
+
+export const productDetailsReducerAdmin = (state = { loading: true }, action) => {
+    switch (action.type) {
+      case PRODUCT_DETAILS_REQUEST:
+        return { loading: true };
+      case PRODUCT_DETAILS_SUCCESS:
+        return { loading: false, product: action.payload };
+      case PRODUCT_DETAILS_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+};
+
 export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
-        case PRODUCT_CREATE_REQUEST:
+      case PRODUCT_CREATE_REQUEST:
         return { loading: true };
-        case PRODUCT_CREATE_SUCCESS:
+      case PRODUCT_CREATE_SUCCESS:
         return { loading: false, success: true, product: action.payload };
-        case PRODUCT_CREATE_FAIL:
+      case PRODUCT_CREATE_FAIL:
         return { loading: false, error: action.payload };
-        case PRODUCT_CREATE_RESET:
+      case PRODUCT_CREATE_RESET:
         return {};
-        default:
+      default:
         return state;
     }
 };
 
 export const productUpdateReducer = (state = {}, action) => {
     switch (action.type) {
-        case PRODUCT_UPDATE_REQUEST:
+      case PRODUCT_UPDATE_REQUEST:
         return { loading: true };
-        case PRODUCT_UPDATE_SUCCESS:
+      case PRODUCT_UPDATE_SUCCESS:
         return { loading: false, success: true };
-        case PRODUCT_UPDATE_FAIL:
+      case PRODUCT_UPDATE_FAIL:
         return { loading: false, error: action.payload };
-        case PRODUCT_UPDATE_RESET:
+      case PRODUCT_UPDATE_RESET:
         return {};
-        default:
+      default:
+        return state;
+    }
+  };
+   
+export const productDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+      case PRODUCT_DELETE_REQUEST:
+        return { loading: true };
+      case PRODUCT_DELETE_SUCCESS:
+        return { loading: false, success: true };
+      case PRODUCT_DELETE_FAIL:
+        return { loading: false, error: action.payload };
+      case PRODUCT_DELETE_RESET:
+        return {};
+      default:
+        return state;
+    }
+};
+  
+export const variantListReducer =(state={ loading: true, variants: [] },action)=>{
+    switch(action.type){
+       case VARIANT_LIST_REQUEST:
+            return {loading:true };
+       case VARIANT_LIST_SUCCESS:
+           return {loading:false, variants:action.payload};
+       case VARIANT_LIST_FAIL:
+           return {loading:false, error: action.payload};
+       default:
+           return state;
+    }
+};
+   
+export const variantDetailsReducer = (state = { loading: true }, action) => {
+    switch (action.type) {
+      case VARIANT_DETAILS_REQUEST:
+        return { loading: true };
+      case VARIANT_DETAILS_SUCCESS:
+        return { loading: false, variant: action.payload };
+      case VARIANT_DETAILS_FAIL:
+        return { loading: false, error: action.payload };
+      default:
         return state;
     }
 };
    
-export const productDeleteReducer = (state = {}, action) => {
+export const variantCreateReducer = (state = {}, action) => {
     switch (action.type) {
-        case PRODUCT_DELETE_REQUEST:
+      case VARIANT_CREATE_REQUEST:
         return { loading: true };
-        case PRODUCT_DELETE_SUCCESS:
-        return { loading: false, success: true };
-        case PRODUCT_DELETE_FAIL:
+      case VARIANT_CREATE_SUCCESS:
+        return { loading: false, success: true, variant: action.payload };
+      case VARIANT_CREATE_FAIL:
         return { loading: false, error: action.payload };
-        case PRODUCT_DELETE_RESET:
+      case VARIANT_CREATE_RESET:
         return {};
-        default:
+      default:
         return state;
     }
 };
 
+export const variantUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+      case VARIANT_UPDATE_REQUEST:
+        return { loading: true };
+      case VARIANT_UPDATE_SUCCESS:
+        return { loading: false, success: true };
+      case VARIANT_UPDATE_FAIL:
+        return { loading: false, error: action.payload };
+      case VARIANT_UPDATE_RESET:
+        return {};
+      default:
+        return state;
+    }
+};
 
-
-
-export const variantListReducer =(state={variants:[]},action)=>{
-    switch(action.type){
-       case VARIANT_LIST_REQUEST:
-            return {loading:true, variants:[]}
-       case VARIANT_LIST_SUCCESS:
-           return {loading:false, variants:action.payload}
-       case VARIANT_LIST_FAIL:
-           return {loading:false, error: action.payload}
-       default:
-           return state
+export const variantDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+      case VARIANT_DELETE_REQUEST:
+        return { loading: true };
+      case VARIANT_DELETE_SUCCESS:
+        return { loading: false, success: true };
+      case VARIANT_DELETE_FAIL:
+        return { loading: false, error: action.payload };
+      case VARIANT_DELETE_RESET:
+        return {};
+      default:
+        return state;
     }
 };
