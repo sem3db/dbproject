@@ -116,4 +116,49 @@ async function updateCustomer(
   
 }
 
-module.exports = { loginIn, register,findCustomerById ,updateCustomer};
+
+async function getShippingAddress(id) {
+  try {
+    const addressFetched = await customerExecuteSQL("SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
+      parseInt(id),
+    ]).then();
+
+    return addressFetched[0];
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
+async function updateShippingAddress(
+  custometId,
+  zipCode,
+  addressLine1,
+  addressLine2,
+  city,
+  state,
+  phone
+) {
+
+  try {
+    await customerExecuteSQL("UPDATE registered_customer SET zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
+      [
+        zipCode,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        phone,
+        custometId
+      ]
+    );
+
+    return ("Shipping Address Successfuly Updated.");
+
+  } catch (e) {
+      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+      throw new Error('Invalid Inputs')
+  }
+  
+}
+
+module.exports = { loginIn, register,findCustomerById ,updateCustomer,getShippingAddress,updateShippingAddress};
