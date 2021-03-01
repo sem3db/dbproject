@@ -53,4 +53,18 @@ INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Panadura');
 INSERT INTO `cse_21`.`main_city` (`city_name`) VALUES ('Mannar');
 
 
+--product order table
+ALTER TABLE `cse_21`.`productorder` 
+DROP COLUMN `delivery_estimate`;
+
+ALTER TABLE `cse_21`.`productorder` 
+ADD COLUMN `delivery_estimate` DATE NULL AFTER `additional_notes`;
+
+ALTER TABLE `cse_21`.`productorder` 
+CHANGE COLUMN `delivery_estimate` `delivery_estimate` DATE NULL DEFAULT NULL AFTER `delivery_method`;
+
+UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '2021-03-11' WHERE (`order_id` = '1');
+UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '2021-03-11' WHERE (`order_id` = '2');
+UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '2021-03-11' WHERE (`order_id` = '3');
+UPDATE `cse_21`.`productorder` SET `delivery_estimate` = '2021-03-11' WHERE (`order_id` = '4');
 
