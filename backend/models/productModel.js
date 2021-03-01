@@ -79,6 +79,22 @@ async function findVariantByParams(product_id, color, size) {
   }
 }
 
+
+async function findVariantByIds(product_id, variant_id) {
+  try {
+    const variant = (
+      await customerExecuteSQL(
+        "SELECT * FROM variant WHERE product_id =? AND variant_id=?",
+        [parseInt(product_id), parseInt(variant_id)]
+      )
+    )[0];
+
+    return variant;
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
 async function findVariantsById(product_id) {
   try {
     const variants = await adminExecuteSQL(
@@ -396,6 +412,7 @@ module.exports = {
   findProductsByCategory,
   findProductsBySubCategory,
   findVariantByParams,
+  findVariantByIds,
   getProductsForAdmin,
   createProduct,
   updateProduct,
