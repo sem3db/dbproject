@@ -33,7 +33,7 @@ const ProfileScreen = ({location,history}) => {
         }
         else{
             console.log(user)
-            if(!user.first){
+            if(!user.first_name){
                 dispatch(getUserDetails('profile'))
             }
             else{
