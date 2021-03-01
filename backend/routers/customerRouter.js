@@ -29,7 +29,6 @@ userRouter.post(
           email: login_cred[0].email,
           token: token,
         });
-
         return;
       }
     }
@@ -40,7 +39,6 @@ userRouter.post(
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
-    // console.log(req.body);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const createdUser = await register(
@@ -58,7 +56,7 @@ userRouter.post(
     res.send({
       first_name: createdUser.fName,
       last_name: createdUser.lName,
-      //token: generateToken(createdUser),
+      //token: token,
     });
   })
 );

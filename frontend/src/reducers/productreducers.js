@@ -43,20 +43,20 @@ import {
     VARIANT_DELETE_RESET,
 } from '../constants/variantConstants'
 
-export const productListReducer =(state={products:[]},action)=>{
+export const productListReducer =(state={products:[],ca:{}},action)=>{
     switch(action.type){
        case PRODUCT_LIST_REQUEST:
-            return {loading:true, products:[]}
+            return {...state,loading:true, products:[]}
        case PRODUCT_LIST_SUCCESS:
-           return {loading:false, products:action.payload}
+           return {...state,loading:false, products:action.payload.Products, ca:action.payload.Categories}
        case PRODUCT_LIST_FAIL:
-           return {loading:false, error: action.payload}
+           return {...state,loading:false, error: action.payload}
        default:
            return state
     }
 };
    
-export const productDetailsReducer =(state={product:{}, variant:{}, loading:true}, action)=>{
+export const productDetailsReducer =(state={product:{}, variant:{}, variants:{}, loading:true}, action)=>{
     switch(action.type){
         case PRODUCT_DETAILS_REQUEST:
             return {
@@ -66,8 +66,9 @@ export const productDetailsReducer =(state={product:{}, variant:{}, loading:true
             return {
                 ...state,
                 loading:false, 
-                product:action.payload,
-                variant:action.payload.Onevariant
+                product:action.payload.Product,
+                variant:action.payload.Onevariant,
+                variants:action.payload.Variants
             }
         case PRODUCT_DETAILS_FAIL:
             return {

@@ -44,7 +44,7 @@ export const listProducts = () => async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     const { data } = await axios.get("/api/products");
-
+    console.log(data)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -63,13 +63,8 @@ export const listProducts = () => async (dispatch) => {
 
 export const listProductsCat = (cat) => async (dispatch) => {
   cat=cat.split("-").join('/')
-  console.log('l1')
-  console.log(cat)
-  console.log('l1')
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    if(cat){
-    }
     const { data } = await axios.get(`/api/products/category/${cat}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -89,9 +84,9 @@ export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
-    
+
     const {data} = await axios.get(`/api/products/${productId}`)
-    
+
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -109,6 +104,7 @@ export const detailsProductVariant = (productId, variants) => async (
   ) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
   try {
+    console.log(variants)
     dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
     const { data } = await axios.post(`/api/products/v`, variants);
     // const data = productdata[productId-1];
