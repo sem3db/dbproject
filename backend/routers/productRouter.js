@@ -111,14 +111,7 @@ productRouter.post(
       req.body.brand,
       req.body.category_name,
       req.body.subcategory_name,
-      req.body.supplier_name,
-      req.body.variant_id,
-      req.body.SKU,
-      req.body.price,
-      req.body.offer,
-      req.body.color,
-      req.body.size,
-      req.body.no_stock
+      req.body.supplier_name
     );
 
     res.send(isAdded);
@@ -151,7 +144,7 @@ productRouter.get(
 productRouter.get(
   "/category/:category",
   expressAsyncHandler(async (req, res) => {
-    console.log('')
+    console.log("");
     const category_products = await findProductsByCategory(req.params.category);
     if (category_products) {
       res.send(category_products);
@@ -182,9 +175,8 @@ productRouter.get(
     const product = await findProductById(req.params.id);
     if (product) {
       res.send(product);
-    } else {     
+    } else {
       res.status(404).send({ message: "Product Not Found" });
-      
     }
   })
 );

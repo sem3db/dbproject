@@ -5,7 +5,7 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 async function getSuppliers() {
   try {
     const suppliers = await adminExecuteSQL(
-      "SELECT supplier_name FROM supplier"
+      "SELECT supplier_id, supplier_name FROM supplier"
     );
     return suppliers;
   } catch (e) {

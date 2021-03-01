@@ -162,13 +162,12 @@ async function getProducts() {
         [Categories[i].category_name]
       );
 
-      var dissubcat=[];
-      for (var j = 0; j < SubCategories.length;j++) {
+      var dissubcat = [];
+      for (var j = 0; j < SubCategories.length; j++) {
         dissubcat.push(SubCategories[j].subcat_name);
       }
-      disCatNSubcat[Categories[i].category_name]=dissubcat;
+      disCatNSubcat[Categories[i].category_name] = dissubcat;
     }
-
 
     ProductList.Categories = disCatNSubcat;
 
@@ -296,12 +295,6 @@ async function getProductsForAdmin() {
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
-      const variants = await adminExecuteSQL(
-        "SELECT variant_Id , SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE product_id =?",
-        [parseInt(productData[index].product_id)]
-      );
-      //console.log(variants[0]);
-
       const category = await adminExecuteSQL(
         "SELECT category_name from category where category_id=?",
         [parseInt(product.category_id)]
@@ -316,12 +309,6 @@ async function getProductsForAdmin() {
         "SELECT supplier_name from supplier where supplier_id=?",
         [product.supplier_id]
       );
-
-      product.imageUrl = variants[0].image_url;
-      product.price = variants[0].price;
-      product.color = variants[0].color;
-      product.offer = variants[0].offer;
-      product.no_stock = variants[0].no_stock;
       product.category = category[0].category_name;
       product.subcat_name = subcategory[0].subcat_name;
       product.supplier_name = supplier[0].supplier_name;
@@ -341,14 +328,7 @@ async function createProduct(
   brand,
   category_name,
   subcategory_name,
-  supplier_name,
-  variant_id,
-  SKU,
-  price,
-  offer,
-  color,
-  size,
-  no_stock
+  supplier_name
 ) {
   try {
     const category_id = await adminExecuteSQL(
@@ -365,7 +345,7 @@ async function createProduct(
       "SELECT supplier_id FROM supplier where supplier_name=?",
       [supplier_name]
     );
-    const last_insert = await adminExecuteSQL(
+    await adminExecuteSQL(
       "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
       [
         product_name,
@@ -376,27 +356,8 @@ async function createProduct(
         dimension,
         brand,
         supplier_id[0].supplier_id,
-      ],
-      "return LAST_INSERT_ID()"
-    );
-
-    const last_insert_product_id = last_insert.insertId;
-
-    await adminExecuteSQL(
-      "INSERT INTO variant (variant_id, product_id, SKU, price, offer, color, size, no_stock) VALUES (?,?,?,?,?,?,?,?)",
-      [
-        variant_id,
-        last_insert_product_id,
-        SKU,
-        price,
-        offer,
-        color,
-        size,
-        no_stock,
       ]
     );
-
-    // insert image --------------------
 
     return "new product is added";
   } catch (e) {
