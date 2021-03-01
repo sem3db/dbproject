@@ -22,10 +22,10 @@ async function quaterlySalesReport(year) {
       var cat_id=Categories[c].category_id;
       var cat_name=Categories[c].category_name;
       report[cat_name]={
-        "Q1":orders_by_category_q1[cat_id.toString()],
-        "Q2":orders_by_category_q2[cat_id.toString()],
-        "Q3":orders_by_category_q3[cat_id.toString()], 
-        "Q4":orders_by_category_q4[cat_id.toString()]
+        "Q1":orders_by_category_q1[cat_id.toString()] ? orders_by_category_q1[cat_id.toString()] : 0,
+        "Q2":orders_by_category_q2[cat_id.toString()] ? orders_by_category_q2[cat_id.toString()] : 0,
+        "Q3":orders_by_category_q3[cat_id.toString()] ? orders_by_category_q3[cat_id.toString()] : 0, 
+        "Q4":orders_by_category_q4[cat_id.toString()] ? orders_by_category_q4[cat_id.toString()] : 0,
       };
     }
 

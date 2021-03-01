@@ -9,7 +9,7 @@ const {
 
 const reportRouter = express.Router();
 
-reportRouter.post(
+reportRouter.get(
   "/report-1/:year",
   expressAsyncHandler(async (req, res) => {
     const qsales = await quaterlySalesReport(req.params.year);
