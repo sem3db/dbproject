@@ -13,8 +13,8 @@ import {
 } from "../constants/productConstants";
 
 export default function ProductListScreen(props) {
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const productListAdmin = useSelector((state) => state.productListAdmin);
+  const { loading, error, products } = productListAdmin;
 
   const productCreate = useSelector((state) => state.productCreate);
   const {

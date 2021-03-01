@@ -23,84 +23,34 @@ import {
   SUBCATEGORY_LIST_SUCCESS,
 } from '../constants/subcategoryConstants';
 
-// frontend testing without backend
-const categorydata = [
-    {category_id:1,category_name:'AAAA'},
-    {category_id:2,category_name:'BBBB'}
-];
-const subcategorydata = [
-    {category_id:1,subcat_id:1,subcat_name:'aaa'},
-    {category_id:1,subcat_id:2,subcat_name:'bbb'}]
-// frontend testing without backend
-
 export const listCategories = () => async (dispatch) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
     try {
 
-        // backend
-        // const { data } = await axios.get("/api/categories/categorylist");
-        // backend
+      const { data } = await axios.get(`/api/categories`);
 
-        // frontend testing without backend
-        const data = categorydata;
-        // frontend testing without backend
-
-        dispatch({
-        type: CATEGORY_LIST_SUCCESS,
-        payload: data,
-        });
+      dispatch({
+      type: CATEGORY_LIST_SUCCESS,
+      payload: data,
+      });
     } catch (error) {
-        console.log(error);
-        dispatch({
-        type: CATEGORY_LIST_FAIL,
-        payload:
-            error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-        });
+      console.log(error);
+      dispatch({
+      type: CATEGORY_LIST_FAIL,
+      payload:
+          error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+      });
     }
 };
-
-export const listSubcategories = (categoryId) => async (dispatch) =>{
-    dispatch({ type: SUBCATEGORY_LIST_REQUEST });
-    try {
-
-        // backend
-        // const { data } = await axios.get("/api/${categoryId}/subcategorylist");
-        // backend
-
-        // frontend testing without backend
-        const data = subcategorydata;
-        // frontend testing without backend
-
-        dispatch({
-        type: SUBCATEGORY_LIST_SUCCESS,
-        payload: data,
-        });
-    } catch (error) {
-        console.log(error);
-        dispatch({
-        type: SUBCATEGORY_LIST_FAIL,
-        payload:
-            error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-        });
-    }
-  }
-
+  
 export const detailsCategory = (categoryId) => async (dispatch) => {
   dispatch({ type: CATEGORY_DETAILS_REQUEST, payload: categoryId });
   try {
     dispatch({ type: CATEGORY_DETAILS_REQUEST });
 
-    // backend
-    // const {data} = await axios.get(`/api/category/${categoryId}`)
-    // backend
-
-    // frontend testing without backend
-    const data = categorydata[categoryId - 1];
-    // frontend testing without backend
+    const {data} = await axios.get(`/api/categories/${categoryId}`)
 
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -115,26 +65,15 @@ export const detailsCategory = (categoryId) => async (dispatch) => {
   }
 };
 
-
 export const createCategory = () => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_CREATE_REQUEST });
   try {
 
-    // backend
-    // const { data } = await axios.post(
-    //   '/api/categories/',
-    //   {},
-    // );
-    // backend
-
-    // frontend testing without backend
     const newcategory = {
-      category_id: categorydata.length + 1,
       category_name: "samplecategory",
+      description: "sampledescription",
     };
-    categorydata.push(newcategory);
-    const data = { category: newcategory };
-    // frontend testing without backend
+    const { data } = await axios.post('/api/categories/',newcategory);
 
 
     dispatch({
@@ -157,14 +96,7 @@ export const updateCategory = (category) => async (dispatch, getState) => {
   // } = getState();
   try {
 
-    // backend
-    // const { data } = await axios.put(`/api/categories/${category.category_id}`, category);
-    // backend
-
-    // frontend testing without backend
-    categorydata[category.category_id - 1] = category;
-    const { data } = categorydata[category.category_id - 1];
-    // frontend testing without backend
+    const { data } = await axios.put(`/api/categories/${category.category_id}`, category);
 
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -183,14 +115,7 @@ export const deleteCategory = (categoryId) => async (dispatch, getState) => {
   // } = getState();
   try {
     
-    // backend
-    // const { data } = axios.delete(`/api/categories/${categoryId}`);
-    // backend
-    
-    // frontend testing without backend
-    categorydata.splice(categoryId-1,1);
-    const { data } = categorydata;
-    // frontend testing without backend
+    const { data } = axios.delete(`/api/categories/${categoryId}`);
 
     dispatch({ type: CATEGORY_DELETE_SUCCESS });
   } catch (error) {
@@ -201,3 +126,26 @@ export const deleteCategory = (categoryId) => async (dispatch, getState) => {
     dispatch({ type: CATEGORY_DELETE_FAIL, payload: message });
   }
 };
+
+export const listSubcategories = (categoryId) => async (dispatch) =>{
+  dispatch({ type: SUBCATEGORY_LIST_REQUEST });
+  try {
+
+      // const { data } = await axios.get("/api/categories/${categoryId}/subcategorylist");
+      const { data } = await axios.get(`/api/categories/subcategories/:id`);
+
+      dispatch({
+      type: SUBCATEGORY_LIST_SUCCESS,
+      payload: data,
+      });
+  } catch (error) {
+      console.log(error);
+      dispatch({
+      type: SUBCATEGORY_LIST_FAIL,
+      payload:
+          error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+      });
+  }
+}

@@ -18,10 +18,25 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_SUCCESS,
+} from '../constants/productConstants';
+
+import {
   VARIANT_LIST_REQUEST,
   VARIANT_LIST_SUCCESS,
   VARIANT_LIST_FAIL,
-} from '../constants/productConstants';
+  VARIANT_DETAILS_REQUEST,
+  VARIANT_DETAILS_SUCCESS,
+  VARIANT_DETAILS_FAIL,
+  VARIANT_CREATE_FAIL,
+  VARIANT_CREATE_REQUEST,
+  VARIANT_CREATE_SUCCESS,
+  VARIANT_UPDATE_REQUEST,
+  VARIANT_UPDATE_SUCCESS,
+  VARIANT_UPDATE_FAIL,
+  VARIANT_DELETE_REQUEST,
+  VARIANT_DELETE_FAIL,
+  VARIANT_DELETE_SUCCESS,
+} from '../constants/variantConstants';
 
 // frontend testing without backend
 // const productdata = [
@@ -52,7 +67,6 @@ import {
 
 export const listProducts = () => async (dispatch) => {
   try {
-    console.log('pkpk')
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     const { data } = await axios.get("/api/products");
@@ -141,12 +155,27 @@ export const detailsProductVariant = (productId, variants) => async (
 
 
 
+
+
 export const listProductsAdmin = () => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
 
-    const { data } = await axios.get("/api/productlist");
-
+    // const { data } = await axios.get(`/api/products/productlist`);
+    const data = [
+      {
+        product_id: 1,
+        product_name: "ssdsd",
+        category_name: "dvsvs",
+        subcat_name: "sdvsv",
+        brand: "svsv",
+        supplier_name: "sdvsvs",
+        weight: "sdvsdvs",
+        dimension: "vsdvdsv",
+        description: "svsdvsd",
+      }
+    ]
+    
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -165,9 +194,8 @@ export const listProductsAdmin = () => async (dispatch) => {
 export const detailsProductAdmin = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
-    dispatch({ type: PRODUCT_DETAILS_REQUEST });
     
-    const {data} = await axios.get(`/api/productlist/${productId}`)
+    const {data} = await axios.get(`/api/products/productlist/${productId}`)
     
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -194,7 +222,7 @@ export const createProduct = () => async (dispatch, getState) => {
       brand: "samplebrand",
       supplier_name: null,
     };
-    const { data } = await axios.post("/api/addProduct", newproduct);
+    const { data } = await axios.post(`/api/products/addProduct`, newproduct);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -208,6 +236,7 @@ export const createProduct = () => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_CREATE_FAIL, payload: message });
   }
 };
+
 export const updateProduct = (product) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_UPDATE_REQUEST, payload: product });
   // const {
@@ -215,7 +244,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   // } = getState();
   try {
 
-    const { data } = await axios.post(`/api/productlist/edit/${product.product_id}`, product);
+    const { data } = await axios.post(`/api/products/productlist/edit/${product.product_id}`, product);
 
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -226,6 +255,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_UPDATE_FAIL, error: message });
   }
 };
+
 export const deleteProduct = (productId) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_DELETE_REQUEST, payload: productId });
   // const {
@@ -233,7 +263,7 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   // } = getState();
   try {
 
-    const { data } = axios.delete(`/productlist/delete/${productId}`);
+    const { data } = axios.delete(`/api/products/productlist/delete/${productId}`);
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
@@ -245,40 +275,12 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   }
 };
 
-
-
-// frontend testing without backend
-// const variantdata = [
-//   {
-//     product_id: 1,
-//     variant_id: 1,
-//     SKU:"sku",
-//     price: 123,
-//     offer: 10,
-//     color: "c",
-//     size: "s",
-//     no_stock: 12,
-//     image_url: "a/a/a/a",
-//   },
-//   {
-//     product_id: 1,
-//     variant_id: 2,
-//     SKU:"sku2",
-//     price: 1234,
-//     offer: 104,
-//     color: "c2",
-//     size: "s2",
-//     no_stock: 123,
-//     image_url: "a/a/a/a2",
-//   }
-// ]
-
 export const listVariants = (productId) => async (dispatch) =>{
   dispatch({ type: VARIANT_LIST_REQUEST });
   try {
 
-      // const { data } = await axios.get("/api/product/${productId}/variantlist");
-      const { data } = await axios.get(`/api/productlist/variants/${productId}`);
+      // const { data } = await axios.get("/api/product/productlist/${productId}/variantlist");
+      const { data } = await axios.get(`/api/products/productlist/variants/${productId}`);
 
       dispatch({
       type: VARIANT_LIST_SUCCESS,
@@ -295,3 +297,85 @@ export const listVariants = (productId) => async (dispatch) =>{
       });
   }
 }
+
+export const detailsVariant = (productId,variantId) => async (dispatch) => {
+  dispatch({ type: VARIANT_DETAILS_REQUEST, payload: (productId,variantId) });
+  try {
+    
+    // const {data} = await axios.get(`/api/products/productlist/${productId}/variants/${variantId}`)
+    const {data} = await axios.get(`/api/products/productlist/variants/${productId}/${variantId}`)
+    
+    dispatch({ type: VARIANT_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: VARIANT_DETAILS_FAIL,
+      payload:
+      error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message,
+    });
+  }
+};
+
+export const createVariant = (productId) => async (dispatch, getState) => {
+  dispatch({ type: VARIANT_CREATE_REQUEST });
+  try {
+    const newvariant = {
+      product_id: productId,
+      SKU:"samplesku",
+      price: null,
+      offer: null,
+      color: null,
+      size: null,
+      no_stock: null,
+      image_url: null,
+    };
+    const { data } = await axios.post(`/api/products/productlist/variants/addvariant/${productId}`, newvariant);
+    dispatch({
+      type: VARIANT_CREATE_SUCCESS,
+      payload: data.variant,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: VARIANT_CREATE_FAIL, payload: message });
+  }
+};
+export const updateVariant = (productId,variant) => async (dispatch, getState) => {
+  dispatch({ type: VARIANT_UPDATE_REQUEST, payload: variant });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+
+    const { data } = await axios.post(`/api/products/productlist/variants/editvariant/${productId}/${variant.variant_id}`, variant);
+
+    dispatch({ type: VARIANT_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: VARIANT_UPDATE_FAIL, error: message });
+  }
+};
+export const deleteVariant = (productId,variantId) => async (dispatch, getState) => {
+  dispatch({ type: VARIANT_DELETE_REQUEST, payload: (productId,variantId) });
+  // const {
+  //   userSignin: { userInfo },
+  // } = getState();
+  try {
+
+    const { data } = axios.delete(`/api/products/productlist/variants/delete/${productId}/${variantId}`);
+
+    dispatch({ type: VARIANT_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: VARIANT_DELETE_FAIL, payload: message });
+  }
+};

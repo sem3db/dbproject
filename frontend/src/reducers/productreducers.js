@@ -20,6 +20,9 @@ import {
     PRODUCT_DETAILS_SUCCESS1,
     PRODUCT_DETAILS_FAIL1,
     PRODUCT_DETAILS_REQUEST1,
+} from '../constants/productConstants'
+
+import {
     VARIANT_LIST_REQUEST,
     VARIANT_LIST_SUCCESS,
     VARIANT_LIST_FAIL,
@@ -38,7 +41,7 @@ import {
     VARIANT_DELETE_SUCCESS,
     VARIANT_DELETE_FAIL,
     VARIANT_DELETE_RESET,
-} from '../constants/productConstants'
+} from '../constants/variantConstants'
 
 export const productListReducer =(state={products:[]},action)=>{
     switch(action.type){
