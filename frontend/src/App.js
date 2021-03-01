@@ -17,20 +17,22 @@ import ProductListScreen from './screens/ProductListScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import DashBoardScreen from './screens/DashBoardScreen';
+import VariantListScreen from './screens/VariantListScreen';
+import VariantEditScreen from './screens/VariantEditScreen';
 
 const App = () => {
   return (
     <Router>
-    <Header/>
-    <main className='py-3'>
-      <Container>
-        {/* <HomeScreen/> */}
+      <Header/>
+      <main className='py-3'>
+        <Container>
+          {/* <HomeScreen/> */}
         <Route path='/' component={HomeScreen} exact />
         <Route path='/products' component={HomeScreen} exact />
         <Route path='/products/:cat' component={HomeScreen} exact />
         <Route path='/profile' component={ProfileScreen} exact />
         <Route path='/product/:id' component={ProductScreen} exact />
-        <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
         <Route path='/cart/:id?' component={CartScreen}/>
         <Route path='/login' component={LoginScreen}/>
         <Route path='/register' component={RegisterScreen}/>
@@ -38,8 +40,16 @@ const App = () => {
         <Route path='/payment' component={PaymentScreen}/>
         <Route path='/placeorder' component={PlaceOrderScreen}/>
         <Route path='/order/:id' component={OrderScreen}/>
+        {/* AdminRoute */}
+        <Route path='/dashboard' component={DashBoardScreen}></Route>
         <Route path='/productlist' component={ProductListScreen}></Route>
+        {/* <Route path='/product/:id/view' component={ProductViewScreen} exact ></Route> */}
+        <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
+        <Route path='/product/:id/variantlist' component={VariantListScreen}></Route>
+        {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
+        <Route path='/product/:id/variant/:vid/edit' component={VariantEditScreen} exact ></Route>
         <Route path='/orderlist' component={OrderListScreen}></Route>
+        {/* AdminRoute */}
         </Container>
       </main>
       <Footer />

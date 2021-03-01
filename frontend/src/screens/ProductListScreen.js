@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createProduct,
   deleteProduct,
-  listProducts,
+  listProductsAdmin,
 } from "../action/productAction";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -35,17 +35,17 @@ export default function ProductListScreen(props) {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`/product/${createdProduct._id}/edit`);
+      props.history.push(`/product/${createdProduct.product_id}/edit`);
     }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
+    dispatch(listProductsAdmin());
   }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
 
   const deleteHandler = (product) => {
     if (window.confirm("Are you sure to delete?")) {
-      dispatch(deleteProduct(product._id));
+      dispatch(deleteProduct(product.product_id));
     }
   };
   const createHandler = () => {
@@ -62,7 +62,6 @@ export default function ProductListScreen(props) {
 
       {loadingDelete && <Loader></Loader>}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
-
       {loadingCreate && <Loader></Loader>}
       {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
@@ -77,34 +76,32 @@ export default function ProductListScreen(props) {
               <th>NAME</th>
               <th>CATEGORY</th>
               <th>SUB-CATEGORY</th>
-              <th>SUPPLIER</th>
               <th>BRAND</th>
-              <th>COLOR</th>
-              <th>PRICE</th>
-              <th>OFFER</th>
-              <th>STOCK</th>
+              <th>SUPPLIER</th>
+              <th>WEIGHT</th>
+              <th>DIMENSION</th>
+              <th>DESCRIPTION</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product._id}>
+              <tr key={product.product_id}>
                 <td>{product.product_id}</td>
                 <td>{product.product_name}</td>
-                <td>{product.category}</td>
+                <td>{product.category_name}</td>
                 <td>{product.subcat_name}</td>
-                <td>{product.supplier_name}</td>
                 <td>{product.brand}</td>
-                <td>{product.color}</td>
-                <td>{product.price}</td>
-                <td>{product.offer}</td>
-                <td>{product.no_stock}</td>
+                <td>{product.supplier_name}</td>
+                <td>{product.weight}</td>
+                <td>{product.dimension}</td>
+                <td>{product.description}</td>
                 <td>
                   <button
                     type="button"
                     className="small"
                     onClick={() =>
-                      props.history.push(`/product/${product._id}/edit`)
+                      props.history.push(`/product/${product.product_id}/edit`)
                     }
                   >
                     Edit
@@ -115,6 +112,15 @@ export default function ProductListScreen(props) {
                     onClick={() => deleteHandler(product)}
                   >
                     Delete
+                  </button>
+                  <button
+                    type="button"
+                    className="small"
+                    onClick={() =>
+                      props.history.push(`/product/${product.product_id}/variantlist`)
+                    }
+                  >
+                    Variants
                   </button>
                 </td>
               </tr>

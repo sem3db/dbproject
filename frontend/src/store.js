@@ -3,11 +3,18 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import {
-  producListReducer,
+  productListReducer,
   productDetailsReducer,
+  productListReducerAdmin,
+  productDetailsReducerAdmin,
   productCreateReducer,
   productDeleteReducer,
   productUpdateReducer,
+  variantListReducer,
+  variantDetailsReducer,
+  variantCreateReducer,
+  variantUpdateReducer,
+  variantDeleteReducer,
 } from './reducers/productreducers'
 
 import {cartReducer} from './reducers/cartreducers'
@@ -15,7 +22,7 @@ import {userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
-} from './reducers/userReducers'
+} from './reducers/userreducers'
 
 import {
   orderCreateReducer,
@@ -27,21 +34,57 @@ import {
   orderPayReducer,
 } from "./reducers/orderReducers";
 
+import {
+  categoryListReducer,
+  categoryDetailsReducer,
+  categoryCreateReducer,
+  categoryDeleteReducer,
+  categoryUpdateReducer,
+} from "./reducers/categoryReducers";
+
+import {
+  subcategoryCreateReducer,
+  subcategoryDeleteReducer,
+  subcategoryDetailsReducer,
+  subcategoryListReducer,
+  subcategoryUpdateReducer,
+} from "./reducers/subcategoryReducers";
+
+import { supplierCreateReducer, supplierDeleteReducer, supplierDetailsReducer, supplierListReducer, supplierUpdateReducer } from "./reducers/supplierReducers";
+
 const reducer = combineReducers({
-  productList:producListReducer,
-  productDetails:productDetailsReducer,
-  productList:producListReducer,
+  productList: productListReducer,
+  productDetails: productDetailsReducer,
+  productListAdmin: productListReducerAdmin,
+  productDetailsAdmin: productDetailsReducerAdmin,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
+  variantList: variantListReducer,
+  variantDetails: variantDetailsReducer,
+  variantCreate: variantCreateReducer,
+  variantUpdate: variantUpdateReducer,
+  variantDelete: variantDeleteReducer,
+  categoryList: categoryListReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryCreate: categoryCreateReducer,
+  categoryUpdate: categoryUpdateReducer,
+  categoryDelete: categoryDeleteReducer,
+  subcategoryList: subcategoryListReducer,
+  subcategoryDetails: subcategoryDetailsReducer,
+  subcategoryCreate: subcategoryCreateReducer,
+  subcategoryUpdate: subcategoryUpdateReducer,
+  subcategoryDelete: subcategoryDeleteReducer,
+  supplierList: supplierListReducer,
+  supplierDetails: supplierDetailsReducer,
+  supplierCreate: supplierCreateReducer,
+  supplierUpdate: supplierUpdateReducer,
+  supplierDelete: supplierDeleteReducer,
   cart:cartReducer,
   userLogin:userLoginReducer,
   userRegister:userRegisterReducer,
   userDetails:userDetailsReducer,
   userUpdateProfile:userUpdateProfileReducer,
-  cart:cartReducer,
-  userLogin:userLoginReducer,
-  cart:cartReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,

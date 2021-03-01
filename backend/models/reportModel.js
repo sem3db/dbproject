@@ -5,7 +5,10 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 //report 1
 async function quaterlySalesReport(year) {
   try {
-    await adminExecuteSQL;
+    // const await adminExecuteSQL(
+    //   "SELECT order_id, product_name,brand, product_price,quantity,product_offer, total_payment, order_date FROM productorder NATURAL JOIN order_product NATURAL JOIN product WHERE YEAR(order_date)=? AND MONTH(order_date) BETWEEN 1 AND 3",
+    //   [year]
+    // );
   } catch (e) {
     return "Error";
   }
