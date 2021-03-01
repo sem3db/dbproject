@@ -21,12 +21,12 @@ DROP INDEX `variant_id` ;
 DROP TABLE `cse_21`.`image`;
 
 
-ALTER TABLE `cse_21`.`productorder` 
+ALTER TABLE `cse_21`.`ProductOrder` 
 ADD COLUMN `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `additional_notes`;
 
 
-ALTER TABLE `cse_21`.`productorder` 
-CHANGE COLUMN `order_date` `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `order_id`;
+-- ALTER TABLE `cse_21`.`productorder` 
+-- CHANGE COLUMN `order_date` `order_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `order_id`;
 
 
 
