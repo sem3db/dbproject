@@ -8,7 +8,7 @@ const {
   updateCustomer,
   getShippingAddress,
   updateShippingAddress,
-  
+  getMainCities  
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -107,6 +107,18 @@ userRouter.get(
       res.send(address);
     } else {     
       res.status(404).send({ message: "Customer does not have a Shipping Address." });      
+    }
+  })
+);
+
+userRouter.get(
+  "/shipment/main_cities",
+  expressAsyncHandler(async (req, res) => {
+    const maincitylist = await getMainCities();
+    if (maincitylist) {
+      res.send(maincitylist);
+    } else {     
+      res.status(404).send({ message: "No Main Cities." });      
     }
   })
 );

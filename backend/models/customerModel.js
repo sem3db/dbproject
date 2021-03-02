@@ -120,24 +120,11 @@ async function updateCustomer(
 async function getShippingAddress(id) {
   try {
 
-    const CustomerInfo = {};
-
-    const MainCities = await customerExecuteSQL(
-      "SELECT DISTINCT city_name FROM main_city"
-    );
-
-    var maincitylist=[];
-    for (var i=0; i<MainCities.length;i++){
-      maincitylist.push(MainCities[i].city_name);
-    }
-
-    CustomerInfo.MainCities = maincitylist;
+    const CustomerInfo = {};    
 
     const addressFetched = await customerExecuteSQL("SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
       parseInt(id),
     ]);
-
-    
 
     CustomerInfo.Customer=addressFetched[0];
 
@@ -146,6 +133,25 @@ async function getShippingAddress(id) {
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
+}
+
+
+async function getMainCities(){
+  try {
+    const MainCities = await customerExecuteSQL(
+      "SELECT DISTINCT city_name FROM main_city"
+    );
+  
+    var maincitylist=[];
+    for (var i=0; i<MainCities.length;i++){
+      maincitylist.push(MainCities[i].city_name);
+    }
+  
+    return maincitylist;
+  } catch (error) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+  
 }
 
 async function updateShippingAddress(
@@ -184,4 +190,4 @@ async function updateShippingAddress(
 
 
 
-module.exports = { loginIn, register,findCustomerById ,updateCustomer,getShippingAddress,updateShippingAddress};
+module.exports = { loginIn, register,findCustomerById ,updateCustomer,getShippingAddress,updateShippingAddress,getMainCities};
