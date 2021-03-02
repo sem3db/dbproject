@@ -44,7 +44,7 @@ export default function VariantListScreen(props) {
 
   const deleteHandler = (variant) => {
     if (window.confirm("Are you sure to delete?")) {
-      dispatch(deleteVariant(productId,variant.variant_id));
+      dispatch(deleteVariant(variant.product_id,variant.variant_id));
     }
   };
   const createHandler = () => {

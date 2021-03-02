@@ -18,27 +18,20 @@ export default function VariantEditScreen(props) {
   
     const variantDetails = useSelector((state) => state.variantDetails);
     const { loading, error, variant } = variantDetails;
-    console.log("variant");
-    console.log("variant");
-    console.log("variant");
-    console.log("variant");
-    console.log("variant");
-    console.log("variant");
-    console.log(variant);
 
-    const productUpdate = useSelector((state) => state.productUpdate);
+    const variantUpdate = useSelector((state) => state.variantUpdate);
     const {
       loading: loadingUpdate,
       error: errorUpdate,
       success: successUpdate,
-    } = productUpdate;
+    } = variantUpdate;
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (successUpdate) {
       props.history.push(`/product/${productId}/variantlist`);
     }
-    if (false) {
+    if (!variant || (variant.variant_id != variantId || successUpdate)) {
       dispatch({ type: VARIANT_UPDATE_RESET });
       dispatch(detailsVariant(productId,variantId));
     } else {
@@ -50,13 +43,12 @@ export default function VariantEditScreen(props) {
       setNo_stock(variant.no_stock);
       setImage_url(variant.image_url);
     }
-  },[productId, variantId, variant, props.history]);
+  },[variant, dispatch, productId, variantId, successUpdate, props.history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
         updateVariant(
-            productId,
             {
               variant_id: variantId,
               product_id: productId,
@@ -93,13 +85,12 @@ export default function VariantEditScreen(props) {
 
   return (
     <div className="admin">
-      variant
       <form className="form" onSubmit={submitHandler}>
         <div>
           <h1>Edit Product {productId} Variant {variantId} </h1>
         </div>
-        {/* {loadingUpdate && <Loader></Loader>} */}
-        {/* {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
+        {loadingUpdate && <Loader></Loader>}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
         <Loader></Loader>
       ) : error ? (

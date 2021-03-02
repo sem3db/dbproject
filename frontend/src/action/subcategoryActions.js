@@ -24,15 +24,6 @@ export const listSubcategories = (categoryId) => async (dispatch) =>{
       // const { data } = await axios.get("/api/categories/${categoryId}/subcategorylist");
       const { data } = await axios.get(`/api/categories/${categoryId}/subcategories`);
 
-      console.log("listsuccat")
-      console.log("listsuccat")
-      console.log("listsuccat")
-      console.log("listsuccat")
-      console.log("listsuccat")
-      console.log("listsuccat")
-      console.log(data)
-
-
       dispatch({
       type: SUBCATEGORY_LIST_SUCCESS,
       payload: data,
