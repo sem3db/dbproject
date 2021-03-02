@@ -130,8 +130,12 @@ export const getUserAddress = (id)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        // const {data} =await axios.get(`/api/customer/address/4`,config)
-        const data={addressLine1:'1 line new', addressLine2:'line 2',zip:'',phone:'',city:'Colombo',province:''}
+        console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooo')
+        let {data} =await axios.get(`/api/customer/5/shipment`,config)
+        data=data.Customer
+        data={addressLine1: data.address_line_1, addressLine2: data.address_line_2, zip: data.zip_code ,phone: data.phone, city: data.city, province: data.state}
+        console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooo')
+        console.log(data)
         dispatch({
             type:USER_ADDRESS_SUCCESS,
             payload:data

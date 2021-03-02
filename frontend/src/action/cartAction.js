@@ -76,16 +76,23 @@ export const removeFromCart= (product_id,variant_id)=>(dispatch,getState)=>{
     localStorage.setItem('cartItems',JSON.stringify(getState().cart.cartItems))
 }
 
-export const saveShippingAddress= (data)=>(dispatch)=>{
-    console.log(data)
-    
+export const saveShippingAddress= (data)=>async(dispatch,getState)=>{
+    const {data1} =await axios.post('/api/customer/5/shipment',data)
+    // console.log(data)
+    // if(getState().userLogin){
+    //     const {userLogin:{userInfo}}=getState()
+    //     const config={
+    //     headers:{
+    //         'Content-Type':'application/json',
+    //         Authorization:`Bearer ${userInfo.token}`
+    //         }
+    //     }
+    //     const {data} =await axios.post('/api/customer/5/shipment',data,config)
+    // }
     dispatch({
         type:CART_SAVE_SHIPPING_ADDRESS,
         payload:data,
     })
-    if(true){
-
-    }
     localStorage.setItem('shippingAddress',JSON.stringify(data))
 }
 

@@ -47,10 +47,10 @@ import FormContainer from "../components/FormContainer";
             }
             else{
                 setAddressLine1(address.addressLine1!==""?address.addressLine1:addressLine1)
-                setAddressLine2(address.addressLine2!==address.addressLine2?address.addressLine2:addressLine2)
+                setAddressLine2(address.addressLine2!==""?address.addressLine2:addressLine2)
                 setPostalCode(address.zip!==""?address.zip:postalCode)
                 setCity(address.city!==""?[address.city]:city)
-                // setProvince(address.province!==""?[address.province]:province)
+                setProvince(address.province!==""?[address.province]:province)
                 setPhone(address.phone!==""?address.phone:phone)
             }
         }
