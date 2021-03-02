@@ -20,13 +20,15 @@ userRouter.post(
     const login_cred = await loginIn(req.body.email);
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
-
-        const token=generateToken({email: login_cred[0].email, fName:login_cred[0].first_name });
+        const token = generateToken({
+          email: login_cred[0].email,
+          fName: login_cred[0].first_name,
+        });
 
         res.send({
-          first_name:login_cred[0].first_name,
+          first_name: login_cred[0].first_name,
           email: login_cred[0].email,
-          token: token
+          token: token,
         });
         return;
       }
@@ -38,7 +40,6 @@ userRouter.post(
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
-    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const createdUser = await register(
@@ -67,8 +68,8 @@ userRouter.get(
     const customer = await findCustomerById(req.params.custometId);
     if (customer) {
       res.send(customer);
-    } else {     
-      res.status(404).send({ message: "Customer Not Found" });      
+    } else {
+      res.status(404).send({ message: "Customer Not Found" });
     }
   })
 );
@@ -98,15 +99,16 @@ userRouter.put(
   })
 );
 
-
 userRouter.get(
   "/:custometId/shipment",
   expressAsyncHandler(async (req, res) => {
     const address = await getShippingAddress(req.params.custometId);
     if (address) {
       res.send(address);
-    } else {     
-      res.status(404).send({ message: "Customer does not have a Shipping Address." });      
+    } else {
+      res
+        .status(404)
+        .send({ message: "Customer does not have a Shipping Address." });
     }
   })
 );
@@ -139,8 +141,5 @@ userRouter.put(
     res.send(newaddress);
   })
 );
-
-
-
 
 module.exports = userRouter;

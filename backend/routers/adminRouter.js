@@ -2,7 +2,7 @@ const express = require("express");
 
 const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const { loginIn, register } = require("../models/adminModel");
+const { loginIn, register, updateLastLogin } = require("../models/adminModel");
 const { generateToken } = require("../utils.js");
 
 const adminRouter = express.Router();
@@ -18,6 +18,7 @@ adminRouter.post(
           email: login_cred[0].email_address,
           //token: generateToken(login_cred[0]),
         });
+        await updateLastLogin(req.body.email);
         return;
       }
     }

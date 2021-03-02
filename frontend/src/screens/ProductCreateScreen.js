@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import {
-  detailsProductAdmin,
-  updateProduct
-} from '../action/productAction';
 import { listCategories } from '../action/categoryActions';
+import { createProduct } from '../action/productAction';
 import { listSubcategories } from '../action/subcategoryActions';
 import { listSuppliers } from '../action/supplierActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 
-export default function ProductEditScreen(props) {
-  const productId = props.match.params.id;
+export default function ProductCreateScreen(props) {
   const [product_name, setProduct_name] = useState('');
   const [description, setDescription] = useState('');
   const [brand, setBrand] = useState('');
@@ -23,15 +18,12 @@ export default function ProductEditScreen(props) {
   const [subcat_name, setSubcat_name] = useState('');
   const [supplier_name, setSupplier_name] = useState('');
 
-  const productDetailsAdmin = useSelector((state) => state.productDetailsAdmin);
-  const { loading, error, product } = productDetailsAdmin;
-
-  const productUpdate = useSelector((state) => state.productUpdate);
+  const productCreate = useSelector((state) => state.productCreate);
   const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = productUpdate;
+    loading,
+    error,
+    success: successCreate,
+  } = productCreate;
 
   const categoryList = useSelector((state) => state.categoryList);
   const { loading: catloading, error: caterror, categories:categories } = categoryList;
@@ -51,32 +43,34 @@ export default function ProductEditScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (successUpdate) {
-      props.history.push('/productlist');
+    if (successCreate) {
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        props.history.push('/productlist');
     }
     if (!catloading && !caterror) {
-      dispatch(listCategories());
+        dispatch(listCategories());
     }
     if (categoryId !== null || !scatloading && !scaterror) {
-      dispatch(listSubcategories(categoryId));
+        dispatch(listSubcategories(categoryId));
     }
     if (!suploading && !superror) {
-      dispatch(listSuppliers());
+        dispatch(listSuppliers());
     }
-    if (!product || product.product_id!=productId || successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
-      dispatch(detailsProductAdmin(productId));
-    } else {
-      setProduct_name(product.product_name);
-      setDescription(product.description);
-      setWeight(product.weight);
-      setDimension(product.dimension);
-      setBrand(product.brand);
-      setCategory_name(product.category_name);
-      setSubcat_name(product.subcat_name);
-      setSupplier_name(product.supplier_name);
-    }
-  }, [product, dispatch, productId, successUpdate, props.history]);
+    // if (!product || product.product_id!=productId || successUpdate) {
+    //   dispatch({ type: PRODUCT_UPDATE_RESET });
+    //   dispatch(detailsProductAdmin(productId));
+    // }
+    // else {
+    //   setProduct_name(product.product_name);
+    //   setDescription(product.description);
+    //   setWeight(product.weight);
+    //   setDimension(product.dimension);
+    //   setBrand(product.brand);
+    //   setCategory_name(product.category_name);
+    //   setSubcat_name(product.subcat_name);
+    //   setSupplier_name(product.supplier_name);
+    // }
+  }, [dispatch, successCreate, props.history]);
 
   useEffect(() => {
     if (categoryId !== null) {
@@ -87,8 +81,7 @@ export default function ProductEditScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-      updateProduct({
-        product_id: productId,
+        createProduct({
         product_name,
         description,
         weight,
@@ -105,12 +98,12 @@ export default function ProductEditScreen(props) {
     <div className="admin">
       <form className="form" onSubmit={submitHandler}>
         <div>
-          <h1>Edit Product {productId}</h1>
+          <h1>Create New Product</h1>
         </div>
-        {loadingUpdate && <Loader></Loader>}
+        {/* {loadingUpdate && <Loader></Loader>} */}
         {/* {catloading && <Loader></Loader>} */}
         {/* {caterror && <Message variant="danger">{caterror}</Message>} */}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+        {/* {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
         {loading ? (
           <Loader></Loader>
         ) : error ? (
@@ -225,7 +218,7 @@ export default function ProductEditScreen(props) {
             <div>
               <label></label>
               <button className="primary" type="submit">
-                Update
+                Create
               </button>
             </div>
           </>

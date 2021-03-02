@@ -15,7 +15,7 @@ categoryRouter.get(
   })
 );
 categoryRouter.get(
-  "/subcategories/:id",
+  "/:id/subcategories",
   expressAsyncHandler(async (req, res) => {
     const subcategories = await getSubCategories(req.params.id);
     res.send(subcategories);

@@ -95,7 +95,7 @@ export const productDetailsReducer =(state={product:{}, variant:{}, variants:{},
 
 
 
-export const productListReducerAdmin = (state = { loading: true, products: [] },action) => {
+export const productListReducerAdmin = (state = { products: [] },action) => {
     switch (action.type) {
       case PRODUCT_LIST_REQUEST:
         return { loading: true };
@@ -126,7 +126,7 @@ export const productCreateReducer = (state = {}, action) => {
       case PRODUCT_CREATE_REQUEST:
         return { loading: true };
       case PRODUCT_CREATE_SUCCESS:
-        return { loading: false, success: true, product: action.payload };
+        return { loading: false, success: true };
       case PRODUCT_CREATE_FAIL:
         return { loading: false, error: action.payload };
       case PRODUCT_CREATE_RESET:
@@ -166,7 +166,7 @@ export const productDeleteReducer = (state = {}, action) => {
     }
 };
   
-export const variantListReducer =(state={ loading: true, variants: [] },action)=>{
+export const variantListReducer =(state={ variants: [] },action)=>{
     switch(action.type){
        case VARIANT_LIST_REQUEST:
             return {loading:true };
