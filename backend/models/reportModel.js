@@ -136,8 +136,7 @@ async function customerOrderReport() {
       "select customer_id,customer_type, order_id, date(order_date) as order_date, total_payment, payment_method from productorder order by customer_id"
     );
 
-    console.log(orderData)
-    
+    console.log(orderData);
 
     for (let index = 0; index < orderData.length; index++) {
       const order = orderData[index];
@@ -154,7 +153,6 @@ async function customerOrderReport() {
         );
       }
       order.customer_name = name[0].first_name + " " + name[0].last_name;
-      
     }
     return orderData;
   } catch (e) {
