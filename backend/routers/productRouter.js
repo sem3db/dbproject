@@ -8,6 +8,7 @@ const {
   findProductsBySubCategory,
   findVariantByParams,
   findVariantByIds,
+  getProductForUpdate,
   getProductsForAdmin,
   createProduct,
   updateProduct,
@@ -38,15 +39,20 @@ productRouter.get(
   })
 );
 
+// product update form ---------------------------------
 productRouter.get(
   "/productlist/:id",
-  // single product details from product_id
+  expressAsyncHandler(async (req, res) => {
+    const product = await getProductForUpdate(req.params.id);
+    res.send(product);
+  })
 );
 
 productRouter.post(
-  "/productlist/addProduct",
+  "/addProduct",
   expressAsyncHandler(async (req, res) => {
-    const isAdded = await createProduct(
+    console.log("fdf");
+    const product = await createProduct(
       req.body.product_name,
       req.body.description,
       req.body.weight,
@@ -57,7 +63,7 @@ productRouter.post(
       req.body.supplier_name
     );
 
-    res.send(isAdded);
+    res.send(product);
   })
 );
 
@@ -83,6 +89,8 @@ productRouter.delete(
     res.send(isdeleted);
   })
 );
+
+
 
 productRouter.get(
   "/productlist/:id/variants",

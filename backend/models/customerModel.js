@@ -46,37 +46,35 @@ async function register(
 
     if (JSON.parse(JSON.stringify(submitState[2][0])).state == 1) {
       console.log(fName + " " + lName + " Successfuly Added.");
-      console.log(JSON.parse(JSON.stringify(submitState[2][0])).state)
-      return {fName,lName};
+      console.log(JSON.parse(JSON.stringify(submitState[2][0])).state);
+      return { fName, lName };
     } else {
       console.log(fName + " " + lName + " already exists.");
-      throw ('Registration Failed, Customer Exists Already.')
+      throw "Registration Failed, Customer Exists Already.";
     }
   } catch (e) {
-    if(e=='Registration Failed, Customer Exists Already.'){
-      console.log(e)
-      throw new Error(e)
-    }
-    else{
+    if (e == "Registration Failed, Customer Exists Already.") {
+      console.log(e);
+      throw new Error(e);
+    } else {
       console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      throw new Error('Invalid Inputs')
+      throw new Error("Invalid Inputs");
     }
   }
 }
 
-
 async function findCustomerById(id) {
   try {
-    const customerFetched = await customerExecuteSQL("SELECT email , password, first_name, last_name, zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
-      parseInt(id),
-    ]).then();
+    const customerFetched = await customerExecuteSQL(
+      "SELECT email , password, first_name, last_name, zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?",
+      [parseInt(id)]
+    ).then();
 
     return customerFetched[0];
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
-
 
 async function updateCustomer(
   custometId,
@@ -90,9 +88,9 @@ async function updateCustomer(
   state,
   phone
 ) {
-
   try {
-    await customerExecuteSQL("UPDATE registered_customer SET password=?, first_name=?, last_name=?, zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
+    await customerExecuteSQL(
+      "UPDATE registered_customer SET password=?, first_name=?, last_name=?, zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
       [
         password,
         fName,
@@ -103,46 +101,41 @@ async function updateCustomer(
         city,
         state,
         phone,
-        custometId
+        custometId,
       ]
     );
 
     console.log(fName + " " + lName + " Successfuly Updated.");
-    return {fName,lName};
+    return { fName, lName };
   } catch (e) {
-      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      throw new Error('Invalid Inputs')
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    throw new Error("Invalid Inputs");
   }
-  
 }
-
 
 async function getShippingAddress(id) {
   try {
-
     const CustomerInfo = {};
 
     const MainCities = await customerExecuteSQL(
       "SELECT DISTINCT city_name FROM main_city"
     );
 
-    var maincitylist=[];
-    for (var i=0; i<MainCities.length;i++){
+    var maincitylist = [];
+    for (var i = 0; i < MainCities.length; i++) {
       maincitylist.push(MainCities[i].city_name);
     }
 
     CustomerInfo.MainCities = maincitylist;
 
-    const addressFetched = await customerExecuteSQL("SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?", [
-      parseInt(id),
-    ]);
+    const addressFetched = await customerExecuteSQL(
+      "SELECT zip_code, address_line_1, address_line_2, city, state, phone FROM registered_customer WHERE reg_customer_id=?",
+      [parseInt(id)]
+    );
 
-    
-
-    CustomerInfo.Customer=addressFetched[0];
+    CustomerInfo.Customer = addressFetched[0];
 
     return CustomerInfo;
-    
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -157,31 +150,24 @@ async function updateShippingAddress(
   state,
   phone
 ) {
-
   try {
-    await customerExecuteSQL("UPDATE registered_customer SET zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
-      [
-        zipCode,
-        addressLine1,
-        addressLine2,
-        city,
-        state,
-        phone,
-        custometId
-      ]
+    await customerExecuteSQL(
+      "UPDATE registered_customer SET zip_code=?, address_line_1=?, address_line_2=?, city=?, state=?, phone=? WHERE (reg_customer_id=?)",
+      [zipCode, addressLine1, addressLine2, city, state, phone, custometId]
     );
 
-    return ("Shipping Address Successfuly Updated.");
-
+    return "Shipping Address Successfuly Updated.";
   } catch (e) {
-      console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-      throw new Error('Invalid Inputs')
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    throw new Error("Invalid Inputs");
   }
-  
 }
 
-
-
-
-
-module.exports = { loginIn, register,findCustomerById ,updateCustomer,getShippingAddress,updateShippingAddress};
+module.exports = {
+  loginIn,
+  register,
+  findCustomerById,
+  updateCustomer,
+  getShippingAddress,
+  updateShippingAddress,
+};
