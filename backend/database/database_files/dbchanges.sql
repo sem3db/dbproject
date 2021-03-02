@@ -39,7 +39,8 @@ DROP TABLE `cse_21`.`image`;
 
 
 
-CREATE TABLE `cse_21`.`main_city` (
+CREATE TABLE `cse_21`.`main_city`
+(
   `city_id` INT NOT NULL AUTO_INCREMENT,
   `city_name` VARCHAR
 (200) NULL,
@@ -125,15 +126,9 @@ cse_21`.`main_city
 
 
 DROP TABLE IF EXISTS `productorder`;
-<<<<<<< HEAD
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `productorder`
 (
-=======
-
-CREATE TABLE `productorder` (
->>>>>>> f5665380f08e07c23c7fdfc6250577b4d9a7f023
   `order_id` int NOT NULL AUTO_INCREMENT,
   `order_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `customer_id` int DEFAULT NULL,
@@ -167,8 +162,6 @@ CREATE TABLE `productorder` (
 
 
 LOCK TABLES `productorder` WRITE;
-<<<<<<< HEAD
-/*!40000 ALTER TABLE `productorder` DISABLE KEYS */;
 INSERT INTO `
 productorder`
 VALUES
@@ -185,9 +178,5 @@ VALUES
   (11, '2021-10-07 13:18:46', 6, 'Registered', 'VISA', NULL, NULL, NULL, NULL, NULL),
   (12, '2021-11-07 13:18:46', 5, 'Registered', 'VISA', NULL, NULL, NULL, NULL, NULL),
   (13, '2021-12-07 13:18:46', 6, 'Registered', 'VISA', NULL, NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `productorder` ENABLE KEYS */;
-=======
-INSERT INTO `productorder` VALUES (1,'2021-02-27 13:18:46',1,'Guest','VISA',300000.00,'delivered','Postal','2021-03-11',NULL),(2,'2021-02-27 13:18:46',1,'Registered','VISA',400000.00,'delivered','Postal','2021-03-11',''),(3,'2021-02-27 13:18:46',2,'Registered','VISA',200000.00,'delivered','Postal','2021-03-11',NULL),(4,'2021-02-07 13:18:46',3,'Registered','PayPal',100000.00,'delivered','Courier','2021-03-11',NULL),(5,'2021-04-07 13:18:46',3,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(6,'2021-05-07 13:18:46',5,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(7,'2021-06-07 13:18:46',6,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(8,'2021-07-07 13:18:46',7,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(9,'2021-08-07 13:18:46',8,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(10,'2021-09-07 13:18:46',4,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(11,'2021-10-07 13:18:46',6,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(12,'2021-11-07 13:18:46',5,'Registered','VISA',NULL,NULL,NULL,NULL,NULL),(13,'2021-12-07 13:18:46',6,'Registered','VISA',NULL,NULL,NULL,NULL,NULL);
 
->>>>>>> f5665380f08e07c23c7fdfc6250577b4d9a7f023
 UNLOCK TABLES;
