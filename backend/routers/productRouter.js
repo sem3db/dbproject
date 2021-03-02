@@ -76,12 +76,9 @@ productRouter.put(
       req.body.weight,
       req.body.dimension,
       req.body.brand,
-      req.params.category_id,
-      req.params.subcat_id,
-      req.params.supplier_id,
-      req.params.category_name,
-      req.params.subcat_name,
-      req.params.supplier_name
+      req.body.category_name,
+      req.body.subcat_name,
+      req.body.supplier_name
     );
 
     res.send(isEdited);
