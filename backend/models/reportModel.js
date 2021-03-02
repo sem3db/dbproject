@@ -132,7 +132,29 @@ async function timePeriodWithMostIneterest(product_id) {
 //report 5
 async function customerOrderReport() {
   try {
-    
+    const orderData = await adminExecuteSQL(
+      "select customer_id,customer_type, order_id,order_date, total_payment, payment_method from productorder order by customer_id;"
+    );
+    //console.log(orderData);
+
+    for (let index = 0; index < orderData.length; index++) {
+      const order = orderData[index];
+      var name;
+      if (order.customer_type == "Registered") {
+        name = await adminExecuteSQL(
+          "SELECT first_name, last_name FROM registered_customer WHERE reg_customer_id=?",
+          [order.customer_id]
+        );
+      } else {
+        name = await adminExecuteSQL(
+          "SELECT first_name, last_name FROM guest_customer WHERE guest_id=?",
+          [order.customer_id]
+        );
+      }
+      order.customer_name = name[0].first_name + " " + name[0].last_name;
+      //console.log(order);
+    }
+    return orderData;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -141,4 +163,5 @@ module.exports = {
   quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
+  customerOrderReport,
 };
