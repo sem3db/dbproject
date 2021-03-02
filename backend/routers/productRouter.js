@@ -131,7 +131,6 @@ productRouter.post(
 productRouter.put(
   "/productlist/:id/variants/editvariant/:vid",
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body);
     const isEdited = await updateVariant(
       req.params.id,
       req.params.vid,

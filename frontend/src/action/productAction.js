@@ -99,28 +99,41 @@ export const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
-export const detailsProductVariant = (productId, variants) => async (
-  dispatch
-  ) => {
-  dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
-  try {
-    console.log(variants)
-    dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
-    const { data } = await axios.post(`/api/products/v`, variants);
-    // const data = productdata[productId-1];
-    const h = { ...data, vary: variants };
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: PRODUCT_DETAILS_FAIL1,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+
+export const detailsProductVariant = (productId, variants) => async (dispatch) => {
+  try{
+    const { data } = await axios.get(`/api/products/${productId}/${variants.color}/${variants.size}`);
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: data });
+    console.log('lllllllllll')
   }
-};
+  catch(error){
+    dispatch({
+            type: PRODUCT_DETAILS_FAIL1,
+            payload:variants
+          });
+  }
+}
+
+
+// export const detailsProductVariant = (productId, variants) => async (dispatch) => {
+
+//   dispatch({ type: PRODUCT_DETAILS_REQUEST1, payload: productId });
+//   try {
+//     console.log(variants)
+//     dispatch({ type: PRODUCT_DETAILS_REQUEST1 });
+//     const { data } = await axios.get(`/api/products/${productId}/${variants.color}/${variants.size}`);
+//     const h = { ...data, vary: variants };
+//     dispatch({ type: PRODUCT_DETAILS_SUCCESS1, payload: h });
+//   } catch (error) {
+//     console.log(error);
+//     dispatch({
+//       type: PRODUCT_DETAILS_FAIL1,
+//       payload:error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };
 
 
 
