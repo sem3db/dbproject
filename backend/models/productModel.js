@@ -86,9 +86,19 @@ async function findVariantByIds(product_id, variant_id) {
         "SELECT * FROM variant WHERE product_id =? AND variant_id=?",
         [parseInt(product_id), parseInt(variant_id)]
       )
+  
     )[0];
 
-    return variant;
+    const Variant = {
+      variantId: variant.variant_id,
+      color: variant.color,
+      size: variant.size,
+      noStock: variant.no_stock,
+      imageUrl: variant.image_url,
+      price: variant.price,
+    };
+
+    return Variant;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
