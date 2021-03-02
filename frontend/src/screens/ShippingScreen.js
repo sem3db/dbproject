@@ -16,11 +16,16 @@ import FormContainer from "../components/FormContainer";
   const ShippingScreen = ({history}) => {
     const cart = useSelector(state=>state.cart)
     const {shippingAddress} =cart
+    console.log('ttttttttt')
+    console.log(shippingAddress)
+    console.log('ttttttttt')
     const [addressLine1, setAddressLine1] =useState(shippingAddress.addressLine1)
     const [addressLine2, setAddressLine2] =useState(shippingAddress.addressLine2)
     const [postalCode, setPostalCode] =useState(shippingAddress.postalCode)
-    const [city, setCity] = useState(shippingAddress.city?shippingAddress.city:[]);
-    const [province, setProvince] = useState(shippingAddress.province?shippingAddress.province:[]);
+    let [city, setCity] = useState(shippingAddress.city?[shippingAddress.city]:[]);
+    let [province, setProvince] = useState(shippingAddress.province?[shippingAddress.province]:[]);
+    console.log(shippingAddress.province)
+    console.log(province)
     const [phone, setPhone] =useState(shippingAddress.phone)
 
     const dispatch =useDispatch()
@@ -41,21 +46,36 @@ import FormContainer from "../components/FormContainer";
                 dispatch(getUserAddress('profile'))
             }
             else{
-                setAddressLine1(address.addressLine1!=""?address.addressLine1:addressLine1)
-                setAddressLine2(address.addressLine2!=address.addressLine2?address.addressLine2:addressLine2)
-                setPostalCode(address.zip!=""?address.zip:postalCode)
-                setCity(address.city!=""?address.city:city)
-                setProvince(address.province!=""?address.province:province)
-                setPhone(address.phone!=""?address.phone:phone)
+                setAddressLine1(address.addressLine1!==""?address.addressLine1:addressLine1)
+                setAddressLine2(address.addressLine2!==""?address.addressLine2:addressLine2)
+                setPostalCode(address.zip!==""?address.zip:postalCode)
+                setCity(address.city!==""?[address.city]:city)
+                setProvince(address.province!==""?[address.province]:province)
+                setPhone(address.phone!==""?address.phone:phone)
             }
         }
     },[dispatch, history, userInfo, address])
 
     const submitHandler=(e)=>{
         e.preventDefault()
-        console.log(city)
-        dispatch(saveShippingAddress({addressLine1,addressLine2,city,postalCode,province}))
+        city=city[0]
+        province=province[0]
+        dispatch(saveShippingAddress({addressLine1,addressLine2,city,postalCode,province,phone}))
         history.push('/payment')
+    }
+    const sub=(a)=>{
+        console.log(a[0])
+        setProvince(a)
+    }
+    const subCity=(a)=>{
+        if(typeof a[0] ==='object'){
+            console.log(a[0].label)
+            setCity([a[0].label])
+        }
+        else{
+            console.log(a[0])
+            setCity(a)
+        }
     }
 
     const cities=['Negombo', 'Colombo','Gampaha']
@@ -81,7 +101,8 @@ import FormContainer from "../components/FormContainer";
               <Form.Group controlId='city'>
                   <Form.Label>City</Form.Label>
                   {/* <Form.Control type='text' required placeholder='Enter City' value={city} onChange={(e)=>setCity(e.target.value)}></Form.Control> */}
-                  <Typeahead onChange={setCity} options={cities} placeholder="Choose a City..." selected={city}/>
+                  {/* <Typeahead onChange={setCity} options={cities} placeholder="Choose a City..." selected={city}/> */}
+                  <Typeahead allowNew onChange={(selected)=>subCity(selected)} options={cities} selected={city} placeholder="Choose a City..."/>
               </Form.Group>
               <Form.Group controlId='postalCode'>
                   <Form.Label>Postal Code</Form.Label>
@@ -90,9 +111,10 @@ import FormContainer from "../components/FormContainer";
               <Form.Group controlId='province'>
                   <Form.Label>Province</Form.Label>
                   {/* <Form.Control type='text' required placeholder='Enter Country' value={country} onChange={(e)=>setCountry(e.target.value)}></Form.Control> */}
-                  <Typeahead onChange={setProvince} options={provinces} placeholder="Choose a province..." selected={province}/>
+                  <Typeahead onChange={(selected)=>sub(selected)} options={provinces} selected={province} placeholder="Choose a province..."/>
               </Form.Group>
               {/* <Typeahead onChange={setSelected} options={['yu']} placeholder="Choose a state..." selected={selected}/> */}
+              
               <Button type='submit' variant='primary'>Continue</Button>
           </Form>
       </FormContainer>

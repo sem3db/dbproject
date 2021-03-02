@@ -22,6 +22,7 @@ const CartScreen = ({match,location,history})=>{
     const dispatch = useDispatch()
     const cart = useSelector(state=>state.cart)
     const {cartItems} = cart
+    console.log(cartItems)
     useEffect(()=>{
         if(productId){
             dispatch(addToCart(productId,variantId,qty))
@@ -30,8 +31,8 @@ const CartScreen = ({match,location,history})=>{
 
     console.log(cart)
 
-    const removeFromCartHandler=(id)=>{
-        dispatch(removeFromCart(id))
+    const removeFromCartHandler=(product_id,variant_id)=>{
+        dispatch(removeFromCart(product_id,variant_id))
     }
     const checkoutHandler =()=>{
         history.push('/login?redirect=shipping')
@@ -55,14 +56,14 @@ const CartScreen = ({match,location,history})=>{
                                 ${item.price}
                             </Col>
                             <Col md={2}>
-                                <Form.Control as='select' value={item.qty} onChange={(e)=>dispatch(addToCart(item.product,Number(e.target.value)))}>
+                                <Form.Control as='select' value={item.qty} onChange={(e)=>dispatch(addToCart(item.product_id,item.variant_id,Number(e.target.value)))}>
                                     {[...Array(item.noStock).keys()].map((x)=>(
                                         <option key={x+1} value={x+1}>{x+1}</option>
                                     ))}
                                 </Form.Control>
                             </Col>
                             <Col md={2}>
-                                <Button type='button' variant='light' onClick={()=>removeFromCartHandler(item.product)}>
+                                <Button type='button' variant='light' onClick={()=>removeFromCartHandler(item.product_id,item.variant_id)}>
                                     <i className='fas fa-trash'></i>
                                 </Button>
                             </Col>
