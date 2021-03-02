@@ -95,7 +95,7 @@ export const productDetailsReducer =(state={product:{}, variant:{}, variants:{},
 
 
 
-export const productListReducerAdmin = (state = { loading: true, products: [] },action) => {
+export const productListReducerAdmin = (state = { products: [] },action) => {
     switch (action.type) {
       case PRODUCT_LIST_REQUEST:
         return { loading: true };
@@ -166,7 +166,7 @@ export const productDeleteReducer = (state = {}, action) => {
     }
 };
   
-export const variantListReducer =(state={ loading: true, variants: [] },action)=>{
+export const variantListReducer =(state={ variants: [] },action)=>{
     switch(action.type){
        case VARIANT_LIST_REQUEST:
             return {loading:true };

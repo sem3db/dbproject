@@ -333,7 +333,7 @@ async function getProductsForAdmin() {
         "call getProductForAdmin(?,?,?)",
         [product.category_id, product.subcat_id, product.supplier_id]
       );
-      product.category = dataFetched[0][0].category_name;
+      product.category_name = dataFetched[0][0].category_name;
       product.subcat_name = dataFetched[1][0].subcat_name;
       product.supplier_name = dataFetched[2][0].supplier_name;
     }

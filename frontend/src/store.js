@@ -58,7 +58,7 @@ import {
   supplierDeleteReducer,
   supplierDetailsReducer,
   supplierListReducer,
-  supplierUpdateReducer,
+  supplierUpdateReducer
 } from "./reducers/supplierReducers";
 
 const reducer = combineReducers({
@@ -89,15 +89,12 @@ const reducer = combineReducers({
   supplierCreate: supplierCreateReducer,
   supplierUpdate: supplierUpdateReducer,
   supplierDelete: supplierDeleteReducer,
-  cart: cartReducer,
-  userLogin: userLoginReducer,
-  userRegister: userRegisterReducer,
-  userDetails: userDetailsReducer,
-  userUpdateProfile: userUpdateProfileReducer,
-  userAddress: userAddressReducer,
-  cart: cartReducer,
-  userLogin: userLoginReducer,
-  cart: cartReducer,
+  cart:cartReducer,
+  userLogin:userLoginReducer,
+  userRegister:userRegisterReducer,
+  userDetails:userDetailsReducer,
+  userUpdateProfile:userUpdateProfileReducer,
+  userAddress:userAddressReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,

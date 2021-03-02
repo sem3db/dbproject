@@ -17,11 +17,6 @@ import {
   CATEGORY_DELETE_SUCCESS,
 } from '../constants/categoryConstants';
 
-import {
-  SUBCATEGORY_LIST_FAIL,
-  SUBCATEGORY_LIST_REQUEST,
-  SUBCATEGORY_LIST_SUCCESS,
-} from '../constants/subcategoryConstants';
 
 export const listCategories = () => async (dispatch) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
@@ -126,26 +121,3 @@ export const deleteCategory = (categoryId) => async (dispatch, getState) => {
     dispatch({ type: CATEGORY_DELETE_FAIL, payload: message });
   }
 };
-
-export const listSubcategories = (categoryId) => async (dispatch) =>{
-  dispatch({ type: SUBCATEGORY_LIST_REQUEST });
-  try {
-
-      // const { data } = await axios.get("/api/categories/${categoryId}/subcategorylist");
-      const { data } = await axios.get(`/api/categories/subcategories/:id`);
-
-      dispatch({
-      type: SUBCATEGORY_LIST_SUCCESS,
-      payload: data,
-      });
-  } catch (error) {
-      console.log(error);
-      dispatch({
-      type: SUBCATEGORY_LIST_FAIL,
-      payload:
-          error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-      });
-  }
-}
