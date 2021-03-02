@@ -75,7 +75,13 @@ productRouter.put(
       req.body.description,
       req.body.weight,
       req.body.dimension,
-      req.body.brand
+      req.body.brand,
+      req.params.category_id,
+      req.params.subcat_id,
+      req.params.supplier_id,
+      req.params.category_name,
+      req.params.subcat_name,
+      req.params.supplier_name
     );
 
     res.send(isEdited);
@@ -89,8 +95,6 @@ productRouter.delete(
     res.send(isdeleted);
   })
 );
-
-
 
 productRouter.get(
   "/productlist/:id/variants",
@@ -153,7 +157,6 @@ productRouter.delete(
     res.send(isdeleted);
   })
 );
-
 
 productRouter.get(
   "/category/:category",

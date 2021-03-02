@@ -314,9 +314,26 @@ async function deleteVariant(product_id, variant_id) {
 async function getProductForUpdate(product_id) {
   try {
     const product = await adminExecuteSQL(
-      "SELECT description, weight, dimension, brand FROM product WHERE product_id=?",
+      "SELECT product_id, description, weight, dimension, brand, category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
       [product_id]
     );
+    const category_name = await adminExecuteSQL(
+      "SELECT category_name FROM category where category_id=?",
+      [product[0].category_id]
+    );
+
+    const subcategory_name = await adminExecuteSQL(
+      "SELECT subcat_name FROM subcategory where subcat_id=?",
+      [product[0].subcat_id]
+    );
+
+    const supplier_name = await adminExecuteSQL(
+      "SELECT supplier_name FROM supplier where supplier_id=?",
+      [product[0].supplier_id]
+    );
+    product[0].category_name = category_name[0].category_name;
+    product[0].subcat_name = subcategory_name[0].subcat_name;
+    product[0].supplier_name = supplier_name[0].supplier_name;
     return product;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
@@ -408,12 +425,30 @@ async function updateProduct(
   description,
   weight,
   dimension,
-  brand
+  brand,
+  category_id,
+  subcat_id,
+  supplier_id,
+  category_name,
+  subcat_name,
+  supplier_name
 ) {
   try {
     await adminExecuteSQL(
       "UPDATE product set description=?, weight=?, dimension=?, brand=? WHERE product_id=?",
       [description, weight, dimension, brand, product_id]
+    );
+    await adminExecuteSQL(
+      "UPDATE category SET category_name=? WHERE category_id=?",
+      [category_name, category_id]
+    );
+    await adminExecuteSQL(
+      "UPDATE subcategory SET subcat_name=? WHERE subcat_id=?",
+      [subcat_name, subcat_id]
+    );
+    await adminExecuteSQL(
+      "UPDATE supplier SET supplier_name=? WHERE supplier_id=?",
+      [supplier_name, supplier_id]
     );
     return "success";
   } catch (e) {
