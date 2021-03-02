@@ -8,6 +8,7 @@ const {
   findProductsBySubCategory,
   findVariantByParams,
   findVariantByIds,
+  getProductForUpdate,
   getProductsForAdmin,
   createProduct,
   updateProduct,
@@ -103,7 +104,8 @@ productRouter.get(
 productRouter.post(
   "/addProduct",
   expressAsyncHandler(async (req, res) => {
-    const isAdded = await createProduct(
+    console.log("fdf");
+    const product = await createProduct(
       req.body.product_name,
       req.body.description,
       req.body.weight,
@@ -114,7 +116,16 @@ productRouter.post(
       req.body.supplier_name
     );
 
-    res.send(isAdded);
+    res.send(product);
+  })
+);
+
+// product update form ---------------------------------
+productRouter.get(
+  "/productlist/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await getProductForUpdate(req.params.id);
+    res.send(product);
   })
 );
 

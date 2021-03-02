@@ -79,7 +79,6 @@ async function findVariantByParams(product_id, color, size) {
   }
 }
 
-
 async function findVariantByIds(product_id, variant_id) {
   try {
     const variant = (
@@ -312,6 +311,18 @@ async function deleteVariant(product_id, variant_id) {
 
 //--------------------admin - products -----------------------------------------------------------------------
 
+async function getProductForUpdate(product_id) {
+  try {
+    const product = await adminExecuteSQL(
+      "SELECT description, weight, dimension, brand FROM product WHERE product_id=?",
+      [product_id]
+    );
+    return product;
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
 async function getProductsForAdmin() {
   try {
     const productData = await adminExecuteSQL("SELECT * FROM product");
@@ -358,7 +369,7 @@ async function createProduct(
       "SELECT supplier_id FROM supplier where supplier_name=?",
       [supplier_name]
     );
-    await adminExecuteSQL(
+    const lastInsertProductId = await adminExecuteSQL(
       "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
       [
         product_name,
@@ -369,13 +380,26 @@ async function createProduct(
         dimension,
         brand,
         supplier_id[0].supplier_id,
-      ]
+      ],
+      "LAST_INSERT_ID()"
     );
 
-    return "new product is added";
+    InsertProduct = {
+      product_id: lastInsertProductId.insertId,
+      product_name: product_name,
+      category_id: category_id[0].category_id,
+      subcat_id: subcategory_id[0].subcat_id,
+      description: description,
+      weight: weight,
+      dimension: dimension,
+      brand: brand,
+      supplier_id: supplier_id[0].supplier_id,
+    };
+
+    return InsertProduct;
   } catch (e) {
     console.log(e);
-    return "Error";
+    return e;
   }
 }
 
@@ -413,6 +437,7 @@ module.exports = {
   findProductsBySubCategory,
   findVariantByParams,
   findVariantByIds,
+  getProductForUpdate,
   getProductsForAdmin,
   createProduct,
   updateProduct,
