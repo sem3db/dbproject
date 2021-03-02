@@ -132,19 +132,6 @@ export const listProductsAdmin = () => async (dispatch) => {
   try {
 
     const { data } = await axios.get(`/api/products/productlist`);
-    // const data = [
-    //   {
-    //     product_id: 1,
-    //     product_name: "ssdsd",
-    //     category_name: "dvsvs",
-    //     subcat_name: "sdvsv",
-    //     brand: "svsv",
-    //     supplier_name: "sdvsvs",
-    //     weight: "sdvsdvs",
-    //     dimension: "vsdvdsv",
-    //     description: "svsdvsd",
-    //   }
-    // ]
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -166,20 +153,7 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
   try {
     
     const {data} = await axios.get(`/api/products/productlist/${productId}`)
-    // const data = [
-    //   {
-    //     product_id: 1,
-    //     product_name: "ssdsd",
-    //     category_name: "consumer_electronics",
-    //     subcat_name: "dondal",
-    //     brand: "svsv",
-    //     supplier_name: "hp",
-    //     weight: "sdvsdvs",
-    //     dimension: "vsdvdsv",
-    //     description: "svsdvsd",
-    //   }
-    // ][0]
-    
+
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data[0] });
   } catch (error) {
     dispatch({
