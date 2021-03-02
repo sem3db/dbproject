@@ -51,7 +51,6 @@ productRouter.get(
 productRouter.post(
   "/addProduct",
   expressAsyncHandler(async (req, res) => {
-    console.log("fdf");
     const product = await createProduct(
       req.body.product_name,
       req.body.description,
@@ -59,7 +58,7 @@ productRouter.post(
       req.body.dimension,
       req.body.brand,
       req.body.category_name,
-      req.body.subcategory_name,
+      req.body.subcat_name,
       req.body.supplier_name
     );
 
@@ -70,6 +69,7 @@ productRouter.post(
 productRouter.put(
   "/productlist/edit/:id",
   expressAsyncHandler(async (req, res) => {
+    const a = req.product;
     const isEdited = await updateProduct(
       req.params.id,
       req.body.description,
