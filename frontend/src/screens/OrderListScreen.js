@@ -108,7 +108,7 @@ export default function OrderListScreen(props) {
                       className="small"
                       onClick={() => deliverHandler(order)}
                     >
-                      Deliver
+                      Mark As Delivered
                     </button>
                     }
                   </td>

@@ -21,6 +21,11 @@ import DashBoardScreen from './screens/DashBoardScreen';
 import VariantListScreen from './screens/VariantListScreen';
 import VariantEditScreen from './screens/VariantEditScreen';
 import ProductCreateScreen from './screens/ProductCreateScreen';
+import Report1Screen from "./screens/Report1Screen";
+import Report2Screen from "./screens/Report2Screen";
+import Report3Screen from "./screens/Report3Screen";
+import Report4Screen from "./screens/Report4Screen";
+import Report5Screen from "./screens/Report5Screen";
 
 const App = () => {
   return (
@@ -49,8 +54,14 @@ const App = () => {
         <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
         <Route path='/product/:id/variantlist' component={VariantListScreen} exact></Route>
         {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
+        {/* <Route path='/product/:id/newvariant/create' component={VariantCreateScreen} exact ></Route> */}
         <Route path='/product/:id/variant/:vid/edit' component={VariantEditScreen} exact ></Route>
         <Route path='/orderlist' component={OrderListScreen} exact ></Route>
+        <Route path='/report1' component={Report1Screen} exact></Route>
+        <Route path='/report2' component={Report2Screen} exact></Route>
+        <Route path='/report3' component={Report3Screen} exact></Route>
+        <Route path='/report4' component={Report4Screen} exact></Route>
+        <Route path='/report5' component={Report5Screen} exact></Route>
         {/* AdminRoute */}
         </Container>
       </main>
