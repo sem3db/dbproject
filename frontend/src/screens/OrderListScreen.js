@@ -102,6 +102,7 @@ export default function OrderListScreen(props) {
                     >
                       Delete
                     </button> */}
+                    {order.delivery_status !== "delivered" && 
                     <button
                       type="button"
                       className="small"
@@ -109,6 +110,7 @@ export default function OrderListScreen(props) {
                     >
                       Deliver
                     </button>
+                    }
                   </td>
                 </tr>
               ))}
