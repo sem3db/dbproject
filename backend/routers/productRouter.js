@@ -59,7 +59,7 @@ productRouter.post(
       req.body.dimension,
       req.body.brand,
       req.body.category_name,
-      req.body.subcategory_name,
+      req.body.subcat_name,
       req.body.supplier_name
     );
 

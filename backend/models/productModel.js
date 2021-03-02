@@ -457,22 +457,6 @@ async function updateProduct(
         product_id,
       ]
     );
-    // const data = await adminExecuteSQL(
-    //   "SELECT category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
-    //   [product_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE category SET category_name=? WHERE category_id=?",
-    //   [category_name, data[0].category_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE subcategory SET subcat_name=? WHERE subcat_id=?",
-    //   [subcat_name, data[0].subcat_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE supplier SET supplier_name=? WHERE supplier_id=?",
-    //   [supplier_name, data[0].supplier_id]
-    // );
     return "success";
   } catch (e) {
     console.log(e);
