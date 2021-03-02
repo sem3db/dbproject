@@ -95,7 +95,6 @@ async function findVariantByIds(product_id, variant_id) {
         "SELECT * FROM variant WHERE product_id =? AND variant_id=?",
         [parseInt(product_id), parseInt(variant_id)]
       )
-  
     )[0];
 
     const Variant = {
@@ -300,7 +299,7 @@ async function updateVariant(
 ) {
   try {
     await adminExecuteSQL(
-      "UPDATE variant set SKU=?, image_url=?, price=?, offer=? color=?, size=?, no_stock=? WHERE product_id=? AND variant_id=?",
+      "UPDATE variant set SKU=?, image_url=?, price=?, offer=?, color=?, size=?, no_stock=? WHERE product_id=? AND variant_id=?",
       [
         SKU,
         image_url,
@@ -315,7 +314,7 @@ async function updateVariant(
     );
     return "success";
   } catch (e) {
-    return e;
+    console.log(e);
   }
 }
 
