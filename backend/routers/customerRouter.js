@@ -129,7 +129,6 @@ userRouter.get(
 userRouter.post(
   "/:custometId/shipment",
   expressAsyncHandler(async (req, res) => {
-    console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkk')
     const newaddress = await updateShippingAddress(
       req.params.custometId,
       req.body.postalCode,
@@ -139,7 +138,7 @@ userRouter.post(
       req.body.province,
       req.body.phone
     );
-    console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
+    
     res.send(newaddress);
   })
 );
