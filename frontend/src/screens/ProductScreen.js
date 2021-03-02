@@ -22,6 +22,7 @@ import {
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
     const {loading, error, product, variant, variants, error1} =productDetails
+    console.log('lklklklklkjh')
     console.log(variant)
     console.log(productDetails)
     if(error1){
