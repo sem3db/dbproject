@@ -146,7 +146,7 @@ export const listOrderMine = () => async (dispatch, getState) => {
   }
 };
 
-// frontend testing without backend
+// sample
 // const orderdata = [
 //   { order_id: 1,
 //     user: 'Danuka',
@@ -165,7 +165,6 @@ export const listOrderMine = () => async (dispatch, getState) => {
 //     deliveredAt: '',
 //   },
 // ];
-// frontend testing without backend
 
 export const listOrders = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_LIST_REQUEST });
@@ -174,13 +173,7 @@ export const listOrders = () => async (dispatch, getState) => {
   // } = getState();
   try {
 
-    // backend
-    const { data } = await Axios.get('/api/orders');
-    // backend
-
-    // frontend testing without backend
-    // const data = orderdata;
-    // frontend testing without backend
+    const { data } = await Axios.get('/api/orders/');
 
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -216,20 +209,10 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
   // } = getState();
   try {
 
-    // backend
     const { data } = Axios.put(
-      `/api/orders/${orderId}/deliver`,
+      `/api/orders/deliver/${orderId}`,
       {}
     );
-    // backend
-
-    // frontend testing without backend
-    // const order = orderdata[orderId-1];
-    // order.delivery_status = true;
-    // order.deliveredAt = '2020/02/22 asd';
-    // const data = order; 
-    // console.log(data);
-    // frontend testing without backend
 
     dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
   } catch (error) {

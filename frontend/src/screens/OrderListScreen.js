@@ -8,23 +8,13 @@ import { ORDER_DELETE_RESET, ORDER_DELIVER_RESET } from '../constants/orderConst
 export default function OrderListScreen(props) {
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
+
   const orderDelete = useSelector((state) => state.orderDelete);
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
   } = orderDelete;
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch({ type: ORDER_DELETE_RESET });
-    dispatch(listOrders());
-  }, [dispatch, successDelete]);
-  const deleteHandler = (order) => {
-    if (window.confirm('Are you sure to delete?')) {
-      dispatch(deleteOrder(order._id));
-    }
-  };
-
 
   const orderDeliver = useSelector((state) => state.orderDeliver);
   const {
@@ -32,10 +22,29 @@ export default function OrderListScreen(props) {
     error: errorDeliver,
     success: successDeliver,
   } = orderDeliver;
+
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: ORDER_DELIVER_RESET });
+    if (successDelete) {
+      dispatch({ type: ORDER_DELETE_RESET });
+    }
+    if (successDeliver) {
+      dispatch({ type: ORDER_DELIVER_RESET });
+      // props.history.push(`/product/${createdProduct.product_id}/edit`);
+    }
     dispatch(listOrders());
-  }, [dispatch, successDeliver]);
+  }, [dispatch, successDelete, successDeliver, props.history]);
+  // useEffect(() => {
+  //   dispatch({ type: ORDER_DELIVER_RESET });
+  //   dispatch(listOrders());
+  // }, [dispatch, successDeliver]);
+
+  
+  const deleteHandler = (order) => {
+    if (window.confirm('Are you sure to delete?')) {
+      dispatch(deleteOrder(order._id));
+    }
+  };
   const deliverHandler = (order) => {
     if (window.confirm('Are you sure to deliver?')) {
       dispatch(deliverOrder(order._id));
@@ -48,6 +57,8 @@ export default function OrderListScreen(props) {
       <h1>Orders</h1>
       {loadingDelete && <Loader></Loader>}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loadingDeliver && <Loader></Loader>}
+      {errorDeliver && <Message variant="danger">{errorDeliver}</Message>}
       {loading ? (
         <Loader></Loader>
       ) : error ? (
@@ -58,9 +69,9 @@ export default function OrderListScreen(props) {
             <tr>
               <th>ID</th>
               <th>USER</th>
+              <th>USER TYPE</th>
               <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
+              <th>TOTAL PAID</th>
               <th>DELIVERY STATUS</th>
               <th>ACTIONS</th>
             </tr>
@@ -70,9 +81,9 @@ export default function OrderListScreen(props) {
               <tr key={order.order_id}>
                 <td>{order.order_id}</td>
                 <td>{order.user}</td>
-                <td>{}</td>
+                <td>{order.customer_type}</td>
+                <td>{order.order_date ? order.order_date.substring(0, 10) : 'No'}</td>
                 <td>{order.total_payment}</td>
-                <td>{}</td>
                 <td>{order.delivery_status}</td>
                 <td>
                   <button
