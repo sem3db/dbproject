@@ -35,21 +35,22 @@ export default function ProductListScreen(props) {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`/product/${createdProduct.product_id}/edit`);
+      // props.history.push(`/product/${createdProduct.product_id}/edit`);
     }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
     dispatch(listProductsAdmin());
-  }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
-
+  }, [ dispatch, props.history, successCreate, successDelete]);
+  // createdProduct,
   const deleteHandler = (product) => {
     if (window.confirm("Are you sure to delete?")) {
       dispatch(deleteProduct(product.product_id));
     }
   };
   const createHandler = () => {
-    dispatch(createProduct());
+    props.history.push(`/newproduct/create`)
+    // dispatch(createProduct());
   };
   return (
     <div className="admin">

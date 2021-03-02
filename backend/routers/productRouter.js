@@ -8,6 +8,7 @@ const {
   findProductsBySubCategory,
   findVariantByParams,
   findVariantByIds,
+  getProductForUpdate,
   getProductsForAdmin,
   createProduct,
   updateProduct,
@@ -24,7 +25,6 @@ const productRouter = express.Router();
 
 productRouter.get(
   "/",
-  // isAuth,
   expressAsyncHandler(async (req, res) => {
     const products = await getProducts();
     res.send(products);
@@ -39,8 +39,62 @@ productRouter.get(
   })
 );
 
+// product update form ---------------------------------
 productRouter.get(
-  "/productlist/variants/:id",
+  "/productlist/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await getProductForUpdate(req.params.id);
+    res.send(product);
+  })
+);
+
+productRouter.post(
+  "/addProduct",
+  expressAsyncHandler(async (req, res) => {
+    const product = await createProduct(
+      req.body.product_name,
+      req.body.description,
+      req.body.weight,
+      req.body.dimension,
+      req.body.brand,
+      req.body.category_name,
+      req.body.subcat_name,
+      req.body.supplier_name
+    );
+
+    res.send(product);
+  })
+);
+
+productRouter.put(
+  "/productlist/edit/:id",
+  expressAsyncHandler(async (req, res) => {
+    const a = req.product;
+    const isEdited = await updateProduct(
+      req.params.id,
+      req.body.description,
+      req.body.weight,
+      req.body.dimension,
+      req.body.brand,
+      req.body.category_name,
+      req.body.subcat_name,
+      req.body.supplier_name
+    );
+
+    res.send(isEdited);
+  })
+);
+
+productRouter.delete(
+  "/productlist/delete/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isdeleted = await deleteProduct(req.params.id);
+    res.send(isdeleted);
+  })
+);
+
+productRouter.get(
+  "/productlist/:id/variants",
   expressAsyncHandler(async (req, res) => {
     const variants = await findVariantsById(req.params.id);
     res.send(variants);
@@ -48,7 +102,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/productlist/variants/:id/:vid",
+  "/productlist/:id/variants/:vid",
   expressAsyncHandler(async (req, res) => {
     const variantDetails = await getVariant(req.params.id, req.params.vid);
     res.send(variantDetails);
@@ -56,7 +110,7 @@ productRouter.get(
 );
 
 productRouter.post(
-  "/productlist/variants/addvariant/:id",
+  "/productlist/:id/variants/addvariant",
   expressAsyncHandler(async (req, res) => {
     const isAdded = await addVariant(
       req.params.id,
@@ -74,8 +128,8 @@ productRouter.post(
   })
 );
 
-productRouter.post(
-  "/productlist/variants/editvariant/:id/:vid",
+productRouter.put(
+  "/productlist/:id/variants/editvariant/:vid",
   expressAsyncHandler(async (req, res) => {
     console.log(req.body);
     const isEdited = await updateVariant(
@@ -93,51 +147,10 @@ productRouter.post(
   })
 );
 
-productRouter.get(
-  "/productlist/variants/delete/:id/:vid",
+productRouter.delete(
+  "/productlist/:id/variants/delete/:vid",
   expressAsyncHandler(async (req, res) => {
     const isdeleted = await deleteVariant(req.params.id, req.params.vid);
-    res.send(isdeleted);
-  })
-);
-
-productRouter.post(
-  "/addProduct",
-  expressAsyncHandler(async (req, res) => {
-    const isAdded = await createProduct(
-      req.body.product_name,
-      req.body.description,
-      req.body.weight,
-      req.body.dimension,
-      req.body.brand,
-      req.body.category_name,
-      req.body.subcategory_name,
-      req.body.supplier_name
-    );
-
-    res.send(isAdded);
-  })
-);
-
-productRouter.post(
-  "/productlist/edit/:id",
-  expressAsyncHandler(async (req, res) => {
-    const isEdited = await updateProduct(
-      req.params.id,
-      req.body.description,
-      req.body.weight,
-      req.body.dimension,
-      req.body.brand
-    );
-
-    res.send(isEdited);
-  })
-);
-
-productRouter.get(
-  "/productlist/delete/:id",
-  expressAsyncHandler(async (req, res) => {
-    const isdeleted = await deleteProduct(req.params.id);
     res.send(isdeleted);
   })
 );

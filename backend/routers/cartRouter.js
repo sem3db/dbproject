@@ -11,6 +11,7 @@ cartRouter.post('/',expressAsyncHandler(async (req, res) => {
 
     const customerID = req.params.customerID;
     
+    
     if (customerID) {
         const cartItems = await getCartItems(customerID).then();
         res.send(cartItems);
@@ -21,12 +22,12 @@ cartRouter.post('/',expressAsyncHandler(async (req, res) => {
   }));
 
 
-cartRouter.post("/addItem",expressAsyncHandler(async (req, res) => {
-    console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
-    const customerID = req.params.customerID;
-    const variant = req.params.variant;
-    const product = req.params.product;
-    const quantity = req.params.quantity;
+cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
+
+    const customerID = req.body.customerID;
+    const variant = req.body.variant;
+    const product = req.body.product;
+    const quantity = req.body.quantity;
 
     if (customerID && variant && product && quantity) {
         const submitState = await addCartItem(customerID,variant,product,quantity).then();
@@ -39,9 +40,9 @@ cartRouter.post("/addItem",expressAsyncHandler(async (req, res) => {
 
   cartRouter.post('/delete',expressAsyncHandler(async (req, res) => {
 
-    const customerID = req.params.customerID;
-    const variant = req.params.variant;
-    const product = req.params.product;
+    const customerID = req.body.customerID;
+    const variant = req.body.variant;
+    const product = req.body.product;
 
     if (customerID && variant && product) {
         const deleteState = await removeCartItem(customerID,variant,product).then();
@@ -54,10 +55,10 @@ cartRouter.post("/addItem",expressAsyncHandler(async (req, res) => {
 
   cartRouter.post('/changeQuantity',expressAsyncHandler(async (req, res) => {
 
-    const customerID = req.params.customerID;
-    const variant = req.params.variant;
-    const product = req.params.product;
-    const newQuantity = req.params.newQuantity;
+    const customerID = req.body.customerID;
+    const variant = req.body.variant;
+    const product = req.body.product;
+    const newQuantity = req.body.newQuantity;
     
 
     if (customerID && variant && product && newQuantity) {

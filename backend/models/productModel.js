@@ -79,7 +79,6 @@ async function findVariantByParams(product_id, color, size) {
   }
 }
 
-
 async function findVariantByIds(product_id, variant_id) {
   try {
     const variant = (
@@ -312,6 +311,35 @@ async function deleteVariant(product_id, variant_id) {
 
 //--------------------admin - products -----------------------------------------------------------------------
 
+async function getProductForUpdate(product_id) {
+  try {
+    const product = await adminExecuteSQL(
+      "SELECT product_id, product_name, description, weight, dimension, brand, category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
+      [product_id]
+    );
+    const category_name = await adminExecuteSQL(
+      "SELECT category_name FROM category where category_id=?",
+      [product[0].category_id]
+    );
+
+    const subcategory_name = await adminExecuteSQL(
+      "SELECT subcat_name FROM subcategory where subcat_id=?",
+      [product[0].subcat_id]
+    );
+
+    const supplier_name = await adminExecuteSQL(
+      "SELECT supplier_name FROM supplier where supplier_id=?",
+      [product[0].supplier_id]
+    );
+    product[0].category_name = category_name[0].category_name;
+    product[0].subcat_name = subcategory_name[0].subcat_name;
+    product[0].supplier_name = supplier_name[0].supplier_name;
+    return product;
+  } catch (e) {
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+  }
+}
+
 async function getProductsForAdmin() {
   try {
     const productData = await adminExecuteSQL("SELECT * FROM product");
@@ -322,7 +350,7 @@ async function getProductsForAdmin() {
         "call getProductForAdmin(?,?,?)",
         [product.category_id, product.subcat_id, product.supplier_id]
       );
-      product.category = dataFetched[0][0].category_name;
+      product.category_name = dataFetched[0][0].category_name;
       product.subcat_name = dataFetched[1][0].subcat_name;
       product.supplier_name = dataFetched[2][0].supplier_name;
     }
@@ -358,7 +386,7 @@ async function createProduct(
       "SELECT supplier_id FROM supplier where supplier_name=?",
       [supplier_name]
     );
-    await adminExecuteSQL(
+    const lastInsertProductId = await adminExecuteSQL(
       "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
       [
         product_name,
@@ -369,13 +397,26 @@ async function createProduct(
         dimension,
         brand,
         supplier_id[0].supplier_id,
-      ]
+      ],
+      "LAST_INSERT_ID()"
     );
 
-    return "new product is added";
+    InsertProduct = {
+      product_id: lastInsertProductId.insertId,
+      product_name: product_name,
+      category_id: category_id[0].category_id,
+      subcat_id: subcategory_id[0].subcat_id,
+      description: description,
+      weight: weight,
+      dimension: dimension,
+      brand: brand,
+      supplier_id: supplier_id[0].supplier_id,
+    };
+
+    return InsertProduct;
   } catch (e) {
     console.log(e);
-    return "Error";
+    return e;
   }
 }
 
@@ -384,16 +425,57 @@ async function updateProduct(
   description,
   weight,
   dimension,
-  brand
+  brand,
+  category_name,
+  subcat_name,
+  supplier_name
 ) {
   try {
-    await adminExecuteSQL(
-      "UPDATE product set description=?, weight=?, dimension=?, brand=? WHERE product_id=?",
-      [description, weight, dimension, brand, product_id]
+    const category_id = await adminExecuteSQL(
+      "SELECT category_id FROM category where category_name=?",
+      [category_name]
     );
+    const subcategory_id = await adminExecuteSQL(
+      "SELECT subcat_id FROM subcategory where subcat_name=?",
+      [subcat_name]
+    );
+
+    const supplier_id = await adminExecuteSQL(
+      "SELECT supplier_id FROM supplier where supplier_name=?",
+      [supplier_name]
+    );
+    await adminExecuteSQL(
+      "UPDATE product set category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
+      [
+        category_id[0].category_id,
+        subcategory_id[0].subcat_id,
+        description,
+        weight,
+        dimension,
+        brand,
+        supplier_id[0].supplier_id,
+        product_id,
+      ]
+    );
+    // const data = await adminExecuteSQL(
+    //   "SELECT category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
+    //   [product_id]
+    // );
+    // await adminExecuteSQL(
+    //   "UPDATE category SET category_name=? WHERE category_id=?",
+    //   [category_name, data[0].category_id]
+    // );
+    // await adminExecuteSQL(
+    //   "UPDATE subcategory SET subcat_name=? WHERE subcat_id=?",
+    //   [subcat_name, data[0].subcat_id]
+    // );
+    // await adminExecuteSQL(
+    //   "UPDATE supplier SET supplier_name=? WHERE supplier_id=?",
+    //   [supplier_name, data[0].supplier_id]
+    // );
     return "success";
   } catch (e) {
-    return "Error";
+    console.log(e);
   }
 }
 
@@ -413,6 +495,7 @@ module.exports = {
   findProductsBySubCategory,
   findVariantByParams,
   findVariantByIds,
+  getProductForUpdate,
   getProductsForAdmin,
   createProduct,
   updateProduct,

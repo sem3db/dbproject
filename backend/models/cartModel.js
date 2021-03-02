@@ -40,18 +40,14 @@ async function changeItemQuantity(userid,variant_id,product_id,quantity){
 async function getCartItems(userid){
     try{       
         const fetched = await customerExecuteSQL('call getCartItems(?)',[userid]).then();
-        var string1=JSON.stringify(fetched[0]);
-        var json1 =  JSON.parse(string1);
-        var string2=JSON.stringify(fetched[1]);
-        var json2 =  JSON.parse(string2);
-        var string3=JSON.stringify(fetched[2]);
-        var json3 =  JSON.parse(string3);
+        var json1 =  JSON.parse(JSON.stringify(fetched[0]));
+        var json2 =  JSON.parse(JSON.stringify(fetched[1]));
 
         return new Promise((res,rej)=>{
             var items = [];
             try{
                 for(i=0;i<json1.length;i++){
-                    items.push(Object.assign({},json1[i],json2[i],json3[i]));
+                    items.push(Object.assign({},json1[i],json2[i]));
                 }
                 res(items);
             }catch(e){
@@ -62,7 +58,5 @@ async function getCartItems(userid){
         return("Error");   
     }
 };
-
-
 
 module.exports = {addCartItem,removeCartItem,changeItemQuantity,getCartItems};

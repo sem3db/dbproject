@@ -16,6 +16,17 @@ async function loginIn(email) {
   }
 }
 
+async function updateLastLogin(email) {
+  try {
+    await adminExecuteSQL(
+      "UPDATE admin_login_details SET last_login=NOW() WHERE email_address=?",
+      [email]
+    );
+  } catch (e) {
+    return "last login update fail";
+  }
+}
+
 async function register(email, password, user_name, role, last_login) {
   try {
     const submitState = await adminExecuteSQL(
@@ -33,4 +44,4 @@ async function register(email, password, user_name, role, last_login) {
   }
 }
 
-module.exports = { loginIn, register };
+module.exports = { loginIn, register, updateLastLogin };
