@@ -56,7 +56,7 @@ reportRouter.get(
     if (orderReport) {
       res.send(orderReport);
     } else {
-      res.status(404).send({ message: "Order Not Found" });
+      res.status(404).send({ message: "Orders Not Found" });
     }
   })
 );

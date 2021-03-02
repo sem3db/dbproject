@@ -20,6 +20,33 @@ var customerpool = mysql.createPool({
 
 module.exports = { adminpool, customerpool };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // let adminUser = {
 //     host    : 'localhost',
 //     user    : 'admin',

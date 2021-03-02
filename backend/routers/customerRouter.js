@@ -8,6 +8,7 @@ const {
   updateCustomer,
   getShippingAddress,
   updateShippingAddress,
+  getMainCities  
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -112,18 +113,33 @@ userRouter.get(
   })
 );
 
-userRouter.put(
+userRouter.get(
+  "/shipment/main_cities",
+  expressAsyncHandler(async (req, res) => {
+    const maincitylist = await getMainCities();
+    if (maincitylist) {
+      res.send(maincitylist);
+    } else {     
+      res.status(404).send({ message: "No Main Cities." });      
+    }
+  })
+);
+
+
+userRouter.post(
   "/:custometId/shipment",
   expressAsyncHandler(async (req, res) => {
+    console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkk')
     const newaddress = await updateShippingAddress(
       req.params.custometId,
-      req.body.zipCode,
+      req.body.postalCode,
       req.body.addressLine1,
       req.body.addressLine2,
       req.body.city,
-      req.body.state,
+      req.body.province,
       req.body.phone
     );
+    console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
     res.send(newaddress);
   })
 );
