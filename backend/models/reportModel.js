@@ -135,7 +135,7 @@ async function customerOrderReport() {
     const orderData = await adminExecuteSQL(
       "select customer_id,customer_type, order_id,order_date, total_payment, payment_method from productorder order by customer_id;"
     );
-    //console.log(orderData);
+    console.log(orderData);
 
     for (let index = 0; index < orderData.length; index++) {
       const order = orderData[index];
@@ -156,7 +156,7 @@ async function customerOrderReport() {
     }
     return orderData;
   } catch (e) {
-    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
+    console.log(e);
   }
 }
 module.exports = {
