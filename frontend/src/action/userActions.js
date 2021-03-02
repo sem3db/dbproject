@@ -131,7 +131,7 @@ export const getUserAddress = (id)=>async(dispatch,getState)=>{
             }
         }
         // const {data} =await axios.get(`/api/customer/address/4`,config)
-        const data={addressLine1:'1 line new', addressLine2:'line 2',}
+        const data={addressLine1:'1 line new', addressLine2:'line 2',zip:'',phone:'',city:'Colombo',province:''}
         dispatch({
             type:USER_ADDRESS_SUCCESS,
             payload:data

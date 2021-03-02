@@ -1,20 +1,24 @@
 import axios from 'axios'
 import {CART_ADD_ITEM, CART_REMOVE_ITEM,CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PAYMENT_METHOD} from '../constants/cartConstants'
+
+
 export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=>{
     const {data}=await axios.get(`/api/products/${product_id}`)
     console.log(data)
-    // if(getState().userLogin){
-    //     const {userLogin:{userInfo}}=getState()
-    //     const config={
-    //     headers:{
-    //         'Content-Type':'application/json',
-    //         Authorization:`Bearer ${userInfo.token}`
-    //         }
-    //     }
-    //     const cart={product_id,variant_id,qty}
-    //     console.log(cart)
-    //     const {data1} =await axios.post(`/api/cart/addItem`,{product:product_id, variant:variant_id, quantity:qty, customerID:5},config)
-    // }
+    if(getState().userLogin){
+        
+        const {userLogin:{userInfo}}=getState()
+        const config={
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+        const cart={product:product_id, variant:variant_id, quantity:qty, customerID:5}
+        console.log(cart)
+        const customerID=5
+        const {data1} =await axios.post('/api/cart/addItem',{product_id, variant_id, qty, customerID},config)
+    }
 
 
     dispatch({
@@ -61,10 +65,10 @@ export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=
 //     }
 // }
 
-export const removeFromCart= (data)=>(dispatch,getState)=>{
+export const removeFromCart= (product_id,variant_id)=>(dispatch,getState)=>{
     dispatch({
         type:CART_REMOVE_ITEM,
-        payload:data,
+        payload:{product_id,variant_id},
     })
     if(getState().userLogin){
         console.log('dfdfdf')
@@ -74,6 +78,7 @@ export const removeFromCart= (data)=>(dispatch,getState)=>{
 
 export const saveShippingAddress= (data)=>(dispatch)=>{
     console.log(data)
+    
     dispatch({
         type:CART_SAVE_SHIPPING_ADDRESS,
         payload:data,

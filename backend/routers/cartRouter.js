@@ -21,8 +21,8 @@ cartRouter.post('/',expressAsyncHandler(async (req, res) => {
   }));
 
 
-cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
-
+cartRouter.post("/addItem",expressAsyncHandler(async (req, res) => {
+    console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
     const customerID = req.params.customerID;
     const variant = req.params.variant;
     const product = req.params.product;

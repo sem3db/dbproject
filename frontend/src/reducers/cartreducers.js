@@ -9,7 +9,7 @@ export const cartReducer =(state={cartItems:[], shippingAddress:{}},action)=>{
            if(existItem){
                 return{
                     ...state,
-                    cartItems: state.cartItems.map(x=>x.product_id === existItem.product_id ? item : x),
+                    cartItems: state.cartItems.map(x=>(x.product_id === existItem.product_id) ? item : x),
                 }
            }else{
                return{
@@ -20,7 +20,7 @@ export const cartReducer =(state={cartItems:[], shippingAddress:{}},action)=>{
         case CART_REMOVE_ITEM:
             return{
                 ...state,
-                cartItems:state.cartItems.filter(x=>x.product !== action.payload)
+                cartItems:state.cartItems.filter(x=>x.product_id !== action.payload.product_id)
             }
         case CART_SAVE_SHIPPING_ADDRESS:
             return{
