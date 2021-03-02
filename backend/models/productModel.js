@@ -314,7 +314,7 @@ async function deleteVariant(product_id, variant_id) {
 async function getProductForUpdate(product_id) {
   try {
     const product = await adminExecuteSQL(
-      "SELECT product_id, description, weight, dimension, brand, category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
+      "SELECT product_id, product_name, description, weight, dimension, brand, category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
       [product_id]
     );
     const category_name = await adminExecuteSQL(
