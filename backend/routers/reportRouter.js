@@ -5,6 +5,7 @@ const {
   quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
+  customerOrderReport,
 } = require("../models/reportModel.js");
 
 const reportRouter = express.Router();
@@ -15,8 +16,8 @@ reportRouter.get(
     const qsales = await quaterlySalesReport(req.params.year);
     if (qsales) {
       res.send(qsales);
-    } else {     
-      res.status(404).send({ message: "Sales Not Found" });      
+    } else {
+      res.status(404).send({ message: "Sales Not Found" });
     }
   })
 );
@@ -30,8 +31,8 @@ reportRouter.get(
     );
     if (product) {
       res.send(product);
-    } else {     
-      res.status(404).send({ message: "No Products Found" });      
+    } else {
+      res.status(404).send({ message: "No Products Found" });
     }
   })
 );
@@ -42,10 +43,21 @@ reportRouter.get(
     const category = await productCategoryWithMostOrders();
     if (category) {
       res.send(category);
-    } else {     
-      res.status(404).send({ message: "No Category Found" });      
+    } else {
+      res.status(404).send({ message: "No Category Found" });
     }
   })
 );
 
+reportRouter.get(
+  "/report-5",
+  expressAsyncHandler(async (req, res) => {
+    const orderReport = await customerOrderReport();
+    if (orderReport) {
+      res.send(orderReport);
+    } else {
+      res.status(404).send({ message: "Order Not Found" });
+    }
+  })
+);
 module.exports = reportRouter;

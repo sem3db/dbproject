@@ -180,7 +180,7 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
     //   }
     // ][0]
     
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data[0] });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
