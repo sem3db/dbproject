@@ -405,11 +405,14 @@ DELIMITER ;
 
 #===================================================================
 
+DROP TRIGGER IF EXISTS `cse_21`.`variant_stock_change`;
+
+DELIMITER $$
+USE `cse_21`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `variant_stock_change` BEFORE UPDATE ON `variant` FOR EACH ROW BEGIN
-	set new.no_stock = old.no_stock + new.no_stock;
-END
-
-
+	set new.no_stock = old.no_stock + new.no_stock;  
+END$$
+DELIMITER ;
 
 
 
