@@ -20,6 +20,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import DashBoardScreen from './screens/DashBoardScreen';
 import VariantListScreen from './screens/VariantListScreen';
 import VariantEditScreen from './screens/VariantEditScreen';
+import ProductCreateScreen from './screens/ProductCreateScreen';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
         <Route path='/dashboard' component={DashBoardScreen} exact></Route>
         <Route path='/productlist' component={ProductListScreen} exact></Route>
         {/* <Route path='/product/:id/view' component={ProductViewScreen} exact ></Route> */}
+        <Route path='/newproduct/create' component={ProductCreateScreen} exact ></Route>
         <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
         <Route path='/product/:id/variantlist' component={VariantListScreen} exact></Route>
         {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
