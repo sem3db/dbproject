@@ -166,6 +166,19 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
   try {
     
     const {data} = await axios.get(`/api/products/productlist/${productId}`)
+    // const data = [
+    //   {
+    //     product_id: 1,
+    //     product_name: "ssdsd",
+    //     category_name: "consumer_electronics",
+    //     subcat_name: "dondal",
+    //     brand: "svsv",
+    //     supplier_name: "hp",
+    //     weight: "sdvsdvs",
+    //     dimension: "vsdvdsv",
+    //     description: "svsdvsd",
+    //   }
+    // ][0]
     
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -182,16 +195,7 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
 export const createProduct = (newproduct) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   try {
-    // const newproduct = {
-    //   product_name: "sampleproduct",
-    //   category_name: null,
-    //   subcat_name: null,
-    //   description: "sampledescription",
-    //   weight: "sampleweight",
-    //   dimension: "sampledimension",
-    //   brand: "samplebrand",
-    //   supplier_name: null,
-    // };
+
     const { data } = await axios.post(`/api/products/addProduct`, newproduct);
 
     dispatch({
@@ -203,7 +207,7 @@ export const createProduct = (newproduct) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-    dispatch({ type: PRODUCT_CREATE_FAIL, payload: message });
+    dispatch({ type: PRODUCT_CREATE_FAIL, error: message });
   }
 };
 
@@ -216,7 +220,10 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
     const { data } = await axios.put(`/api/products/productlist/edit/${product.product_id}`, product);
 
-    dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
+    dispatch({ 
+      type: PRODUCT_UPDATE_SUCCESS,
+      payload: data
+    });
   } catch (error) {
     const message =
       error.response && error.response.data.message
