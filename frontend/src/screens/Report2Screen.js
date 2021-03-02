@@ -33,7 +33,7 @@ export default function Report2Screen(props) {
     return (
         <>
         <div className="admin">
-            <h1>Report2 - Products with most number of sales</h1>
+            <h1>Report 2 - Products with most number of sales</h1>
             <form className="form" onSubmit={submitHandler}>
             <div>
                 <label htmlFor="from">From</label>

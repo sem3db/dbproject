@@ -23,7 +23,7 @@ export default function Report3Screen(props) {
     return (
         <>
         <div className="admin">
-            <h1>Report3 - Product category with most orders</h1>
+            <h1>Report 3 - Product category with most orders</h1>
             <form className="form" onSubmit={submitHandler}>
             <div>
                 <label></label>

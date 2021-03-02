@@ -1,70 +1,58 @@
 // - Given a product, time period with most interest to it
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { listProductsAdmin } from '../action/productAction';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 export default function Report4Screen(props) {
-    // const [product_name, setProduct_name] = useState('');
+    const [product_name, setProduct_name] = useState('');
+    const [timeperiod, setTimeperiod] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
+    const [producttimereport, setProducttimereport] = useState('');
+        
+    const productListAdmin = useSelector((state) => state.productListAdmin);
+    const { loading, error, products } = productListAdmin;
 
-    // const [timeperiod, setTimeperiod] = useState(null);
+    let productId = null;
+    if(products){
+        products.forEach(p => {
+            if (product_name === p.product_name){
+            productId = p.product_id;
+            }
+        })
+    }
 
-    // const productListAdmin = useSelector((state) => state.productListAdmin);
-    // const { loading, error, products } = productListAdmin;
-    // console.log("products")
-    // console.log("products")
-    // console.log("products")
-    // console.log("products")
-    // console.log("products")
-    // console.log(products)
-
-
-    // let productId = null;
-    // products.forEach(p => {
-    //     if (product_name === p.product_name){
-    //     productId = p.product_id;
-    //     }
-    // })
-
-    // const apiURL = `/api/report-4/${productId}`;
-    // const fetchData = async () => {
-    //     const response = await axios.get(apiURL)
-    //     setTimeperiod(response.data) 
-    // }
-
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     if (!loading && !error) {
-    //         dispatch(listProductsAdmin());
-    //     }
-    //     if (productId !== null) {
-    //         const apiURL = `/api/report-4/${productId}`;
-    //         const fetchData = async () => {
-    //             const response = await axios.get(apiURL)
-    //         setTimeperiod(response.data) 
-    //         }
-    //     }
-    // }, [dispatch, productId, props.history]);
-    
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(listProductsAdmin());
-        // if (productId !== null) {
-        //     const apiURL = `/api/report-4/${productId}`;
-        //     const fetchData = async () => {
-        //         const response = await axios.get(apiURL)
-        //     setTimeperiod(response.data) 
-        //     }
-        // }
     },[]);
 
 
+    const submitHandler = (e) => {
+        e.preventDefault();
+        async function getProductTimeReport(productId){
+            // const response = await axios.get(`/api/reports/report-4`,productId);
+            // console.log(response);
+            // const res = response.data;
+            // setProducttimereport(res)
+            setSubmitted(true);
+        }
+        getProductTimeReport();
+    };
+    
     return (
         <>
-        <div className="">
-            <h1>Report4 - most interest time period to a product</h1>
-            <form className="form">
-                {/* <div>
+        <div className="admin">
+            <h1>Report 4 - most interest time period to a product</h1>
+            {loading ? (
+                <Loader></Loader>
+            ) : error ? (
+                <Message variant="danger">{error}</Message>
+            ) : (
+            <form className="form" onSubmit={submitHandler}>
+                <div>
                     <label htmlFor="product_name">Product</label>
                     <select
                     id="product_name"
@@ -79,22 +67,48 @@ export default function Report4Screen(props) {
                     </select>
                 </div>
                 <div>
-                    <button className="fetch-button" onClick={fetchData}>
-                    Fetch Data
+                    <label></label>
+                    <button className="primary" type="submit">
+                    Show
                     </button>
-                </div> */}
-            </form>
-            {/* {timeperiod &&
-                <div className="">
-                    <h1>Product {productId}</h1>
-                    <div className="">
-                        <p>timeperiod</p>
-                        <p>timeperiod</p>
-                    </div>
                 </div>
-            } */}
+            </form>
+            // {timeperiod &&
+            //     <div className="">
+            //         <h1>Product {productId}</h1>
+            //         <div className="">
+            //             <p>timeperiod</p>
+            //             <p>timeperiod</p>
+            //         </div>
+            //     </div>
+            // }
+            )}
             
         </div>
         </>
     );
 }
+
+//     return (
+//         <>
+//         <div className="admin">
+//             <h1>Report3 - Product category with most orders</h1>
+//             <form className="form" onSubmit={submitHandler}>
+//             <div>
+//                 <label></label>
+//                 <button className="primary" type="submit">
+//                 Show
+//                 </button>
+//             </div>
+//             </form>
+//             {submitted &&
+//             <div>
+//                 <h2>
+//                 Product Category: {productcategoryreport}
+//                 </h2>
+//             </div>
+//             }
+//         </div>
+//         </>
+//     );
+// };
