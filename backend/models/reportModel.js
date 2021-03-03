@@ -100,7 +100,7 @@ async function getOneQuaterSales(year, quater) {
 async function productsWithMostNumberOfSales(from, to) {
   try {
     const product = await adminExecuteSQL(
-      " SELECT SUM(quantity) AS sale_quantity, product_id, product_name, description, weight, dimension, brand FROM productorder NATURAL JOIN order_product natural join product WHERE order_date between ? AND ? GROUP BY product_id ORDER BY quantity DESC LIMIT 5",
+      " SELECT SUM(quantity) AS sale_quantity, product_id, product_name, description, weight, dimension, brand FROM productorder NATURAL JOIN order_product natural join product WHERE order_date between ? AND ? GROUP BY product_id ORDER BY sale_quantity DESC LIMIT 5",
       [from, to]
     );
     return product;
@@ -122,14 +122,11 @@ async function productCategoryWithMostOrders() {
 }
 
 //report 4
-async function timePeriodWithMostIneterest(product_name) {
+async function timePeriodWithMostIneterest(product_id) {
   try {
-    const interestedPeriod = await adminExecuteSQL(
-      "call cse_21.interestPeriod(?)",
-      [product_name]
-    );
-
-    console.log(interestedPeriod);
+    const interestedPeriod = (
+      await adminExecuteSQL("call cse_21.interestPeriod(?)", [product_id])
+    )[0][0];
 
     return interestedPeriod;
   } catch (e) {
