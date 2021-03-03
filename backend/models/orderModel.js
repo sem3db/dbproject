@@ -67,14 +67,24 @@ async function moveToOrder_registered(
 }
 
 async function moveToOrder_guest(
-  cust_id,
   paymethod,
   delstat,
   delmethod,
   note,
-  productlist
+  productlist,
+  email,
+  phone,
+  first_name,
+  last_name,
+  zip_code,
+  address_line_1,
+  address_line_2,
+  city,
+  state
 ) {
   try {
+    const raw_cust_id = await customerExecuteSQL("call newGuest(?,?,?,?,?,?,?,?,?)",[email,phone,first_name,last_name,zip_code,address_line_1,address_line_2,city,state]).then();
+    const cust_id = JSON.parse(JSON.stringify(raw_cust_id))["cust_id"];
     const moveState = await customerExecuteSQL(
       "call moveToOrder_gst(?,?,?,?,?,?)",
       [
