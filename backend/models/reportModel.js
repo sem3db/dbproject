@@ -122,8 +122,16 @@ async function productCategoryWithMostOrders() {
 }
 
 //report 4
-async function timePeriodWithMostIneterest(product_id) {
+async function timePeriodWithMostIneterest(product_name) {
   try {
+    const interestedPeriod = await adminExecuteSQL(
+      "call cse_21.interestPeriod(?)",
+      [product_name]
+    );
+
+    console.log(interestedPeriod);
+
+    return interestedPeriod;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -160,24 +168,10 @@ async function customerOrderReport() {
   }
 }
 
-async function customerOrderReport(product_name) {
-  try {
-    const interestedPeriod = await adminExecuteSQL(
-      "call cse_21.interestPeriod(?)",
-      [product_name]
-    );
-
-    console.log(interestedPeriod);
-
-    return interestedPeriod;
-  } catch (e) {
-    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
-  }
-}
-
 module.exports = {
   quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
+  timePeriodWithMostIneterest,
   customerOrderReport,
 };

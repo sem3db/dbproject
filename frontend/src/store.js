@@ -28,6 +28,11 @@ import {
 } from "./reducers/userreducers";
 
 import {
+  adminSigninReducer,
+  adminDetailsReducer,
+} from "./reducers/adminReducer";
+
+import {
   orderCreateReducer,
   orderDeleteReducer,
   orderDeliverReducer,
@@ -95,6 +100,8 @@ const reducer = combineReducers({
   userDetails:userDetailsReducer,
   userUpdateProfile:userUpdateProfileReducer,
   userAddress:userAddressReducer,
+  adminSignin:adminSigninReducer,
+  adminDetails:adminDetailsReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
@@ -121,7 +128,12 @@ const initialState = {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
   },
-  userLogin: { userInfo: userInfoFromStorage },
+  userLogin: {
+    userInfo: userInfoFromStorage
+  },
+  adminSignin: {
+    adminInfo: localStorage.getItem('adminInfo')? JSON.parse(localStorage.getItem('adminInfo')):null,
+  }
 };
 const middleware = [thunk];
 const store = createStore(

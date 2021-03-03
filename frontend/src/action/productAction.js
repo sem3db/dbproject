@@ -140,11 +140,15 @@ export const detailsProductVariant = (productId, variants) => async (dispatch) =
 
 
 
-export const listProductsAdmin = () => async (dispatch) => {
+export const listProductsAdmin = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = await axios.get(`/api/products/productlist`);
+    const { data } = await axios.get(`/api/products/productlist`, {
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -161,11 +165,15 @@ export const listProductsAdmin = () => async (dispatch) => {
   }
 };
 
-export const detailsProductAdmin = (productId) => async (dispatch) => {
+export const detailsProductAdmin = (productId) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
+  const { adminSignin:{adminInfo}} = getState();
   try {
     
-    const {data} = await axios.get(`/api/products/productlist/${productId}`)
+    const {data} = await axios.get(`/api/products/productlist/${productId}`, {
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data[0] });
   } catch (error) {
@@ -181,9 +189,13 @@ export const detailsProductAdmin = (productId) => async (dispatch) => {
 
 export const createProduct = (newproduct) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = await axios.post(`/api/products/addProduct`, newproduct);
+    const { data } = await axios.post(`/api/products/addProduct`,newproduct,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+    );
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -200,12 +212,13 @@ export const createProduct = (newproduct) => async (dispatch, getState) => {
 
 export const updateProduct = (product) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_UPDATE_REQUEST, payload: product });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = await axios.put(`/api/products/productlist/edit/${product.product_id}`, product);
+    const { data } = await axios.put(`/api/products/productlist/edit/${product.product_id}`, product,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ 
       type: PRODUCT_UPDATE_SUCCESS,
@@ -222,12 +235,13 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
 export const deleteProduct = (productId) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_DELETE_REQUEST, payload: productId });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = axios.delete(`/api/products/productlist/delete/${productId}`);
+    const { data } = axios.delete(`/api/products/productlist/delete/${productId}`,{},{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
@@ -239,12 +253,16 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
   }
 };
 
-export const listVariants = (productId) => async (dispatch) =>{
+export const listVariants = (productId) => async (dispatch, getState) =>{
   dispatch({ type: VARIANT_LIST_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
       // const { data } = await axios.get("/api/product/productlist/${productId}/variantlist");
-      const { data } = await axios.get(`/api/products/productlist/${productId}/variants`);
+      const { data } = await axios.get(`/api/products/productlist/${productId}/variants`, {
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
 
       dispatch({
       type: VARIANT_LIST_SUCCESS,
@@ -262,12 +280,16 @@ export const listVariants = (productId) => async (dispatch) =>{
   }
 }
 
-export const detailsVariant = (productId,variantId) => async (dispatch) => {
+export const detailsVariant = (productId,variantId) => async (dispatch, getState) => {
   dispatch({ type: VARIANT_DETAILS_REQUEST, payload: (productId,variantId) });
+  const { adminSignin:{adminInfo}} = getState();
   try {
     
     // const {data} = await axios.get(`/api/products/productlist/${productId}/variants/${variantId}`)
-    const {data} = await axios.get(`/api/products/productlist/${productId}/variants/${variantId}`)
+    const {data} = await axios.get(`/api/products/productlist/${productId}/variants/${variantId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    )
 
     dispatch({ type: VARIANT_DETAILS_SUCCESS, payload: data[0] });
   } catch (error) {
@@ -283,8 +305,12 @@ export const detailsVariant = (productId,variantId) => async (dispatch) => {
 
 export const createVariant = (productId,newvariant) => async (dispatch, getState) => {
   dispatch({ type: VARIANT_CREATE_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
-    const { data } = await axios.post(`/api/products/productlist/${productId}/variants/addvariant`, newvariant);
+    const { data } = await axios.post(`/api/products/productlist/${productId}/variants/addvariant`, newvariant, {
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
     dispatch({
       type: VARIANT_CREATE_SUCCESS,
       payload: data.variant,
@@ -299,12 +325,12 @@ export const createVariant = (productId,newvariant) => async (dispatch, getState
 };
 export const updateVariant = (variant) => async (dispatch, getState) => {
   dispatch({ type: VARIANT_UPDATE_REQUEST, payload: variant });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
-
-    const { data } = await axios.put(`/api/products/productlist/${variant.product_id}/variants/editvariant/${variant.variant_id}`, variant);
+    const { data } = await axios.put(`/api/products/productlist/${variant.product_id}/variants/editvariant/${variant.variant_id}`, variant, {
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: VARIANT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -317,12 +343,13 @@ export const updateVariant = (variant) => async (dispatch, getState) => {
 };
 export const deleteVariant = (productId,variantId) => async (dispatch, getState) => {
   dispatch({ type: VARIANT_DELETE_REQUEST, payload: (productId,variantId) });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = axios.delete(`/api/products/productlist/${productId}/variants/delete/${variantId}`);
+    const { data } = axios.delete(`/api/products/productlist/${productId}/variants/delete/${variantId}`,{},{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: VARIANT_DELETE_SUCCESS });
   } catch (error) {
