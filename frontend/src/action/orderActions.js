@@ -168,9 +168,8 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
   dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
   const { adminSignin:{adminInfo}} = getState();
   try {
-
     const { data } = Axios.put(
-      `/api/orders/deliver/${orderId}`,
+      `/api/orders/setDeliverStatus/${orderId}`,
       {},{
         headers:{ Authorization: `Bearer ${adminInfo.token}`}
       }
