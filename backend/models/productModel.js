@@ -267,7 +267,6 @@ async function getVariant(product_id, variant_Id) {
 
 async function addVariant(
   product_id,
-  variant_id,
   SKU,
   image_url,
   price,
@@ -277,8 +276,20 @@ async function addVariant(
   no_stock
 ) {
   try {
+    const data = await adminExecuteSQL(
+      "SELECT variant_id FROM variant WHERE product_id=?",
+      [product_id]
+    );
+    //console.log(data);
+    var next_variant_id;
+    if (data.length != 0) {
+      next_variant_id = data[data.length - 1].variant_id + 1;
+    } else {
+      next_variant_id = 1;
+    }
+    //console.log(next_variant_id);
     await adminExecuteSQL("INSERT INTO variant values(?,?,?,?,?,?,?,?,?)", [
-      variant_id,
+      next_variant_id,
       product_id,
       SKU,
       image_url,

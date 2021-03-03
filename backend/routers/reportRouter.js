@@ -1,6 +1,6 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-
+const { isAuth, isAdmin } = require("../utils.js");
 const {
   quaterlySalesReport,
   productCategoryWithMostOrders,
@@ -12,6 +12,8 @@ const reportRouter = express.Router();
 
 reportRouter.get(
   "/report-1/:year",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const qsales = await quaterlySalesReport(req.params.year);
     if (qsales) {
@@ -24,6 +26,8 @@ reportRouter.get(
 
 reportRouter.post(
   "/report-2",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await productsWithMostNumberOfSales(
       req.body.from,
@@ -39,6 +43,8 @@ reportRouter.post(
 
 reportRouter.get(
   "/report-3",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const category = await productCategoryWithMostOrders();
     if (category) {
@@ -51,6 +57,8 @@ reportRouter.get(
 
 reportRouter.get(
   "/report-5",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orderReport = await customerOrderReport();
     if (orderReport) {

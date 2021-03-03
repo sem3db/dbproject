@@ -19,7 +19,7 @@ const {
   updateVariant,
   deleteVariant,
 } = require("../models/productModel.js");
-const { isAuth } = require("../utils.js");
+const { isAuth, isAdmin } = require("../utils.js");
 
 const productRouter = express.Router();
 
@@ -33,6 +33,8 @@ productRouter.get(
 
 productRouter.get(
   "/productlist",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const products = await getProductsForAdmin();
     res.send(products);
@@ -42,6 +44,8 @@ productRouter.get(
 // product update form ---------------------------------
 productRouter.get(
   "/productlist/:id",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await getProductForUpdate(req.params.id);
     res.send(product);
@@ -50,6 +54,8 @@ productRouter.get(
 
 productRouter.post(
   "/addProduct",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await createProduct(
       req.body.product_name,
@@ -68,6 +74,8 @@ productRouter.post(
 
 productRouter.put(
   "/productlist/edit/:id",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     console.log(req.body);
     const isEdited = await updateProduct(
@@ -88,6 +96,8 @@ productRouter.put(
 
 productRouter.delete(
   "/productlist/delete/:id",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const isdeleted = await deleteProduct(req.params.id);
     res.send(isdeleted);
@@ -96,6 +106,8 @@ productRouter.delete(
 
 productRouter.get(
   "/productlist/:id/variants",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const variants = await findVariantsById(req.params.id);
     res.send(variants);
@@ -104,6 +116,8 @@ productRouter.get(
 
 productRouter.get(
   "/productlist/:id/variants/:vid",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const variantDetails = await getVariant(req.params.id, req.params.vid);
     res.send(variantDetails);
@@ -112,10 +126,12 @@ productRouter.get(
 
 productRouter.post(
   "/productlist/:id/variants/addvariant",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
+    //console.log(req.body);
     const isAdded = await addVariant(
       req.params.id,
-      req.body.variant_id,
       req.body.SKU,
       req.body.image_url,
       req.body.price,
@@ -131,8 +147,10 @@ productRouter.post(
 
 productRouter.put(
   "/productlist/:id/variants/editvariant/:vid",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const isEdited = await updateVariant(
       req.params.id,
       req.params.vid,
@@ -150,6 +168,8 @@ productRouter.put(
 
 productRouter.delete(
   "/productlist/:id/variants/delete/:vid",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const isdeleted = await deleteVariant(req.params.id, req.params.vid);
     res.send(isdeleted);
