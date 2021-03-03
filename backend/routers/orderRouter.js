@@ -98,17 +98,9 @@ orderRouter.post(
   })
 );
 
-orderRouter.post(
-  "/",
-  expressAsyncHandler(async (req, res) => {
-    const isUpdate = await setDeliveryStatus(req.params.id);
-    res.send(isUpdate);
-  })
-);
 
 
-
-orderRouter.post(
+orderRouter.get(
   "/list",
   expressAsyncHandler(async (req, res) => {
     const orderList = await getOrderList(req.user.reg_customer_id);
