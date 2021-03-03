@@ -23,11 +23,11 @@ cartRouter.post('/',expressAsyncHandler(async (req, res) => {
 
 
 cartRouter.post('/addItem',expressAsyncHandler(async (req, res) => {
-
+    console.log(req.body)
     const customerID = req.body.customerID;
-    const variant = req.body.variant;
-    const product = req.body.product;
-    const quantity = req.body.quantity;
+    const variant = req.body.variant_id;
+    const product = req.body.product_id;
+    const quantity = req.body.qty;
 
     if (customerID && variant && product && quantity) {
         const submitState = await addCartItem(customerID,variant,product,quantity).then();

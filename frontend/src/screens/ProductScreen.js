@@ -22,6 +22,7 @@ import {
     const dispatch = useDispatch();
     const productDetails=useSelector(state=>state.productDetails)
     const {loading, error, product, variant, variants, error1} =productDetails
+    console.log('lklklklklkjh')
     console.log(variant)
     console.log(productDetails)
     if(error1){
@@ -48,7 +49,7 @@ import {
       {loading?<Loader/>:error?<Message variant='danger' Children={error}>{error}</Message>:(
       <Row>
         <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid />
+          <Image src={variant.image} alt={product.name} fluid />
         </Col>
         <Col md={6}>
         {error1?<Message variant='warning'>Selected Product is not available</Message>:''}

@@ -54,7 +54,7 @@ async function findProductById(id) {
       color: a_variant.color,
       size: a_variant.size,
       noStock: a_variant.no_stock,
-      imageUrl: a_variant.image_url,
+      image: a_variant.image_url,
       price: a_variant.price,
     };
 
@@ -78,7 +78,7 @@ async function findVariantByParams(product_id, color, size) {
       color: variant.color,
       size: variant.size,
       noStock: variant.no_stock,
-      imageUrl: variant.image_url,
+      image: variant.image_url,
       price: variant.price,
     };
 
@@ -114,7 +114,7 @@ async function findVariantByIds(product_id, variant_id) {
     product.color = variant.color;
     product.size = variant.size;
     product.noStock = variant.no_stock;
-    product.imageUrl = variant.image_url;
+    product.image = variant.image_url;
     product.price = variant.price;
 
     return product;
@@ -149,7 +149,7 @@ async function findProductsByCategory(category) {
         [parseInt(category_products[index].product_id)]
       );
 
-      product.imageUrl = variants[0].image_url;
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(
@@ -178,7 +178,7 @@ async function findProductsBySubCategory(category, subcategory) {
         [parseInt(category_products[index].product_id)]
       );
 
-      product.imageUrl = variants[0].image_url;
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(
@@ -207,7 +207,7 @@ async function getProducts() {
         [parseInt(productData[index].product_id)]
       );
 
-      product.imageUrl = variants[0].image_url;
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(

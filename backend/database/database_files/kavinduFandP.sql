@@ -121,7 +121,7 @@ DELIMITER ;
 
 
 
-
+DROP PROCEDURE IF EXISTS `cse_21`.`addToCart`;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addToCart`(userid varchar(10),in_variant_id varchar(10), in_product_id varchar(10), in_quantity decimal(5,0))
@@ -135,7 +135,8 @@ BEGIN
     if exist < 1 
 		then select insertToCart(usercartid,in_variant_id,in_product_id,in_quantity) as submitstate;
     else
-		select increaseCartQuantity(usercartid,in_variant_id,in_product_id,in_quantity) as submitstate;
+		#select increaseCartQuantity(usercartid,in_variant_id,in_product_id,in_quantity) as submitstate;
+        update cart_product set quantity = in_quantity where product_id = in_product_id and variant_id = in_variant_id and cart_id = usercartid;
     end if;
 END$$
 DELIMITER ;
