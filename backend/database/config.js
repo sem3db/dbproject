@@ -20,6 +20,23 @@ var customerpool = mysql.createPool({
 
 module.exports = { adminpool, customerpool };
 
+// var adminpool = mysql.createPool({
+//   connectionLimit: process.env.DB_CONNECTION_LIMIT,
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_ADMIN_USERNAME,
+//   password: process.env.DB_ADMIN_PASSWORD,
+//   database: process.env.DB_NAME,
+//   multipleStatements: true
+// });
+
+// var customerpool = mysql.createPool({
+//   connectionLimit: process.env.DB_CONNECTION_LIMIT,
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_CUSTOMER_USERNAME,
+//   password: process.env.DB_CUSTOMER_PASSWORD,
+//   database: process.env.DB_NAME,
+//   multipleStatements: true
+// });
 
 
 
