@@ -16,6 +16,7 @@ adminRouter.post(
         const token = generateToken({
           user_name: login_cred[0].user_name,
           email: login_cred[0].email_address,
+          isAdmin: true,
         });
         res.send({
           user_name: login_cred[0].user_name,
