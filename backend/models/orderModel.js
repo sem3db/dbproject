@@ -106,9 +106,35 @@ async function moveToOrder_guest(
   }
 }
 
+
+
+async function getOrderList() {
+  try {
+    const orderlist = adminExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder").then();
+    return orderlist;
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
+
+async function orderDetailes(orderID) {
+  try {
+    const order = adminExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",[orderID]).then();
+    const productlist = adminExecuteSQL("select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id").then();
+    return [order,productlist];
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
 module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
   setDeliveryStatus,
+  getOrderList,
+  orderDetailes
 };
