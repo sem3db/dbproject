@@ -1,6 +1,4 @@
---
---Functions
---
+
 USE `cse_21`;
 DROP function IF EXISTS `addNewRegCustomer`;
 
@@ -69,9 +67,6 @@ RETURN averagerating;
 END$$
 DELIMITER ;
 
---
---Procedures
---
 
 
 USE `cse_21`;
@@ -118,7 +113,7 @@ DELIMITER ;
 
 
 
---get a product using its product id
+
 USE `cse_21`;
 DROP procedure IF EXISTS `getProductById`;
 
