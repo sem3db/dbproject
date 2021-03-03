@@ -11,18 +11,10 @@ import {
 } from "../constants/variantConstants";
 
 export default function VariantListScreen(props) {
-    const productId = props.match.params.id;
+  const productId = props.match.params.id;
 
-    const variantList = useSelector((state) => state.variantList);
-    const { loading, error, variants } = variantList;
-
-  // const variantCreate = useSelector((state) => state.variantCreate);
-  // const {
-  //   loading: loadingCreate,
-  //   error: errorCreate,
-  //   success: successCreate,
-  //   variant: createdVariant,
-  // } = variantCreate;
+  const variantList = useSelector((state) => state.variantList);
+  const { loading, error, variants } = variantList;
 
   const variantDelete = useSelector((state) => state.variantDelete);
   const {
@@ -33,9 +25,6 @@ export default function VariantListScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // if (successCreate) {
-    //   dispatch({ type: VARIANT_CREATE_RESET });
-    // }
     if (successDelete) {
       dispatch({ type: VARIANT_DELETE_RESET });
     }
@@ -63,8 +52,6 @@ export default function VariantListScreen(props) {
 
       {loadingDelete && <Loader></Loader>}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
-      {/* {loadingCreate && <Loader></Loader>}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
       {loading ? (
         <Loader></Loader>
       ) : error ? (

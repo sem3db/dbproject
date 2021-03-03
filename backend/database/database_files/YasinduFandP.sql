@@ -1,6 +1,3 @@
---
---Functions
---
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `addNewAdmin`
@@ -53,9 +50,6 @@ BEGIN
 DELIMITER ;
 
 
---
---Procedures
---
 
 
 DELIMITER $$

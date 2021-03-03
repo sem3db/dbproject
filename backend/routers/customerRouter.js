@@ -109,6 +109,7 @@ userRouter.get(
 //   })
 // );
 
+
 userRouter.get(
   "/shipment/info",
   isAuth,  
@@ -141,6 +142,7 @@ userRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     
+    console.log('kkkkkkkkkkkkkkkkkkkk')
     const newaddress = await updateShippingAddress(
       
       req.user.reg_customer_id,

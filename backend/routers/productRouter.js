@@ -113,7 +113,7 @@ productRouter.get(
 productRouter.post(
   "/productlist/:id/variants/addvariant",
   expressAsyncHandler(async (req, res) => {
-    //console.log(req.body);
+    console.log(req.body);
     const isAdded = await addVariant(
       req.params.id,
       req.body.SKU,

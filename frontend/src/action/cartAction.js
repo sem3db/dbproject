@@ -16,7 +16,7 @@ export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=
             Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const cart={product:product_id, variant:variant_id, quantity:qty, customerID:5}
+        const cart={product:product_id, variant:variant_id, quantity:qty}
         const customerID=5
         const {data1} =await axios.post('/api/cart/addItem',{product_id, variant_id, qty, customerID},config)
     }
@@ -70,28 +70,38 @@ export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=
 //     }
 // }
 
-export const removeFromCart= (product_id,variant_id)=>(dispatch,getState)=>{
+export const removeFromCart= (product_id,variant_id)=> async(dispatch,getState)=>{
+    const {userLogin:{userInfo}}=getState()
+    if(userInfo){
+        const config={
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+                }
+            }
+        console.log('remove cart item login user')
+        const customerID=5
+        const {data1} =await axios.post('/api/cart/delete',{product_id, variant_id},config)
+    }
     dispatch({
         type:CART_REMOVE_ITEM,
         payload:{product_id,variant_id},
     })
-    if(getState().userLogin){
-        console.log('dfdfdf')
-    }
     localStorage.setItem('cartItems',JSON.stringify(getState().cart.cartItems))
 }
 
 export const saveShippingAddress= (data)=>async(dispatch,getState)=>{
     console.log(data)
-    if(getState().userLogin){
-        const {userLogin:{userInfo}}=getState()
+    console.log('shipment')
+    const {userLogin:{userInfo}}=getState()
+    if(userInfo){
         const config={
         headers:{
             'Content-Type':'application/json',
             Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const {data1} =await axios.post('/api/customer/5/shipment',data)
+        const {data1} =await axios.post('/api/customer/shipment/change',data,config)
     }
     dispatch({
         type:CART_SAVE_SHIPPING_ADDRESS,
@@ -100,10 +110,11 @@ export const saveShippingAddress= (data)=>async(dispatch,getState)=>{
     localStorage.setItem('shippingAddress',JSON.stringify(data))
 }
 
-export const savePaymentMethod= (data)=>(dispatch)=>{
+export const saveDeliveryDetails= (data)=>(dispatch)=>{
+    console.log(data)
     dispatch({
         type:CART_SAVE_PAYMENT_METHOD,
         payload:data,
     })
-    localStorage.setItem('paymentMethod',JSON.stringify(data))
+    localStorage.setItem('orderDetails',JSON.stringify(data))
 }

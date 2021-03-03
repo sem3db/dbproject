@@ -58,8 +58,8 @@ cartRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const customerID = req.user.reg_customer_id;
-    const variant = req.body.variant;
-    const product = req.body.product;
+    const variant = req.body.variant_id;
+    const product = req.body.product_id;
 
     if (customerID && variant && product) {
       const deleteState = await removeCartItem(
