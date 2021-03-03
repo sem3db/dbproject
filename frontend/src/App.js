@@ -63,7 +63,7 @@ const App = () => {
         <AdminRoute path='/reports/report1' component={Report1Screen} exact></AdminRoute>
         <AdminRoute path='/reports/report2' component={Report2Screen} exact></AdminRoute>
         <AdminRoute path='/reports/report3' component={Report3Screen} exact></AdminRoute>
-        <AdminRoute path='/reports/report4' component={Report4Screen} exact></AdminRoute>
+        <AdminRoute path='/reports/report4/:id' component={Report4Screen} exact></AdminRoute>
         <AdminRoute path='/reports/report5' component={Report5Screen} exact></AdminRoute>
         {/* <AdminRoute path='/product/:id/view' component={ProductViewScreen} exact ></AdminRoute> */}
         {/* <AdminRoute path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></AdminRoute> */}

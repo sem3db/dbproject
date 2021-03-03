@@ -4,10 +4,7 @@ import axios from 'axios';
 
 export default function Report3Screen(props) {
     const [submitted, setSubmitted] = useState(false);
-    // const [from, setFrom] = useState('');
-    // const [to, setTo] = useState('');
     const [productcategoryreport, setProductcategoryreport] = useState('');
-    // let l = []
   
     const submitHandler = (e) => {
       e.preventDefault();
@@ -34,9 +31,22 @@ export default function Report3Screen(props) {
             </form>
             {submitted && productcategoryreport &&
             <div>
-                <h2>
-                Product Category: <b>{productcategoryreport}</b>
-                </h2>
+            <table className="table">
+                <thead>
+                <tr>
+                    <th>CATEGORY NAME</th>
+                    <th>ORDER COUNT</th>
+                </tr>
+                </thead>
+                <tbody>
+                {productcategoryreport.map(creport =>
+                <tr key={creport.category_name}>
+                    <td>{creport.category_name}</td>
+                    <td>{creport.order_count}</td>
+                </tr>
+                )}
+                </tbody>
+            </table>
             </div>
             }
         </div>
