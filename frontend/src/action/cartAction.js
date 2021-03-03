@@ -16,7 +16,7 @@ export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=
             Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const cart={product:product_id, variant:variant_id, quantity:qty, customerID:5}
+        const cart={product:product_id, variant:variant_id, quantity:qty}
         const customerID=5
         const {data1} =await axios.post('/api/cart/addItem',{product_id, variant_id, qty, customerID},config)
     }
@@ -81,7 +81,7 @@ export const removeFromCart= (product_id,variant_id)=> async(dispatch,getState)=
             }
         console.log('remove cart item login user')
         const customerID=5
-        const {data1} =await axios.post('/api/cart/delete',{product_id, variant_id,customerID},config)
+        const {data1} =await axios.post('/api/cart/delete',{product_id, variant_id},config)
     }
     dispatch({
         type:CART_REMOVE_ITEM,

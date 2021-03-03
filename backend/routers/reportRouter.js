@@ -1,10 +1,11 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-
+const { isAuth, isAdmin } = require("../utils.js");
 const {
   quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
+  timePeriodWithMostIneterest,
   customerOrderReport,
 } = require("../models/reportModel.js");
 
@@ -45,6 +46,18 @@ reportRouter.get(
       res.send(category);
     } else {
       res.status(404).send({ message: "No Category Found" });
+    }
+  })
+);
+
+reportRouter.get(
+  "/report-4/:product",
+  expressAsyncHandler(async (req, res) => {
+    const orders = await timePeriodWithMostIneterest(req.params.product);
+    if (orders) {
+      res.send(orders);
+    } else {
+      res.status(404).send({ message: "No Orders Found" });
     }
   })
 );

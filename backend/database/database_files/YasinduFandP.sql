@@ -96,5 +96,17 @@ BEGIN
 DELIMITER ;
 
 
+-- ======================================================================== new ==============================================================================================
+
+DELIMITER $$
+USE `cse_21`$$
+CREATE PROCEDURE `getCatSubcatSupIds` (in in_category_name varchar(100), in in_subcat_name varchar(100), in in_supplier_name varchar(100))
+BEGIN
+	SELECT category_id FROM category where category_name=in_category_name;
+    SELECT subcat_id FROM subcategory where subcat_name=in_subcat_name;
+    SELECT supplier_id FROM supplier where supplier_name=in_supplier_name;
+END$$
+
+DELIMITER ;
 
 
