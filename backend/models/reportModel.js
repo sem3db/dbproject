@@ -122,13 +122,11 @@ async function productCategoryWithMostOrders() {
 }
 
 //report 4
-async function timePeriodWithMostIneterest(product_name) {
+async function timePeriodWithMostIneterest(product_id) {
   try {
-    const interestedPeriod = await adminExecuteSQL(
-      "call cse_21.interestPeriod(?)",[product_name]
-    );
-
-    console.log(interestedPeriod);
+    const interestedPeriod = (await adminExecuteSQL(
+      "call cse_21.interestPeriod(?)",[product_id]
+    ))[0][0];
 
     return interestedPeriod;
   } catch (e) {
