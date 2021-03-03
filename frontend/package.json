@@ -12,6 +12,7 @@
     "react-bootstrap": "^1.4.3",
     "react-bootstrap-typeahead": "^5.1.4",
     "react-dom": "^17.0.1",
+    "react-pay": "0.0.1",
     "react-paypal-button-v2": "^2.6.3",
     "react-redux": "^7.2.2",
     "react-router-bootstrap": "^0.25.0",
