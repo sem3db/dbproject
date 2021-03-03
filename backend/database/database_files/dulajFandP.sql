@@ -96,13 +96,18 @@ BEGIN
     declare newcartid int;
     
     set emailexist = (select userAlreadyRegistered(in_email));
+    
     if emailexist = 0 then 
+    
+    START TRANSACTION;
+    
 		set @tmp_var_1 = (select insertNewCart());
         SET newcartid = (Select getNextCartId());
         
         set state = (select addNewRegCustomer(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, newcartid));
 
-        
+	commit;
+    
 	else
 		set state=0;
 	end if;
@@ -111,30 +116,6 @@ END$$
 DELIMITER ;
 ;
 
-
-
-
-USE `cse_21`;
-DROP procedure IF EXISTS `getProductById`;
-
-USE `cse_21`;
-DROP procedure IF EXISTS `cse_21`.`getProductById`;
-;
-
-DELIMITER $$
-USE `cse_21`$$
-CREATE DEFINER=`customer`@`localhost` PROCEDURE `getProductById`(IN product_id integer)
-BEGIN
-	SELECT product_name, description, weight, dimension, brand FROM product WHERE product.product_id =product_id;
-    SELECT DISTINCT color FROM variant WHERE variant.product_id =product_id;
-    SELECT DISTINCT size FROM variant WHERE variant.product_id =product_id;
-    SELECT variant_id, SKU , image_url ,price, offer, color,size, no_stock FROM variant WHERE variant.product_id =product_id LIMIT 1;
-    SELECT category_name FROM category WHERE category.category_id=(SELECT category_id FROM product WHERE product.product_id =product_id);
-    SELECT subcat_name FROM subcategory WHERE subcategory.subcat_id=(SELECT subcat_id FROM product WHERE product.product_id =product_id) AND subcategory.category_id=(SELECT category_id FROM product WHERE product.product_id =product_id);
-END$$
-
-DELIMITER ;
-;
 
 
 

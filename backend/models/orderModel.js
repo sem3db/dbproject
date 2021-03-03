@@ -16,17 +16,21 @@ async function getOrders() {
       var user;
       if (order.customer_type == "Registered") {
         user = await adminExecuteSQL(
-          "SELECT first_name from registered_customer where reg_customer_id=?",
+          "SELECT first_name, address_line_1, address_line_2, city, phone from customerdetails where reg_customer_id=?",
           [parseInt(order.customer_id)]
         );
       } else {
         user = await adminExecuteSQL(
-          "SELECT first_name from guest_customer where guest_id=?",
+          "SELECT first_name, address_line_1, address_line_2, city, phone from guest_customer where guest_id=?",
           [parseInt(order.customer_id)]
         );
       }
 
       order.user = user[0].first_name;
+      order.address_line_1 = user[0].address_line_1;
+      order.address_line_2 = user[0].address_line_2;
+      order.city = user[0].city;
+      order.phone = user[0].phone;
     }
     return orderData;
   } catch (e) {
@@ -62,7 +66,7 @@ async function moveToOrder_registered(
     console.log(moveState);
     return moveState;
   } catch (e) {
-    console.log(e)
+    console.log(e);
     console.log(JSON.parse(JSON.stringify(e))["error"]);
     return "Error";
   }
@@ -82,10 +86,23 @@ async function moveToOrder_guest(
   address_line_1,
   address_line_2,
   city,
-  state 
+  state
 ) {
   try {
-    const raw_cust_id = await customerExecuteSQL("call newGuest(?,?,?,?,?,?,?,?,?)",[email,phone,first_name,last_name,zip_code,address_line_1,address_line_2,city,state]).then();
+    const raw_cust_id = await customerExecuteSQL(
+      "call newGuest(?,?,?,?,?,?,?,?,?)",
+      [
+        email,
+        phone,
+        first_name,
+        last_name,
+        zip_code,
+        address_line_1,
+        address_line_2,
+        city,
+        state,
+      ]
+    ).then();
     const cust_id = JSON.parse(JSON.stringify(raw_cust_id))["cust_id"];
     const moveState = await customerExecuteSQL(
       "call moveToOrder_gst(?,?,?,?,?,?)",
@@ -106,9 +123,35 @@ async function moveToOrder_guest(
   }
 }
 
+
+
+async function getOrderList() {
+  try {
+    const orderlist = adminExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder").then();
+    return orderlist;
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
+
+async function orderDetailes(orderID) {
+  try {
+    const order = adminExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",[orderID]).then();
+    const productlist = adminExecuteSQL("select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id").then();
+    return [order,productlist];
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
 module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
   setDeliveryStatus,
+  getOrderList,
+  orderDetailes
 };
