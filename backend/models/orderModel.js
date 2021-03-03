@@ -77,7 +77,7 @@ async function moveToOrder_guest(
   try {
     const moveState = await customerExecuteSQL(
       "call moveToOrder_gst(?,?,?,?,?,?)",
-      [cust_id, paymethod, delstat, delmethod, note, productlist]
+      [cust_id, paymethod, delstat, delmethod, note, JSON.stringify(productlist)]
     ).then();
     console.log(moveState);
     return moveState;

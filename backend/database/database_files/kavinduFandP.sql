@@ -42,6 +42,8 @@ RETURN 1;
 END$$
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS `cse_21`.`initOrder`;
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `initOrder`(
 _cutomerid int,
@@ -54,7 +56,7 @@ _estim datetime,
 _note varchar(300)) RETURNS int
     DETERMINISTIC
 BEGIN
-	INSERT INTO `cse_21`.`ProductOrder`
+	INSERT INTO `cse_21`.`productorder`
 (`order_date`,
 `customer_id`,
 `customer_type`,
@@ -118,6 +120,9 @@ DELIMITER ;
 
 
 
+
+
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addToCart`(userid varchar(10),in_variant_id varchar(10), in_product_id varchar(10), in_quantity decimal(5,0))
 BEGIN
@@ -167,6 +172,10 @@ BEGIN
     #SELECT image.product_image as image_path  from (image join (SELECT product_id,variant_id from cart_product where cart_id=usercartid) as tbl on (image.variant_id= tbl.variant_id and image.product_id=tbl.product_id));
 END$$
 DELIMITER ;
+
+
+
+DROP PROCEDURE IF EXISTS `cse_21`.`moveToOrder_gst`;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `moveToOrder_gst`(
@@ -239,7 +248,7 @@ BEGIN
             
             set _finalprice = _totalprice - _totaloffer;
             
-            update ProductOrder set total_payment = total_payment + _finalprice where order_id = _lastorderid;
+            update productorder set total_payment = total_payment + _finalprice where order_id = _lastorderid;
             
             update variant set no_stock = _quantity * -1 where product_id = _productid and variant_id = _variantid;
             
@@ -265,7 +274,7 @@ _lastorderid);
 		set _counter = _counter+1;
         END while;
         
-		update ProductOrder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
+		update productorder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
     
 		if _rollback
 			then rollback;
@@ -278,6 +287,9 @@ _lastorderid);
     
 END$$
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS `cse_21`.`moveToOrder_reg`;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `moveToOrder_reg`(
@@ -349,7 +361,7 @@ BEGIN
             
             set _finalprice = _totalprice - _totaloffer;
             
-            update ProductOrder set total_payment = total_payment + _finalprice where order_id = _lastorderid;
+            update productorder set total_payment = total_payment + _finalprice where order_id = _lastorderid;
             
             update variant set no_stock = _quantity * -1 where product_id = _productid and variant_id = _variantid;
             
@@ -374,7 +386,7 @@ _lastorderid);
 
 		END LOOP _moverow; 
         
-	update ProductOrder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
+	update productorder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
 		
 	delete from cart_product where cart_id = _usercartid;
     
