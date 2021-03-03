@@ -198,7 +198,6 @@ async function getProducts() {
       "SELECT product_id, product_name FROM product"
     );
 
-    
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
@@ -215,10 +214,8 @@ async function getProducts() {
           [parseInt(productData[index].product_id)]
         )
       )[0].rating;
-      
     }
 
-    
     return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
@@ -433,7 +430,7 @@ async function createProduct(
       "LAST_INSERT_ID()"
     );
 
-    InsertProduct = {
+    const InsertProduct = {
       product_id: lastInsertProductId.insertId,
       product_name: product_name,
       category_id: category_id[0].category_id,
@@ -454,6 +451,7 @@ async function createProduct(
 
 async function updateProduct(
   product_id,
+  product_name,
   description,
   weight,
   dimension,
@@ -477,8 +475,9 @@ async function updateProduct(
       [supplier_name]
     );
     await adminExecuteSQL(
-      "UPDATE product set category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
+      "UPDATE product set product_name=?, category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
       [
+        product_name,
         category_id[0].category_id,
         subcategory_id[0].subcat_id,
         description,

@@ -69,9 +69,10 @@ productRouter.post(
 productRouter.put(
   "/productlist/edit/:id",
   expressAsyncHandler(async (req, res) => {
-    const a = req.product;
+    console.log(req.body);
     const isEdited = await updateProduct(
       req.params.id,
+      req.body.product_name,
       req.body.description,
       req.body.weight,
       req.body.dimension,
