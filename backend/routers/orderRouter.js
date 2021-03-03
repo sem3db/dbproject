@@ -10,8 +10,7 @@ const {
 
 orderRouter.get(
   "/",
-  isAuth,
-  isAdmin,
+
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
 

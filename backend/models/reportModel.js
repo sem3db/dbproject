@@ -113,9 +113,9 @@ async function productsWithMostNumberOfSales(from, to) {
 async function productCategoryWithMostOrders() {
   try {
     const category = await adminExecuteSQL(
-      "SELECT category_name FROM order_product o, product p, category c WHERE o.product_id = p.product_id AND p.category_id = c.category_id GROUP BY category_name ORDER BY count(c.category_name) DESC LIMIT 1"
+      "SELECT category_name, count(order_id) as order_count FROM order_product o, product p, category c WHERE o.product_id = p.product_id AND p.category_id = c.category_id GROUP BY category_name ORDER BY count(c.category_name) DESC LIMIT 5"
     );
-    return category[0].category_name;
+    return category;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -163,7 +163,8 @@ async function customerOrderReport() {
 async function customerOrderReport(product_name) {
   try {
     const interestedPeriod = await adminExecuteSQL(
-      "call cse_21.interestPeriod(?)",[product_name]
+      "call cse_21.interestPeriod(?)",
+      [product_name]
     );
 
     console.log(interestedPeriod);
