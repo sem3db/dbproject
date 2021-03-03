@@ -102,16 +102,18 @@ orderRouter.post(
 
 orderRouter.get(
   "/list",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const orderList = await getOrderList(req.user.reg_customer_id);
     res.send(orderList);
   })
 );
 
-orderRouter.post(
-  "/orderdetail",
+orderRouter.get(
+  "/orderdetail/:orderId",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
-    const orderdetail = await orderDetailes(req.body.orderID);
+    const orderdetail = await orderDetailes(req.params.orderID);
     res.send(orderdetail);
   })
 );
