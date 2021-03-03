@@ -187,6 +187,8 @@ async function getProducts() {
     const productData = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product"
     );
+
+    
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
@@ -194,7 +196,7 @@ async function getProducts() {
         "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
         [parseInt(productData[index].product_id)]
       );
-
+      
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
@@ -203,8 +205,10 @@ async function getProducts() {
           [parseInt(productData[index].product_id)]
         )
       )[0].rating;
+      
     }
 
+    
     return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);

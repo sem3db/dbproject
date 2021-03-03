@@ -2,7 +2,11 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const orderRouter = express.Router();
 
-const { getOrders, setDeliveryState } = require("../models/orderModel.js");
+const {
+  getOrders,
+  moveToOrder_registered,
+  moveToOrder_guest,
+} = require("../models/orderModel.js");
 
 orderRouter.get(
   "/",
@@ -13,31 +17,21 @@ orderRouter.get(
   })
 );
 
-orderRouter.get(
-  "/setDeliveryState/:id",
-  expressAsyncHandler(async (req, res) => {
-    const setState = await setDeliveryState(req.params.id);
-    res.send(setState);
-  })
-);
-
 orderRouter.post(
   "/placeorder/registered",
   expressAsyncHandler(async (req, res) => {
-    const customerID = req.params.customerID;
-    const paymethod = req.params.paymethod;
-    const delstat = req.params.delstat;
-    const delmethod = req.params.delmethod;
-    const estim = req.params.estim;
-    const note = req.params.note;
+    const customerID = req.body.customerID;
+    const paymethod = req.body.paymethod;
+    const delstat = req.body.delstat;
+    const delmethod = req.body.delmethod;
+    const note = req.body.note;
 
-    if (customerID && paymethod && delstat && delmethod && estim) {
+    if (customerID && paymethod && delstat && delmethod) {
       const orderState = await moveToOrder_registered(
-        cust_id,
+        customerID,
         paymethod,
         delstat,
         delmethod,
-        estim,
         note
       ).then();
       res.send(orderState);
@@ -50,28 +44,19 @@ orderRouter.post(
 orderRouter.post(
   "/placeorder/guest",
   expressAsyncHandler(async (req, res) => {
-    const customerID = req.params.customerID;
-    const paymethod = req.params.paymethod;
-    const delstat = req.params.delstat;
-    const delmethod = req.params.delmethod;
-    const estim = req.params.estim;
-    const note = req.params.note;
-    const productlist = req.params.productlist;
+    const customerID = req.body.customerID;
+    const paymethod = req.body.paymethod;
+    const delstat = req.body.delstat;
+    const delmethod = req.body.delmethod;
+    const note = req.body.note;
+    const productlist = req.body.productlist;
 
-    if (
-      customerID &&
-      paymethod &&
-      delstat &&
-      delmethod &&
-      estim &&
-      productlist
-    ) {
-      const orderState = await moveToOrder_registered(
-        cust_id,
+    if (customerID && paymethod && delstat && delmethod && productlist) {
+      const orderState = await moveToOrder_guest(
+        customerID,
         paymethod,
         delstat,
         delmethod,
-        estim,
         note,
         productlist
       ).then();
