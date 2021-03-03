@@ -5,7 +5,7 @@ import {ORDER_PAY_RESET} from '../constants/orderConstants'
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Link } from "react-router-dom";
-import { createOrder } from "../action/orderActions";
+import { createOrder, guestcreateOrder } from "../action/orderActions";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -14,6 +14,9 @@ const PlaceOrderScreen = ({ history }) => {
   const [sdkReady, setSdkReady] = useState(false);
 
   const dispatch = useDispatch();
+
+  const userLogin = useSelector(state =>state.userLogin);
+  const {userInfo} =userLogin;
 
   const cart = useSelector((state) => state.cart);
 
@@ -25,7 +28,8 @@ const PlaceOrderScreen = ({ history }) => {
       : cart.itemsPrice > 50
       ? cart.itemsPrice * 0.05
       : 10;
-  cart.taxPrice = Number((0.15 * cart.itemsPrice).toFixed(2));
+  cart.deliveryCost=0
+  cart.taxPrice = Number((0 * cart.itemsPrice).toFixed(2));
   cart.totalPrice =
     (Number(cart.itemsPrice) + Number(cart.deliveryCost) + Number(cart.taxPrice))*0.1;
 
@@ -36,7 +40,7 @@ const PlaceOrderScreen = ({ history }) => {
   const { loading: loadingPay, success: successPay } = orderPay;
 
   useEffect(() => {
-    const addPayPalScript = async () => {
+      const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
       script.type = "text/javascript";
@@ -47,38 +51,74 @@ const PlaceOrderScreen = ({ history }) => {
       };
       document.body.appendChild(script);
     };
-
-    if (successPay) {
-        dispatch({type:ORDER_PAY_RESET})
-        history.push(`/cart`)
-      // dispatch(getOrderDetails(order._id))
-    } else if (!window.paypal) {
+    // console.log(cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})))
+    if(success){
+      history.push(`/`)
+    }else if (!window.paypal) {
       addPayPalScript();
     } else {
       setSdkReady(true);
     }
-    // else if
-    // if(success){
-    //     history.push(`/order/${order._id}`)
-    // }
-  }, [dispatch, order, successPay]);
+  }, [dispatch, order, success]);
+
+
+
+  //   if (successPay) {
+  //       dispatch({type:ORDER_PAY_RESET})
+  //       history.push(`/cart`)
+  //     // dispatch(getOrderDetails(order._id))
+  //   } else if (!window.paypal) {
+  //     addPayPalScript();
+  //   } else {
+  //     setSdkReady(true);
+  //   }
+  //   // else if
+  //   // if(success){
+  //   //     history.push(`/order/${order._id}`)
+  //   // }
+  // }, [dispatch, order, successPay]);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     console.log('gggggggggggggggggooooooooooooooooooooooooooodddddddddddddddddddddd')
+    if(userInfo){
       dispatch(
-            createOrder({
-              // orderItems: cart.cartItems,
-              // shippingAddress: cart.shippingAddress,
-              deliveryMethod:cart.orderDetails.deliveryMethod,
-              paymentMethod: cart.orderDetails.paymentMethod,
-              itemsPrice: cart.itemsPrice,
-              shippingPrice: cart.shippingPrice,
-              taxPrice: cart.taxPrice,
-              totalPrice: cart.totalPrice,
-              delstat:'No'
-            })
-          );
+        createOrder({
+          deliveryMethod:cart.orderDetails.deliveryMethod,
+          paymentMethod: cart.orderDetails.paymentMethod,
+          // itemsPrice: cart.itemsPrice,
+          // shippingPrice: cart.shippingPrice,
+          // taxPrice: cart.taxPrice,
+          // totalPrice: cart.totalPrice,
+          delstat:'No'
+        })
+      );
+    }
+    else{
+      console.log('unreg')
+      dispatch(
+        guestcreateOrder({
+          deliveryMethod:cart.orderDetails.deliveryMethod,
+          paymentMethod: cart.orderDetails.paymentMethod,
+          delstat:'No',
+          note:' ',
+          productlist:cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})),
+
+          email:cart.orderDetails.email,
+          phone:cart.shippingAddress.phone,
+          first_name:cart.orderDetails.first_name,
+          last_name:cart.orderDetails.last_name,
+          zip_code:cart.shippingAddress.postalCode,
+          address_line_1:cart.shippingAddress.addressLine1,
+          address_line_2:cart.shippingAddress.addressLine2,
+          city:cart.shippingAddress.city,
+          state:cart.shippingAddress.province,
+          
+        })
+      )
+    }
+
+      
   };
 
 //   const PlaceOrderHandler = () => {
