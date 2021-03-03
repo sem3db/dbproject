@@ -80,7 +80,7 @@ async function moveToOrder_guest(
   address_line_1,
   address_line_2,
   city,
-  state
+  state 
 ) {
   try {
     const raw_cust_id = await customerExecuteSQL("call newGuest(?,?,?,?,?,?,?,?,?)",[email,phone,first_name,last_name,zip_code,address_line_1,address_line_2,city,state]).then();
