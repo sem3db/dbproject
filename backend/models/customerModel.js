@@ -5,7 +5,7 @@ const ACCESS_TOKEN_SECRECT = "DBProject";
 async function loginIn(email) {
   try {
     const credential = await customerExecuteSQL(
-      "SELECT email , password, first_name, last_name FROM registered_customer WHERE email =?",
+      "SELECT reg_customer_id, email , password, first_name, last_name FROM registered_customer WHERE email =?",
       [email]
     );
 
@@ -44,13 +44,14 @@ async function register(
       ]
     ).then();
 
-    if (JSON.parse(JSON.stringify(submitState[2][0])).state == 1) {
-      console.log(fName + " " + lName + " Successfuly Added.");
-      console.log(JSON.parse(JSON.stringify(submitState[2][0])).state);
-      return { fName, lName };
-    } else {
+    if (JSON.parse(JSON.stringify(submitState[2][0])).state == 0) {
       console.log(fName + " " + lName + " already exists.");
       throw "Registration Failed, Customer Exists Already.";
+      
+    } else {
+      const customer_id=JSON.parse(JSON.stringify(submitState[2][0])).state;
+      console.log(fName + " " + lName + " Successfuly Added.");
+      return { customer_id, fName, lName };
     }
   } catch (e) {
     if (e == "Registration Failed, Customer Exists Already.") {

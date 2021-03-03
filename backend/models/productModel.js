@@ -54,7 +54,7 @@ async function findProductById(id) {
       color: a_variant.color,
       size: a_variant.size,
       noStock: a_variant.no_stock,
-      imageUrl: a_variant.image_url,
+      image: a_variant.image_url,
       price: a_variant.price,
     };
 
@@ -66,7 +66,6 @@ async function findProductById(id) {
 
 async function findVariantByParams(product_id, color, size) {
   try {
-    
     const variant = (
       await customerExecuteSQL(
         "SELECT * FROM variant WHERE product_id =? AND color=? AND size=?",
@@ -79,7 +78,7 @@ async function findVariantByParams(product_id, color, size) {
       color: variant.color,
       size: variant.size,
       noStock: variant.no_stock,
-      imageUrl: variant.image_url,
+      image: variant.image_url,
       price: variant.price,
     };
 
@@ -91,10 +90,12 @@ async function findVariantByParams(product_id, color, size) {
 
 async function findVariantByIds(product_id, variant_id) {
   try {
-    const product = (await customerExecuteSQL(
+    const product = (
+      await customerExecuteSQL(
         "SELECT product_id,product_name,description,weight,dimension,brand FROM product WHERE product_id =?",
         [parseInt(product_id)]
-      ))[0];
+      )
+    )[0];
 
     const variant = (
       await customerExecuteSQL(
@@ -102,20 +103,20 @@ async function findVariantByIds(product_id, variant_id) {
         [parseInt(product_id), parseInt(variant_id)]
       )
     )[0];
-    
+
     product.rating = (
       await customerExecuteSQL(
         "SELECT getAverageRatingForProduct(?) AS rating",
         [parseInt(product_id)]
       )
     )[0].rating;
-    product.variantId=variant.variant_id;
-    product.color=variant.color;
-    product.size=variant.size;
-    product.noStock= variant.no_stock;
-    product.imageUrl=variant.image_url;
-    product.price=variant.price;
-    
+    product.variantId = variant.variant_id;
+    product.color = variant.color;
+    product.size = variant.size;
+    product.noStock = variant.no_stock;
+    product.image = variant.image_url;
+    product.price = variant.price;
+
     return product;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
@@ -148,7 +149,7 @@ async function findProductsByCategory(category) {
         [parseInt(category_products[index].product_id)]
       );
 
-      product.imageUrl = variants[0].image_url;
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(
@@ -177,7 +178,7 @@ async function findProductsBySubCategory(category, subcategory) {
         [parseInt(category_products[index].product_id)]
       );
 
-      product.imageUrl = variants[0].image_url;
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(
@@ -198,7 +199,6 @@ async function getProducts() {
       "SELECT product_id, product_name FROM product"
     );
 
-    
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
@@ -206,8 +206,8 @@ async function getProducts() {
         "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
         [parseInt(productData[index].product_id)]
       );
-      
-      product.imageUrl = variants[0].image_url;
+
+      product.image = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
         await customerExecuteSQL(
@@ -215,10 +215,8 @@ async function getProducts() {
           [parseInt(productData[index].product_id)]
         )
       )[0].rating;
-      
     }
 
-    
     return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
@@ -433,7 +431,7 @@ async function createProduct(
       "LAST_INSERT_ID()"
     );
 
-    InsertProduct = {
+    const InsertProduct = {
       product_id: lastInsertProductId.insertId,
       product_name: product_name,
       category_id: category_id[0].category_id,
@@ -454,6 +452,7 @@ async function createProduct(
 
 async function updateProduct(
   product_id,
+  product_name,
   description,
   weight,
   dimension,
@@ -477,8 +476,9 @@ async function updateProduct(
       [supplier_name]
     );
     await adminExecuteSQL(
-      "UPDATE product set category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
+      "UPDATE product set product_name=?, category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
       [
+        product_name,
         category_id[0].category_id,
         subcategory_id[0].subcat_id,
         description,

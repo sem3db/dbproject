@@ -1,14 +1,28 @@
 --
 --Functions
 --
+USE `cse_21`;
+DROP function IF EXISTS `addNewRegCustomer`;
+
+USE `cse_21`;
+DROP function IF EXISTS `cse_21`.`addNewRegCustomer`;
+;
+
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` FUNCTION `addNewRegCustomer`(in_email varchar(100), in_password varchar(255), in_first_name varchar(100), in_last_name varchar(100), in_zip_code varchar(5), in_address_line_1 varchar(30), in_address_line_2 varchar(30), in_city varchar(30), in_state varchar(30), in_phone varchar(10), in_cart_id int ) RETURNS int
+USE `cse_21`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `addNewRegCustomer`(in_email varchar(100), in_password varchar(255), in_first_name varchar(100), in_last_name varchar(100), in_zip_code varchar(5), in_address_line_1 varchar(30), in_address_line_2 varchar(30), in_city varchar(30), in_state varchar(30), in_phone varchar(10), in_cart_id int ) 
+RETURNS integer
     DETERMINISTIC
 BEGIN
+DECLARE added_id INTEGER;
 INSERT INTO registered_customer (email, password, first_name, last_name, zip_code, address_line_1, address_line_2, city, state, phone, cart_id) VALUES(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, in_cart_id);
-RETURN 1;
+SELECT LAST_INSERT_ID() into added_id;
+RETURN added_id;
 END$$
+
 DELIMITER ;
+;
+
 
 
 DELIMITER $$
@@ -59,7 +73,16 @@ DELIMITER ;
 --Procedures
 --
 
+
+USE `cse_21`;
+DROP procedure IF EXISTS `registerCustomer`;
+
+USE `cse_21`;
+DROP procedure IF EXISTS `cse_21`.`registerCustomer`;
+;
+
 DELIMITER $$
+USE `cse_21`$$
 CREATE DEFINER=`customer`@`localhost` PROCEDURE `registerCustomer`(
 	in in_email varchar(100), 
 	in in_password varchar(255), 
@@ -71,7 +94,7 @@ CREATE DEFINER=`customer`@`localhost` PROCEDURE `registerCustomer`(
     in in_city varchar(30), 
     in in_state varchar(30), 
     in in_phone varchar(10),
-    out state bool
+    out state integer
 )
 BEGIN
 	declare emailexist int;
@@ -82,14 +105,18 @@ BEGIN
 		set @tmp_var_1 = (select insertNewCart());
         SET newcartid = (Select getNextCartId());
         
-        set @tmp_var_2 = (select addNewRegCustomer(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, newcartid));
+        set state = (select addNewRegCustomer(in_email, in_password, in_first_name, in_last_name, in_zip_code, in_address_line_1, in_address_line_2, in_city, in_state, in_phone, newcartid));
 
-        set state=true;
+        
 	else
-		set state=false;
+		set state=0;
 	end if;
 END$$
+
 DELIMITER ;
+;
+
+
 
 --get a product using its product id
 USE `cse_21`;

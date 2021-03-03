@@ -1,9 +1,11 @@
 import React from "react";
+import {Route} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import {logout} from '../action/userActions'
 import { signout } from "../action/adminActions";
+import SearchBox from './SearchBox'
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ const Header = (props) => {
                 <Nav.Link className="btn btn-secondary">Watch</Nav.Link>
               </LinkContainer>
             </Nav> */}
+            <Route render={({history})=><SearchBox history={history}/>}/>
 
             <Nav className="ml-auto">
               <LinkContainer to="/cart">

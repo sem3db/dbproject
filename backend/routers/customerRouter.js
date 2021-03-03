@@ -21,10 +21,11 @@ userRouter.post(
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
         const token = generateToken({
+          reg_customer_id:login_cred[0].reg_customer_id,
           email: login_cred[0].email,
           fName: login_cred[0].first_name,
         });
-        console.log(token);
+        
         res.send({
           first_name: login_cred[0].first_name,
           email: login_cred[0].email,
@@ -54,18 +55,27 @@ userRouter.post(
       req.body.state,
       req.body.phone
     );
+
+    const token = generateToken({
+      reg_customer_id:createdUser.customer_id,
+      email: req.body.email,
+      fName: req.body.fName,
+    });
+
     res.send({
-      first_name: createdUser.fName,
-      last_name: createdUser.lName,
-      //token: token,
+      reg_customer_id:createdUser.customer_id,
+      first_name: req.body.fName,
+      email: req.body.email,
+      token: token,
     });
   })
 );
 
 userRouter.get(
-  "/:custometId",
+  "/profile",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
-    const customer = await findCustomerById(req.params.custometId);
+    const customer = await findCustomerById(req.user.reg_customer_id);
     if (customer) {
       res.send(customer);
     } else {
@@ -74,35 +84,36 @@ userRouter.get(
   })
 );
 
-userRouter.put(
-  "/update/:custometId",
-  expressAsyncHandler(async (req, res) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const createdUser = await updateCustomer(
-      req.params.custometId,
-      hashedPassword,
-      req.body.fName,
-      req.body.lName,
-      req.body.zipCode,
-      req.body.addressLine1,
-      req.body.addressLine2,
-      req.body.city,
-      req.body.state,
-      req.body.phone
-    );
-    res.send({
-      first_name: createdUser.fName,
-      last_name: createdUser.lName,
-      //token: generateToken(createdUser),
-    });
-  })
-);
+// userRouter.put(
+//   "/update/:custometId",
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//     const createdUser = await updateCustomer(
+//       req.params.custometId,
+//       hashedPassword,
+//       req.body.fName,
+//       req.body.lName,
+//       req.body.zipCode,
+//       req.body.addressLine1,
+//       req.body.addressLine2,
+//       req.body.city,
+//       req.body.state,
+//       req.body.phone
+//     );
+//     res.send({
+//       first_name: createdUser.fName,
+//       last_name: createdUser.lName,
+//     });
+//   })
+// );
 
 userRouter.get(
-  "/:custometId/shipment",
+  "/shipment/info",
+  isAuth,  
   expressAsyncHandler(async (req, res) => {
-    const address = await getShippingAddress(req.params.custometId);
+    const address = await getShippingAddress(req.user.reg_customer_id);
     if (address) {
       res.send(address);
     } else {
@@ -126,10 +137,13 @@ userRouter.get(
 );
 
 userRouter.post(
-  "/:custometId/shipment",
+  "/shipment/change",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
+    
     const newaddress = await updateShippingAddress(
-      req.params.custometId,
+      
+      req.user.reg_customer_id,
       req.body.postalCode,
       req.body.addressLine1,
       req.body.addressLine2,
