@@ -30,7 +30,7 @@ export default function Report1Screen(props) {
   return (
     <>
     <div className="admin">
-      <h1>Report1 - Quarterly sales report</h1>
+      <h1>Report 1 - Quarterly sales report</h1>
       <form className="form" onSubmit={submitHandler}>
         <div>
           <label htmlFor="year">Input Year</label>

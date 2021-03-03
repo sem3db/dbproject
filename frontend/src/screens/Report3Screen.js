@@ -1,23 +1,29 @@
 // - Product category with most orders
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
 export default function Report3Screen(props) {
-    const [submitted, setSubmitted] = useState('');
-
+    const [submitted, setSubmitted] = useState(false);
+    // const [from, setFrom] = useState('');
+    // const [to, setTo] = useState('');
+    const [productcategoryreport, setProductcategoryreport] = useState('');
+    // let l = []
+  
     const submitHandler = (e) => {
-        e.preventDefault();
+      e.preventDefault();
+      async function getProductCategoryReport(){
+        const response = await axios.get(`/api/reports/report-3`);
+        const res = response.data;
+        setProductcategoryreport(res)
         setSubmitted(true);
+      }
+      getProductCategoryReport();
     };
-    useEffect(() => {
-        if (submitted) {
-        //   dispatch(listCategories());
-        }
-    }, [submitted, props.history]);
 
     return (
         <>
-        <div className="">
-            <h1>Report3 - Product category with most orders</h1>
+        <div className="admin">
+            <h1>Report 3 - Product category with most orders</h1>
             <form className="form" onSubmit={submitHandler}>
             <div>
                 <label></label>
@@ -28,12 +34,12 @@ export default function Report3Screen(props) {
             </form>
             {submitted &&
             <div>
-                <h1>
-                Product
-                </h1>
+                <h2>
+                Product Category: {productcategoryreport}
+                </h2>
             </div>
             }
         </div>
         </>
-        );
-}
+    );
+};
