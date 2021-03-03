@@ -22,7 +22,7 @@ const LoginScreen = ({location,history}) => {
     const {loading, error, userInfo} = userLogin
 
     const redirect = location.search ? location.search.split('=')[1]:'/'
-
+    console.log(redirect)
     useEffect(()=>{
         if(userInfo){
             history.push(redirect)
@@ -54,7 +54,7 @@ const LoginScreen = ({location,history}) => {
                     <Col>
                     New Customer?
                     <Row className='px-3'><Col><Link to={redirect ? `/register?redirect=${redirect}`:'/register'} >Register</Link></Col></Row>
-                    <Row className='px-3'><Col><Link to={redirect ? `/register?redirect=${redirect}`:'/register'} >Continue as a Guset</Link></Col></Row>
+                    <Row className='px-3'><Col><Link to={redirect=='shipping' ? '/shipping':'/'} >Continue as a Guset</Link></Col></Row>
                     </Col>
                 </Row>
                 

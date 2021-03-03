@@ -24,9 +24,9 @@ orderRouter.post(
   expressAsyncHandler(async (req, res) => {
     const customerID = req.user.reg_customer_id;
     //const customerID = req.body.customerID;
-    const paymethod = req.body.paymethod;
+    const paymethod = req.body.aymentMethod;
     const delstat = req.body.delstat;
-    const delmethod = req.body.delmethod;
+    const delmethod = req.body.deliveryMethod;
     const note = req.body.note;
 
     if (customerID && paymethod && delstat && delmethod) {

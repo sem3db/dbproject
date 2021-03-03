@@ -38,7 +38,7 @@ import FormContainer from "../components/FormContainer";
 
     useEffect(()=>{
         if(!userInfo){
-            history.push('/login')
+            // history.push('/login')
         }
         else{
             console.log(address)
