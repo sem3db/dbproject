@@ -16,7 +16,7 @@ orderRouter.get(
 
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
-
+    
     res.send(orders);
   })
 );
