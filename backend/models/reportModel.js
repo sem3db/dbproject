@@ -133,8 +133,9 @@ async function timePeriodWithMostIneterest(product_id) {
 async function customerOrderReport() {
   try {
     const orderData = await adminExecuteSQL(
-      "select customer_id,customer_type, order_id,order_date, total_payment, payment_method from productorder order by customer_id;"
+      "select customer_id,customer_type, order_id, date(order_date) as order_date, total_payment, payment_method from productorder order by customer_id"
     );
+
     console.log(orderData);
 
     for (let index = 0; index < orderData.length; index++) {
@@ -152,11 +153,10 @@ async function customerOrderReport() {
         );
       }
       order.customer_name = name[0].first_name + " " + name[0].last_name;
-      //console.log(order);
     }
     return orderData;
   } catch (e) {
-    console.log(e);
+    console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
 }
 module.exports = {

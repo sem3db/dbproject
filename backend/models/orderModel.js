@@ -40,13 +40,12 @@ async function moveToOrder_registered(
   paymethod,
   delstat,
   delmethod,
-  estim,
   note
 ) {
   try {
     const moveState = await customerExecuteSQL(
-      "call moveToOrder_reg(?,?,?,?,?,?)",
-      [cust_id, paymethod, delstat, delmethod, estim, note]
+      "call moveToOrder_reg(?,?,?,?,?)",
+      [cust_id, paymethod, delstat, delmethod, note]
     ).then();
     console.log(moveState);
     return moveState;
@@ -61,14 +60,13 @@ async function moveToOrder_guest(
   paymethod,
   delstat,
   delmethod,
-  estim,
   note,
   productlist
 ) {
   try {
     const moveState = await customerExecuteSQL(
-      "call moveToOrder_gst(?,?,?,?,?,?,?)",
-      [cust_id, paymethod, delstat, delmethod, estim, note, productlist]
+      "call moveToOrder_gst(?,?,?,?,?,?)",
+      [cust_id, paymethod, delstat, delmethod, note, productlist]
     ).then();
     console.log(moveState);
     return moveState;

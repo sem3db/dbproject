@@ -3,23 +3,24 @@ import {CART_ADD_ITEM, CART_REMOVE_ITEM,CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PA
 
 
 export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=>{
-    const {data}=await axios.get(`/api/products/${product_id}`)
-    console.log('popopopopo')
+    const {data}=await axios.get(`/api/products/${product_id}/${variant_id}`)
+    console.log('data from proid/variid')
     console.log(data)
-    if(getState().userLogin){
-        
-        const {userLogin:{userInfo}}=getState()
+    const {userLogin:{userInfo}}=getState()
+    if(userInfo){
+        console.log(getState().userLogin)
+        // const {userLogin:{userInfo}}=getState()
         const config={
         headers:{
             'Content-Type':'application/json',
             Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const cart={product:product_id, variant:variant_id, quantity:qty, customerID:5}
-        console.log(cart)
-        const customerID=5
-        // const {data1} =await axios.post('/api/cart/addItem',{product_id, variant_id, qty, customerID},config)
     }
+    const cart={product:product_id, variant:variant_id, quantity:qty, customerID:5}
+    console.log(cart)
+    const customerID=5
+    // const {data1} =await axios.post('/api/cart/addItem',{product_id, variant_id, qty, customerID},config)
 
 
     dispatch({
@@ -78,18 +79,17 @@ export const removeFromCart= (product_id,variant_id)=>(dispatch,getState)=>{
 }
 
 export const saveShippingAddress= (data)=>async(dispatch,getState)=>{
-    const {data1} =await axios.post('/api/customer/5/shipment',data)
-    // console.log(data)
-    // if(getState().userLogin){
-    //     const {userLogin:{userInfo}}=getState()
-    //     const config={
-    //     headers:{
-    //         'Content-Type':'application/json',
-    //         Authorization:`Bearer ${userInfo.token}`
-    //         }
-    //     }
-    //     const {data} =await axios.post('/api/customer/5/shipment',data,config)
-    // }
+    console.log(data)
+    if(getState().userLogin){
+        const {userLogin:{userInfo}}=getState()
+        const config={
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+        const {data1} =await axios.post('/api/customer/5/shipment',data)
+    }
     dispatch({
         type:CART_SAVE_SHIPPING_ADDRESS,
         payload:data,

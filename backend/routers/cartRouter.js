@@ -9,14 +9,14 @@ const cartRouter = express.Router();
 
 cartRouter.post('/',expressAsyncHandler(async (req, res) => {
 
-    const customerID = req.params.customerID;
+    const customerID = req.body.customerID;
     
     
     if (customerID) {
         const cartItems = await getCartItems(customerID).then();
         res.send(cartItems);
     } else {
-        res.status(404).send({ message: "Customer/Cart not found" });
+        res.status(404).send({ message: `Customer/Cart not found : ${customerID}` });
     }    
 
   }));

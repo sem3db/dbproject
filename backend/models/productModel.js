@@ -73,7 +73,16 @@ async function findVariantByParams(product_id, color, size) {
       )
     )[0];
 
-    return variant;
+    const Variant = {
+      variantId: variant.variant_id,
+      color: variant.color,
+      size: variant.size,
+      noStock: variant.no_stock,
+      imageUrl: variant.image_url,
+      price: variant.price,
+    };
+
+    return Variant;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
   }
@@ -86,7 +95,6 @@ async function findVariantByIds(product_id, variant_id) {
         "SELECT * FROM variant WHERE product_id =? AND variant_id=?",
         [parseInt(product_id), parseInt(variant_id)]
       )
-  
     )[0];
 
     const Variant = {
@@ -179,6 +187,8 @@ async function getProducts() {
     const productData = await customerExecuteSQL(
       "SELECT product_id, product_name FROM product"
     );
+
+    
     for (let index = 0; index < productData.length; index++) {
       const product = productData[index];
 
@@ -186,7 +196,7 @@ async function getProducts() {
         "SELECT image_url ,price FROM variant WHERE product_id =? LIMIT 1",
         [parseInt(productData[index].product_id)]
       );
-
+      
       product.imageUrl = variants[0].image_url;
       product.price = variants[0].price;
       product.rating = (
@@ -195,8 +205,10 @@ async function getProducts() {
           [parseInt(productData[index].product_id)]
         )
       )[0].rating;
+      
     }
 
+    
     return getProductTemplate(productData);
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
@@ -287,7 +299,7 @@ async function updateVariant(
 ) {
   try {
     await adminExecuteSQL(
-      "UPDATE variant set SKU=?, image_url=?, price=?, offer=? color=?, size=?, no_stock=? WHERE product_id=? AND variant_id=?",
+      "UPDATE variant set SKU=?, image_url=?, price=?, offer=?, color=?, size=?, no_stock=? WHERE product_id=? AND variant_id=?",
       [
         SKU,
         image_url,
@@ -302,7 +314,7 @@ async function updateVariant(
     );
     return "success";
   } catch (e) {
-    return e;
+    console.log(e);
   }
 }
 
@@ -467,22 +479,6 @@ async function updateProduct(
         product_id,
       ]
     );
-    // const data = await adminExecuteSQL(
-    //   "SELECT category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
-    //   [product_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE category SET category_name=? WHERE category_id=?",
-    //   [category_name, data[0].category_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE subcategory SET subcat_name=? WHERE subcat_id=?",
-    //   [subcat_name, data[0].subcat_id]
-    // );
-    // await adminExecuteSQL(
-    //   "UPDATE supplier SET supplier_name=? WHERE supplier_id=?",
-    //   [supplier_name, data[0].supplier_id]
-    // );
     return "success";
   } catch (e) {
     console.log(e);
