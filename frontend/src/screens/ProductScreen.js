@@ -49,7 +49,7 @@ import {
       {loading?<Loader/>:error?<Message variant='danger' Children={error}>{error}</Message>:(
       <Row>
         <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid />
+          <Image src={variant.image} alt={product.name} fluid />
         </Col>
         <Col md={6}>
         {error1?<Message variant='warning'>Selected Product is not available</Message>:''}

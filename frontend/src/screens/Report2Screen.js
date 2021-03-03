@@ -7,27 +7,16 @@ export default function Report2Screen(props) {
     const [to, setTo] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [productreport, setProductreport] = useState('');
-    // let l = []
   
     const submitHandler = (e) => {
-      e.preventDefault();
-      async function getProductReport(from,to){
-        const response = await axios.get(`/api/reports/report-2`,{from,to});
-        console.log(response)
-        // const res = response.data;
-        // for (var g in res){
-        //   let k = []
-        //   k.push(g)
-        //   var n = res[g]
-        //   for (var h in n){
-        //     k.push(n[h])
-        //   }
-        //   l.push(k)
-        // }
-        // setProductreport(l)
-        setSubmitted(true);
-      }
-      getProductReport(from,to);
+        e.preventDefault();
+        async function getProductReport(from,to){
+            const response = await axios.post(`/api/reports/report-2`,{"from":from,"to":to});
+            const res = response.data;
+            setProductreport(res)
+            setSubmitted(true);
+        }
+        getProductReport(from,to);
     };
 
     return (
@@ -64,11 +53,34 @@ export default function Report2Screen(props) {
                 </button>
             </div>
             </form>
-            {submitted &&
+            {submitted && productreport &&
             <div>
-                <p>
-                    TABLE
-                </p>
+            <table className="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PRODUCT</th>
+                    <th>BRAND</th>
+                    <th>DESCRIPTION</th>
+                    <th>WEIGHT</th>
+                    <th>DIMENSION</th>
+                    <th>SALES QUANTITY</th>
+                </tr>
+                </thead>
+                <tbody>
+                {productreport.map(preport =>
+                <tr key={preport.product_id}>
+                    <td>{preport.product_id}</td>
+                    <td>{preport.product_name}</td>
+                    <td>{preport.brand}</td>
+                    <td>{preport.description}</td>
+                    <td>{preport.weight}</td>
+                    <td>{preport.dimension}</td>
+                    <td>{preport.sale_quantity}</td>
+                </tr>
+                )}
+                </tbody>
+            </table>
             </div>
             }
         </div>

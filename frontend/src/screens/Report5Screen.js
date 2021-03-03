@@ -30,7 +30,7 @@ export default function Report5Screen(props) {
             </button>
         </div>
       </form>
-      {submitted &&
+      {submitted && orderreports &&
       <div>
       <table className="table">
         <thead>
