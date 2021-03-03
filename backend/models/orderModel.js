@@ -123,12 +123,13 @@ async function moveToOrder_guest(
   }
 }
 
-
-
 async function getOrderList(userID) {
   try {
     //const cart_id = customerExecuteSQL("select getcartid(?)",[userID]);
-    const orderlist = customerExecuteSQL("select order_id,date(order_date) as order_date,delivery_estimate,total_payment,delivery_status from productorder where customer_id = ? and customer_type= ?",[parseInt(userID),"Registered"]).then();
+    const orderlist = customerExecuteSQL(
+      "select order_id,date(order_date) as order_date,delivery_estimate,total_payment,delivery_status from productorder where customer_id = ? and customer_type= ?",
+      [parseInt(userID), "Registered"]
+    ).then();
     console.log(orderlist);
     return orderlist;
   } catch (e) {
@@ -137,12 +138,16 @@ async function getOrderList(userID) {
   }
 }
 
-
 async function orderDetailes(orderID) {
   try {
-    const order = customerExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",[orderID]).then();
-    const productlist = customerExecuteSQL("select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id").then();
-    return [order,productlist];
+    const order = customerExecuteSQL(
+      "select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",
+      [orderID]
+    ).then();
+    const productlist = customerExecuteSQL(
+      "select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id"
+    ).then();
+    return [order, productlist];
   } catch (e) {
     console.log(JSON.parse(JSON.stringify(e))["error"]);
     return "ERROR";
@@ -155,5 +160,5 @@ module.exports = {
   moveToOrder_guest,
   setDeliveryStatus,
   getOrderList,
-  orderDetailes
+  orderDetailes,
 };
