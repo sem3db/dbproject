@@ -1,6 +1,6 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-
+const { isAuth, isAdmin } = require("../utils.js");
 const {
   quaterlySalesReport,
   productCategoryWithMostOrders,

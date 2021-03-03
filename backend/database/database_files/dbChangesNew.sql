@@ -1,3 +1,5 @@
+
+
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/11.jpg' WHERE (`variant_id` = '1') and (`product_id` = '1');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/21.jpg' WHERE (`variant_id` = '1') and (`product_id` = '2');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/31.jpg' WHERE (`variant_id` = '1') and (`product_id` = '3');
@@ -85,3 +87,12 @@ UPDATE `cse_21`.`variant` SET `image_url` = '/images/294.jpg' WHERE (`variant_id
 
 ALTER TABLE `cse_21`.`cart_product` 
 CHANGE COLUMN `ID` `ID` INT NOT NULL AUTO_INCREMENT ;
+
+
+
+ALTER TABLE `cse_21`.`guest_customer` 
+DROP FOREIGN KEY `guest_customer_ibfk_1`;
+ALTER TABLE `cse_21`.`guest_customer` 
+DROP COLUMN `order_id`,
+DROP INDEX `order_id` ;
+;

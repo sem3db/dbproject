@@ -1,7 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const orderRouter = express.Router();
-
+const { isAuth, isAdmin } = require("../utils.js");
 const {
   getOrders,
   moveToOrder_registered,
@@ -10,6 +10,8 @@ const {
 
 orderRouter.get(
   "/",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
 
