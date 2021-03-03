@@ -173,5 +173,6 @@ module.exports = {
   quaterlySalesReport,
   productCategoryWithMostOrders,
   productsWithMostNumberOfSales,
+  timePeriodWithMostIneterest,
   customerOrderReport
 };
