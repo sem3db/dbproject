@@ -450,3 +450,5 @@ GRANT EXECUTE ON PROCEDURE cse_21.getCartItems TO 'customer'@'localhost';
 GRANT EXECUTE ON PROCEDURE cse_21.moveToOrder_gst TO 'customer'@'localhost';
 GRANT EXECUTE ON PROCEDURE cse_21.moveToOrder_reg TO 'customer'@'localhost';
 GRANT EXECUTE ON PROCEDURE cse_21.removeFromCart TO 'customer'@'localhost';
+
+FLUSH privileges;
