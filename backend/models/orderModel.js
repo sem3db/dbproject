@@ -130,7 +130,7 @@ async function getOrderList(userID) {
       "select order_id,date(order_date) as order_date,delivery_estimate,total_payment,delivery_status from productorder where customer_id = ? and customer_type= ?",
       [parseInt(userID), "Registered"]
     ).then();
-    console.log(orderlist);
+    //console.log(orderlist);
     return orderlist;
   } catch (e) {
     console.log(JSON.parse(JSON.stringify(e))["error"]);
@@ -140,12 +140,13 @@ async function getOrderList(userID) {
 
 async function orderDetailes(orderID) {
   try {
-    const order = customerExecuteSQL(
-      "select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",
+    const order = await customerExecuteSQL(
+      "select order_id,order_date,delivery_estimate,total_payment,delivery_status from productorder where order_id = ?",
       [orderID]
     ).then();
-    const productlist = customerExecuteSQL(
-      "select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id"
+    const productlist = await customerExecuteSQL(
+      "select product_name,product_price,product_offer from order_product join product on order_product.product_id = product.product_id where order_product.order_id=?",
+      [orderID]
     ).then();
     return [order, productlist];
   } catch (e) {
