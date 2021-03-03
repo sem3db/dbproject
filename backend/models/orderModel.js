@@ -35,6 +35,17 @@ async function getOrders() {
   }
 }
 
+async function setDeliveryState(order_id) {
+  try {
+    await adminExecuteSQL(
+      "UPDATE productorder SET delivery_status=? WHERE order_id=?",
+      ["delivered", order_id]
+    );
+  } catch (e) {
+    return "Error";
+  }
+}
+
 async function moveToOrder_registered(
   cust_id,
   paymethod,
@@ -80,4 +91,5 @@ module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
+  setDeliveryState,
 };
