@@ -123,9 +123,36 @@ async function moveToOrder_guest(
   }
 }
 
+
+
+async function getOrderList(userID) {
+  try {
+    const cart_id = customerExecuteSQL("select getcartid(?)",[userID]);
+    const orderlist = customerExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where cart_id = ?",[cart_id]).then();
+    return orderlist;
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
+
+async function orderDetailes(orderID) {
+  try {
+    const order = customerExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where order_id = ?",[orderID]).then();
+    const productlist = customerExecuteSQL("select product_name,product_price_product_offer from order_product join product on order_product.product_id = product.product_id").then();
+    return [order,productlist];
+  } catch (e) {
+    console.log(JSON.parse(JSON.stringify(e))["error"]);
+    return "ERROR";
+  }
+}
+
 module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
   setDeliveryStatus,
+  getOrderList,
+  orderDetailes
 };
