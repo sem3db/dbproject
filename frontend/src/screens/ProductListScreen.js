@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createProduct,
   deleteProduct,
   listProductsAdmin,
 } from "../action/productAction";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
-  PRODUCT_CREATE_RESET,
   PRODUCT_DELETE_RESET,
 } from "../constants/productConstants";
 
@@ -16,13 +14,13 @@ export default function ProductListScreen(props) {
   const productListAdmin = useSelector((state) => state.productListAdmin);
   const { loading, error, products } = productListAdmin;
 
-  const productCreate = useSelector((state) => state.productCreate);
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    product: createdProduct,
-  } = productCreate;
+  // const productCreate = useSelector((state) => state.productCreate);
+  // const {
+  //   loading: loadingCreate,
+  //   error: errorCreate,
+  //   success: successCreate,
+  //   product: createdProduct,
+  // } = productCreate;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -33,25 +31,27 @@ export default function ProductListScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (successCreate) {
-      dispatch({ type: PRODUCT_CREATE_RESET });
-      // props.history.push(`/product/${createdProduct.product_id}/edit`);
-    }
+    // if (successCreate) {
+    //   dispatch({ type: PRODUCT_CREATE_RESET });
+    //   // props.history.push(`/product/${createdProduct.product_id}/edit`);
+    // }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
     dispatch(listProductsAdmin());
-  }, [ dispatch, props.history, successCreate, successDelete]);
-  // createdProduct,
+  }, [ dispatch, props.history, successDelete]);
+
   const deleteHandler = (product) => {
     if (window.confirm("Are you sure to delete?")) {
       dispatch(deleteProduct(product.product_id));
     }
   };
+
   const createHandler = () => {
     props.history.push(`/newproduct/create`)
     // dispatch(createProduct());
   };
+
   return (
     <div className="admin">
       <div className="row">
@@ -63,8 +63,8 @@ export default function ProductListScreen(props) {
 
       {loadingDelete && <Loader></Loader>}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
-      {loadingCreate && <Loader></Loader>}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
+      {/* {loadingCreate && <Loader></Loader>} */}
+      {/* {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
       {loading ? (
         <Loader></Loader>
       ) : error ? (

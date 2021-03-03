@@ -26,7 +26,7 @@ export default function ProductCreateScreen(props) {
   } = productCreate;
 
   const categoryList = useSelector((state) => state.categoryList);
-  const { loading: catloading, error: caterror, categories:categories } = categoryList;
+  const { loading: catloading, error: caterror, categories } = categoryList;
 
   const subcategoryList = useSelector((state) => state.subcategoryList);
   const { loading: scatloading, error: scaterror, subcategories } = subcategoryList;
@@ -50,7 +50,7 @@ export default function ProductCreateScreen(props) {
     if (!catloading && !caterror) {
         dispatch(listCategories());
     }
-    if (categoryId !== null || !scatloading && !scaterror) {
+    if (categoryId !== null && !scatloading && !scaterror) {
         dispatch(listSubcategories(categoryId));
     }
     if (!suploading && !superror) {

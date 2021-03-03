@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    createVariant,
     deleteVariant,
     listVariants,
 } from "../action/productAction";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { VARIANT_CREATE_RESET, VARIANT_DELETE_RESET } from "../constants/variantConstants";
+import {
+  VARIANT_DELETE_RESET
+} from "../constants/variantConstants";
 
 export default function VariantListScreen(props) {
     const productId = props.match.params.id;
@@ -15,13 +16,13 @@ export default function VariantListScreen(props) {
     const variantList = useSelector((state) => state.variantList);
     const { loading, error, variants } = variantList;
 
-  const variantCreate = useSelector((state) => state.variantCreate);
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    variant: createdVariant,
-  } = variantCreate;
+  // const variantCreate = useSelector((state) => state.variantCreate);
+  // const {
+  //   loading: loadingCreate,
+  //   error: errorCreate,
+  //   success: successCreate,
+  //   variant: createdVariant,
+  // } = variantCreate;
 
   const variantDelete = useSelector((state) => state.variantDelete);
   const {
@@ -32,24 +33,25 @@ export default function VariantListScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (successCreate) {
-      dispatch({ type: VARIANT_CREATE_RESET });
-      props.history.push(`/product/${productId}/variant/${createdVariant.variant_id}/edit`);
-    }
+    // if (successCreate) {
+    //   dispatch({ type: VARIANT_CREATE_RESET });
+    // }
     if (successDelete) {
       dispatch({ type: VARIANT_DELETE_RESET });
     }
     dispatch(listVariants(productId));
-  }, [productId, successCreate,successDelete, createVariant, dispatch, props.history]);
+  }, [productId, dispatch,successDelete, props.history]);
 
   const deleteHandler = (variant) => {
     if (window.confirm("Are you sure to delete?")) {
       dispatch(deleteVariant(variant.product_id,variant.variant_id));
     }
   };
+
   const createHandler = () => {
-    dispatch(createVariant(productId));
+    props.history.push(`/product/${productId}/newvariant/create`);
   };
+
   return (
     <div className="admin">
       <div className="row">
@@ -61,8 +63,8 @@ export default function VariantListScreen(props) {
 
       {loadingDelete && <Loader></Loader>}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
-      {loadingCreate && <Loader></Loader>}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
+      {/* {loadingCreate && <Loader></Loader>}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
       {loading ? (
         <Loader></Loader>
       ) : error ? (
