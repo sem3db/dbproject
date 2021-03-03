@@ -187,7 +187,7 @@ _delmethod varchar(15),
 _note varchar(300),
 _productlist JSON)
 BEGIN
-	declare _submitstate int;
+declare _submitstate int;
     
     declare _variantid int;
     declare _productid int;
@@ -217,29 +217,29 @@ BEGIN
     
     
     start transaction;
-		set _city = (select lower(city) from guest_customer where guest_id = cust_id);
+set _city = (select lower(city) from guest_customer where guest_id = cust_id);
         set _ismaincity = (select isMainCity(_city));
         
         if _ismaincity =0 then
-			set _delay=7;
-		else
-			set _delay=5;
-		end if;
+set _delay=7;
+else
+set _delay=5;
+end if;
         
-		set _submitstate = (select initOrder(cust_id,"Guest",_paymethod,0.0,_delstat,_delmethod,date(now()),_note));
+set _submitstate = (select initOrder(cust_id,"Guest",_paymethod,0.0,_delstat,_delmethod,date(now()),_note));
         
         set _lastorderid =_submitstate;
         
         set _counter = 0;
         set _productlist_len = json_length(_productlist);
         
-		while _counter < _productlist_len do
+while _counter < _productlist_len do
         
-			set @productline = json_extract(_productlist, concat("$[",_counter,"]"));
+set @productline = json_extract(_productlist, concat("$[",_counter,"]"));
             
             set _variantid = json_extract(@productline,"$.variant_id");
             set _productid = json_extract(@productline,"$.product_id");
-            set _quantity = json_extract(@productline,"$.quantity");
+            set _quantity = json_extract(@productline,"$.qty");
             
             set _price= (select price from variant where variant_id = _variantid and product_id = _productid);
             set _offer= (select offer from variant where variant_id = _variantid and product_id = _productid);
@@ -256,8 +256,8 @@ BEGIN
             set _newstock = (select no_stock from variant where product_id = _productid and variant_id = _variantid);
             
             if _newstock < 0 then
-				set _nostockdelay = 3;
-			end if;
+set _nostockdelay = 3;
+end if;
             
             INSERT INTO order_product(
 `product_id`,
@@ -272,22 +272,23 @@ _price,
 _offer,
 _lastorderid);
 
-		set _counter = _counter+1;
+set _counter = _counter+1;
         END while;
         
-		update productorder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
+update productorder set delivery_estimate = date_add( delivery_estimate, interval _delay + _nostockdelay day) where order_id = _lastorderid;
     
-		if _rollback
-			then rollback;
-			select false;
-		else
-			select true;
-		end if;
+if _rollback
+then rollback;
+select false;
+else
+select true;
+end if;
     
     commit;
     
 END$$
 DELIMITER ;
+
 
 
 DROP PROCEDURE IF EXISTS `cse_21`.`moveToOrder_reg`;

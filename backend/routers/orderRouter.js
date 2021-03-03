@@ -6,6 +6,7 @@ const {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
+  setDeliveryStatus,
 } = require("../models/orderModel.js");
 
 orderRouter.get(
@@ -18,19 +19,25 @@ orderRouter.get(
   })
 );
 
+orderRouter.get(
+  "/setDeliverStatus/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
+  })
+);
+
 orderRouter.post(
   "/placeorder/registered",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body)
     const customerID = req.user.reg_customer_id;
-    console.log(customerID)
     //const customerID = req.body.customerID;
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
     const delmethod = req.body.deliveryMethod;
     const note = req.body.note;
-    console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkgggggggggkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+
     if (customerID && paymethod && delstat && delmethod) {
       const orderState = await moveToOrder_registered(
         customerID,
@@ -40,7 +47,6 @@ orderRouter.post(
         note
       ).then();
       res.send(orderState);
-      console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
     } else {
       res.status(404).send({ message: "Invalid Request" });
     }
@@ -49,6 +55,7 @@ orderRouter.post(
 
 orderRouter.post(
   "/placeorder/guest",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
