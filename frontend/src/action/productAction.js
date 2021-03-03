@@ -145,7 +145,8 @@ export const listProductsAdmin = () => async (dispatch, getState) => {
   const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = await axios.get(`/api/products/productlist`, {
+    const { data } = await axios.get(`/api/products/productlist`, 
+    {
       headers:{ Authorization: `Bearer ${adminInfo.token}`}
     }
     );

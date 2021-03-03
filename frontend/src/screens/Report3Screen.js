@@ -13,7 +13,9 @@ export default function Report3Screen(props) {
       e.preventDefault();
       async function getProductCategoryReport(){
         const response = await axios.get(`/api/reports/report-3`);
+        console.log(response);
         const res = response.data;
+        console.log(res);
         setProductcategoryreport(res)
         setSubmitted(true);
       }
