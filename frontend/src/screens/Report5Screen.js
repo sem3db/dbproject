@@ -1,5 +1,5 @@
 // - Customer - order report
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 
 export default function Report5Screen(props) {
