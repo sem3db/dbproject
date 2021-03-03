@@ -21,6 +21,7 @@ userRouter.post(
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
         const token = generateToken({
+          reg_customer_id:login_cred[0].reg_customer_id,
           email: login_cred[0].email,
           fName: login_cred[0].first_name,
         });
@@ -56,23 +57,25 @@ userRouter.post(
     );
 
     const token = generateToken({
+      reg_customer_id:createdUser.customer_id,
       email: req.body.email,
       fName: req.body.fName,
     });
 
     res.send({
-      first_name: createdUser.fName,
-      email: createdUser.email,
+      reg_customer_id:createdUser.customer_id,
+      first_name: req.body.fName,
+      email: req.body.email,
       token: token,
     });
   })
 );
 
 userRouter.get(
-  "/:custometId",
+  "/profile",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const customer = await findCustomerById(req.params.custometId);
+    const customer = await findCustomerById(req.user.reg_customer_id);
     if (customer) {
       res.send(customer);
     } else {
@@ -107,10 +110,10 @@ userRouter.get(
 // );
 
 userRouter.get(
-  "/:custometId/shipment",
-  isAuth,
+  "/shipment/info",
+  isAuth,  
   expressAsyncHandler(async (req, res) => {
-    const address = await getShippingAddress(req.params.custometId);
+    const address = await getShippingAddress(req.user.reg_customer_id);
     if (address) {
       res.send(address);
     } else {
@@ -134,11 +137,13 @@ userRouter.get(
 );
 
 userRouter.post(
-  "/:custometId/shipment",
+  "/shipment/change",
   isAuth,
   expressAsyncHandler(async (req, res) => {
+    
     const newaddress = await updateShippingAddress(
-      req.params.custometId,
+      
+      req.user.reg_customer_id,
       req.body.postalCode,
       req.body.addressLine1,
       req.body.addressLine2,
