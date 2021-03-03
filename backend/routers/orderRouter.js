@@ -57,7 +57,6 @@ orderRouter.post(
 
 orderRouter.post(
   "/placeorder/guest",
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const paymethod = req.body.paymethod;
     const delstat = req.body.delstat;
@@ -110,7 +109,7 @@ orderRouter.post(
 
 
 orderRouter.post(
-  "/list",isAuth,
+  "/list",
   expressAsyncHandler(async (req, res) => {
     const orderList = await getOrderList(req.user.reg_customer_id);
     res.send(orderList);
@@ -118,7 +117,7 @@ orderRouter.post(
 );
 
 orderRouter.post(
-  "/orderdetail",isAuth,
+  "/orderdetail",
   expressAsyncHandler(async (req, res) => {
     const orderdetail = await orderDetailes(req.body.orderID);
     res.send(orderdetail);
