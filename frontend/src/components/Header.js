@@ -7,7 +7,7 @@ import {logout} from '../action/userActions'
 import { signout } from "../action/adminActions";
 import SearchBox from './SearchBox'
 
-const Header = (props) => {
+const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector(state =>state.userLogin);
   const {userInfo} =userLogin;
@@ -20,7 +20,6 @@ const Header = (props) => {
 
   const signoutHandler = ()=>{
     dispatch(signout())
-    props.history.push(`/`);
   }
 
   return (
@@ -47,9 +46,15 @@ const Header = (props) => {
                 <Nav.Link className="btn btn-secondary">Watch</Nav.Link>
               </LinkContainer>
             </Nav> */}
+            {!adminInfo ? (
             <Route render={({history})=><SearchBox history={history}/>}/>
-
+            ) : (
+              <>
+              </>
+            )}
             <Nav className="ml-auto">
+              {!adminInfo ? (
+              <>
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart
@@ -69,6 +74,11 @@ const Header = (props) => {
                     Sign In
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              </>
+              ) : (
+                <>
+                </>
               )}
 
               {adminInfo ? (

@@ -63,7 +63,7 @@ export default function OrderListScreen(props) {
                 <td>{order.total_payment}</td>
                 <td>{order.delivery_status}</td>
                 <td>
-                  <button
+                  {/* <button
                     type="button"
                     className="small"
                     onClick={() => {
@@ -71,7 +71,7 @@ export default function OrderListScreen(props) {
                     }}
                   >
                     Details
-                  </button>
+                  </button> */}
                   {order.delivery_status !== "delivered" && 
                   <button
                     type="button"
