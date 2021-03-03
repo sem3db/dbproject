@@ -55,8 +55,9 @@ orderRouter.post(
 
 orderRouter.post(
   "/placeorder/guest",
-  isAuth,
   expressAsyncHandler(async (req, res) => {
+    console.log('popopopopopopopopopop')
+    console.log(req.body)
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
     const delmethod = req.body.deliveryMethod;

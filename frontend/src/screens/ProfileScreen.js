@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message"
 import Loader from "../components/Loader"
 import {getUserDetails,updateUserProfile} from "../action/userActions";
+import {listOrderMine} from '../action/orderActions'
 import {
+    Table,
 Form,
   Row,
   Col,
@@ -21,11 +23,15 @@ const ProfileScreen = ({location,history}) => {
 
     const userDetails = useSelector(state=>state.userDetails)
     const {loading, error, user} = userDetails
+
     const userLogin = useSelector(state=>state.userLogin)
     const {userInfo} = userLogin
 
     const userUpdateProfile = useSelector(state=>state.userUpdateProfile)
     const {success} = userUpdateProfile
+
+    const orderMyList = useSelector(state=>state.orderMineList)
+    const {loading:loadingOrders,error:errorOrders,orders} = orderMyList
 
     useEffect(()=>{
         if(!userInfo){
@@ -35,6 +41,7 @@ const ProfileScreen = ({location,history}) => {
             console.log(user)
             if(!user.first_name){
                 dispatch(getUserDetails('profile'))
+                dispatch(listOrderMine())
             }
             else{
                 setFirstName(user.first_name)
@@ -83,6 +90,32 @@ const ProfileScreen = ({location,history}) => {
             </Col>
             <Col md={9}>
                 <h2>My Orders</h2>
+                {loadingOrders?<Loader/>:errorOrders?<Message variant='danger'>{errorOrders}</Message>:(
+                    <Table striped bordered hover responsive className='table-sm'>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>TOTAL</th>
+                                <th>PAID</th>
+                                <th>DELIVERED</th>
+                                <th></th>
+                                <tbody>
+                                    {orders.map(order=>(
+                                        <tr key={order._id}>
+                                            <td>{order._id}</td>
+                                            <td>{order._id}</td>
+                                            <td>{order._id}</td>
+                                            <td>{order._id}</td>
+                                            <td>{order._id}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </tr>
+                        </thead>
+
+                    </Table>
+                )}
             </Col>
      
         </Row>

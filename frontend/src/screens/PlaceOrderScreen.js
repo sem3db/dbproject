@@ -51,21 +51,32 @@ const PlaceOrderScreen = ({ history }) => {
       };
       document.body.appendChild(script);
     };
-    console.log(cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})))
-    if (successPay) {
-        dispatch({type:ORDER_PAY_RESET})
-        history.push(`/cart`)
-      // dispatch(getOrderDetails(order._id))
-    } else if (!window.paypal) {
+    // console.log(cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})))
+    if(success){
+      history.push(`/`)
+    }else if (!window.paypal) {
       addPayPalScript();
     } else {
       setSdkReady(true);
     }
-    // else if
-    // if(success){
-    //     history.push(`/order/${order._id}`)
-    // }
-  }, [dispatch, order, successPay]);
+  }, [dispatch, order, success]);
+
+
+
+  //   if (successPay) {
+  //       dispatch({type:ORDER_PAY_RESET})
+  //       history.push(`/cart`)
+  //     // dispatch(getOrderDetails(order._id))
+  //   } else if (!window.paypal) {
+  //     addPayPalScript();
+  //   } else {
+  //     setSdkReady(true);
+  //   }
+  //   // else if
+  //   // if(success){
+  //   //     history.push(`/order/${order._id}`)
+  //   // }
+  // }, [dispatch, order, successPay]);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
@@ -84,6 +95,7 @@ const PlaceOrderScreen = ({ history }) => {
       );
     }
     else{
+      console.log('unreg')
       dispatch(
         guestcreateOrder({
           deliveryMethod:cart.orderDetails.deliveryMethod,
@@ -92,10 +104,10 @@ const PlaceOrderScreen = ({ history }) => {
           note:' ',
           productlist:cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})),
 
-          email:" ",
+          email:cart.orderDetails.email,
           phone:cart.shippingAddress.phone,
-          first_name:' ',
-          last_name:' ',
+          first_name:cart.orderDetails.first_name,
+          last_name:cart.orderDetails.last_name,
           zip_code:cart.shippingAddress.postalCode,
           address_line_1:cart.shippingAddress.addressLine1,
           address_line_2:cart.shippingAddress.addressLine2,
