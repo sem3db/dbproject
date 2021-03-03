@@ -46,8 +46,12 @@ const Header = () => {
                 <Nav.Link className="btn btn-secondary">Watch</Nav.Link>
               </LinkContainer>
             </Nav> */}
+            {!adminInfo ? (
             <Route render={({history})=><SearchBox history={history}/>}/>
-
+            ) : (
+              <>
+              </>
+            )}
             <Nav className="ml-auto">
               {!adminInfo ? (
               <>
