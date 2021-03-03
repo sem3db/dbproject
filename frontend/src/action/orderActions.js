@@ -48,16 +48,14 @@ import {
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
+    const {userLogin: { userInfo },} = getState();
     const config = {
-      // headers:{
-      //   'Content-Type':'application/json'
-      //   Authorization:`Bearer` ${userInfo.token}
-      // }
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${userInfo.token}`
+      }
     };
-    const { data } = await Axios.post("/api/orders", order, config);
+    const { data } = await Axios.post("/api/orders/placeorder/registered", order, config);
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
     dispatch({ type: CART_EMPTY });
     localStorage.removeItem("cartItems");

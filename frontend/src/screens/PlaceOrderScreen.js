@@ -66,17 +66,18 @@ const PlaceOrderScreen = ({ history }) => {
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     console.log('gggggggggggggggggooooooooooooooooooooooooooodddddddddddddddddddddd')
-      // dispatch(
-      //       createOrder({
-      //         orderItems: cart.cartItems,
-      //         shippingAddress: cart.shippingAddress,
-      //         paymentMethod: cart.paymentMethod,
-      //         itemsPrice: cart.itemsPrice,
-      //         shippingPrice: cart.shippingPrice,
-      //         taxPrice: cart.taxPrice,
-      //         totalPrice: cart.totalPrice,
-      //       })
-      //     );
+      dispatch(
+            createOrder({
+              // orderItems: cart.cartItems,
+              // shippingAddress: cart.shippingAddress,
+              deliveryMethod:cart.orderDetails.deliveryMethod,
+              paymentMethod: cart.orderDetails.paymentMethod,
+              itemsPrice: cart.itemsPrice,
+              shippingPrice: cart.shippingPrice,
+              taxPrice: cart.taxPrice,
+              totalPrice: cart.totalPrice,
+            })
+          );
   };
 
 //   const PlaceOrderHandler = () => {
@@ -101,7 +102,7 @@ const PlaceOrderScreen = ({ history }) => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
-              <p>
+              <p className='pl-3'>
                 <strong>Address: </strong>
                 {cart.shippingAddress.addressLine1},{" "}{cart.shippingAddress.addressLine2},{" "}{cart.shippingAddress.city},{" "}{cart.shippingAddress.province},{" "}
                 {cart.shippingAddress.postalCode}.
@@ -109,13 +110,18 @@ const PlaceOrderScreen = ({ history }) => {
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>
-              <strong>Method:</strong>
-              {cart.paymentMethod}
+              <div className='pl-3'>
+              <strong>Payment Method : </strong>
+              {cart.orderDetails.paymentMethod}</div>
             </ListGroup.Item>
             <ListGroup.Item>
-              <h2>Estimated Deilivery</h2>
-              <strong>Date:</strong>
-              {cart.paymentMethod}
+              <h2 className='pb-0'>Estimated Deilivery</h2>
+              <div className='pl-3'>
+              <strong>Delivery Option : </strong>
+              {cart.orderDetails.deliveryMethod}<br></br>
+              <strong>Estimated Delivery Date : </strong>
+              {cart.orderDetails.deliveryMethod}
+              </div>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
