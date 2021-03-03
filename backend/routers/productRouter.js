@@ -19,7 +19,7 @@ const {
   updateVariant,
   deleteVariant,
 } = require("../models/productModel.js");
-const { isAuth } = require("../utils.js");
+const { isAuth, isAdmin } = require("../utils.js");
 
 const productRouter = express.Router();
 
@@ -113,9 +113,9 @@ productRouter.get(
 productRouter.post(
   "/productlist/:id/variants/addvariant",
   expressAsyncHandler(async (req, res) => {
+    //console.log(req.body);
     const isAdded = await addVariant(
       req.params.id,
-      req.body.variant_id,
       req.body.SKU,
       req.body.image_url,
       req.body.price,
@@ -132,7 +132,7 @@ productRouter.post(
 productRouter.put(
   "/productlist/:id/variants/editvariant/:vid",
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const isEdited = await updateVariant(
       req.params.id,
       req.params.vid,

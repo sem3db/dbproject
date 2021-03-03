@@ -1,16 +1,17 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const orderRouter = express.Router();
-
+const { isAuth, isAdmin } = require("../utils.js");
 const {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
 } = require("../models/orderModel.js");
-const { isAuth } = require("../utils.js");
 
 orderRouter.get(
   "/",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
 

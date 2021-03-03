@@ -1,3 +1,5 @@
+
+
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/11.jpg' WHERE (`variant_id` = '1') and (`product_id` = '1');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/21.jpg' WHERE (`variant_id` = '1') and (`product_id` = '2');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/31.jpg' WHERE (`variant_id` = '1') and (`product_id` = '3');

@@ -1,5 +1,6 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
+const { isAuth } = require("../utils.js");
 const {
   getCategories,
   getSubCategories,
