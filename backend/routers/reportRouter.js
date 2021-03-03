@@ -22,7 +22,7 @@ reportRouter.get(
   })
 );
 
-reportRouter.get(
+reportRouter.post(
   "/report-2",
   expressAsyncHandler(async (req, res) => {
     const product = await productsWithMostNumberOfSales(

@@ -32,10 +32,10 @@ export default function Report3Screen(props) {
                 </button>
             </div>
             </form>
-            {submitted &&
+            {submitted && productcategoryreport &&
             <div>
                 <h2>
-                Product Category: {productcategoryreport}
+                Product Category: <b>{productcategoryreport}</b>
                 </h2>
             </div>
             }

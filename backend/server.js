@@ -38,9 +38,14 @@ app.use("/api/reports", reportRouter);
 app.use("/api/suppliers", supplierRouter);
 app.use("/api/categories", categoryRouter);
 
+
+app.get('/api/config/paypal',(req,res)=>res.send(process.env.PAYPAL_CLIENT_ID))
+
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running on port ${PORT}...`.yellow.bold));
+
+
