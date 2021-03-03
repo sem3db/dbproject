@@ -91,14 +91,15 @@ export const guestcreateOrder = (order) => async (dispatch, getState) => {
 export const getOrderDetails = (orderId) => async (dispatch, getState) => {
   try {
   dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId });
-  // const {userLogin: { userInfo },} = getState();
+  const {userLogin: { userInfo },} = getState();
   const config={
-    // header:{
-    //   Authorization:`Bearer ${userInfo.token}`,
-    // },
+    headers:{
+      'Content-Type':'application/json',
+      Authorization:`Bearer ${userInfo.token}`
+    }
   }
-  
-    const { data } = await Axios.get(`/api/orders/${orderId}`,config);
+    const {data } = await Axios.get(`/api/orders/orderdetail/${orderId}`,config);
+    console.log(data)
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: ORDER_DETAILS_FAIL, payload: error.response && error.response.data.message
@@ -191,6 +192,7 @@ export const listOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_FAIL, payload: message });
   }
 };
+
   
 export const deliverOrder = (orderId) => async (dispatch, getState) => {
   dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });

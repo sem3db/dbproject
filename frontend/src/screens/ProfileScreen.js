@@ -11,6 +11,7 @@ Form,
   Col,
   Button
 } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 const ProfileScreen = ({location,history}) => {
     const [first_name, setFirstName] = useState('')
@@ -97,23 +98,25 @@ const ProfileScreen = ({location,history}) => {
                                 <th>ID</th>
                                 <th>DATE</th>
                                 <th>TOTAL</th>
-                                <th>PAID</th>
-                                <th>DELIVERED</th>
+                                <th>DELIVERY STATUS</th>
+                                <th>DELIVERED ON</th>
                                 <th></th>
+                            </tr>
+                        </thead>
                                 <tbody>
                                     {orders.map(order=>(
-                                        <tr key={order._id}>
-                                            <td>{order._id}</td>
-                                            <td>{order._id}</td>
-                                            <td>{order._id}</td>
-                                            <td>{order._id}</td>
-                                            <td>{order._id}</td>
+                                        <tr key={order.order_id}>
+                                            <td>{order.order_id}</td>
+                                            <td>{order.order_date.substring(0,10)}</td>
+                                            <td>LKR {order.total_payment}</td>
+                                            <td>{order.delivery_status}</td>
+                                            <td>{order.delivery_estimate.substring(0,10)}</td>
+                                            <td>
+                                                <LinkContainer to={`/orderdetail/${order.order_id}`}><Button variant='light'>Details</Button></LinkContainer>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
-                            </tr>
-                        </thead>
-
                     </Table>
                 )}
             </Col>
