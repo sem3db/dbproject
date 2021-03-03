@@ -148,7 +148,7 @@ async function customerOrderReport() {
       var name;
       if (order.customer_type == "Registered") {
         name = await adminExecuteSQL(
-          "SELECT first_name, last_name FROM registered_customer WHERE reg_customer_id=?",
+          "SELECT first_name, last_name FROM customerdetails WHERE reg_customer_id=?",
           [order.customer_id]
         );
       } else {
