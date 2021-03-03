@@ -26,7 +26,6 @@ if(!loading){
     order.itemsPrice = order.cartItems.reduce((acc,item)=>acc +item.price*item.qty,0)
 }
 
-
 useEffect(()=>{
     dispatch(getOrderDetails(orderId))
 },[dispatch,orderId])

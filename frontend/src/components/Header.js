@@ -15,6 +15,7 @@ const Header = () => {
   const {adminInfo} =adminSignin;
 
   const logoutHandler = ()=>{
+    console.log('jjjjjjjjjjjjjjjjjjjjj')
     dispatch(logout())
   }
 
@@ -65,7 +66,7 @@ const Header = () => {
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>profile</NavDropdown.Item>
                   </LinkContainer>
-                  <NavDropdown.Item onclick={logoutHandler}></NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>Log Out</NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <LinkContainer to="/login">
