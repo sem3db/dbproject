@@ -25,8 +25,6 @@ UPDATE `cse_21`.`variant` SET `image_url` = '/images/261.jpg' WHERE (`variant_id
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/271.jpg' WHERE (`variant_id` = '1') and (`product_id` = '27');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/281.jpg' WHERE (`variant_id` = '1') and (`product_id` = '28');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/291.jpg' WHERE (`variant_id` = '1') and (`product_id` = '29');
-
-
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/22.jpg' WHERE (`variant_id` = '2') and (`product_id` = '2');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/182.jpg' WHERE (`variant_id` = '2') and (`product_id` = '18');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/183.jpg' WHERE (`variant_id` = '3') and (`product_id` = '18');

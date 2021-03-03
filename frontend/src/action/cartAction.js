@@ -70,14 +70,23 @@ export const addToCart=(product_id,variant_id,qty) => async (dispatch,getState)=
 //     }
 // }
 
-export const removeFromCart= (product_id,variant_id)=>(dispatch,getState)=>{
+export const removeFromCart= (product_id,variant_id)=> async(dispatch,getState)=>{
+    const {userLogin:{userInfo}}=getState()
+    if(userInfo){
+        const config={
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+                }
+            }
+        console.log('remove cart item login user')
+        const customerID=5
+        const {data1} =await axios.post('/api/cart/delete',{product_id, variant_id,customerID},config)
+    }
     dispatch({
         type:CART_REMOVE_ITEM,
         payload:{product_id,variant_id},
     })
-    if(getState().userLogin){
-        console.log('dfdfdf')
-    }
     localStorage.setItem('cartItems',JSON.stringify(getState().cart.cartItems))
 }
 
