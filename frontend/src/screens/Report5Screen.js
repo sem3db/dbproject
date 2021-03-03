@@ -11,7 +11,6 @@ export default function Report5Screen(props) {
     async function getOrderReports(){
       const response = await axios.get(`/api/reports/report-5`);
       const res = response.data;
-      console.log(res);
       setOrderreports(res)
       setSubmitted(true);
     }

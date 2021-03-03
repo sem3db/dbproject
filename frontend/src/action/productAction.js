@@ -150,7 +150,7 @@ export const listProductsAdmin = () => async (dispatch, getState) => {
       headers:{ Authorization: `Bearer ${adminInfo.token}`}
     }
     );
-
+    
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,

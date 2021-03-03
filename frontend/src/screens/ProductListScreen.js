@@ -14,14 +14,6 @@ export default function ProductListScreen(props) {
   const productListAdmin = useSelector((state) => state.productListAdmin);
   const { loading, error, products } = productListAdmin;
 
-  // const productCreate = useSelector((state) => state.productCreate);
-  // const {
-  //   loading: loadingCreate,
-  //   error: errorCreate,
-  //   success: successCreate,
-  //   product: createdProduct,
-  // } = productCreate;
-
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: loadingDelete,
@@ -31,15 +23,11 @@ export default function ProductListScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // if (successCreate) {
-    //   dispatch({ type: PRODUCT_CREATE_RESET });
-    //   // props.history.push(`/product/${createdProduct.product_id}/edit`);
-    // }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
     dispatch(listProductsAdmin());
-  }, [ dispatch, props.history, successDelete]);
+  }, [ dispatch, successDelete, props.history]);
 
   const deleteHandler = (product) => {
     if (window.confirm("Are you sure to delete?")) {
@@ -49,7 +37,6 @@ export default function ProductListScreen(props) {
 
   const createHandler = () => {
     props.history.push(`/newproduct/create`)
-    // dispatch(createProduct());
   };
 
   return (
@@ -122,6 +109,15 @@ export default function ProductListScreen(props) {
                     }
                   >
                     Variants
+                  </button>
+                  <button
+                    type="button"
+                    className="small"
+                    onClick={() =>
+                      props.history.push(`/reports/report4/${product.product_id}`)
+                    }
+                  >
+                    Interest period
                   </button>
                 </td>
               </tr>
