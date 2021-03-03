@@ -40,7 +40,7 @@ export default function VariantEditScreen(props) {
       setOffer(variant.offer);
       setColor(variant.color);
       setSize(variant.size);
-      setNo_stock(variant.no_stock);
+      setNo_stock('0');
       setImage_url(variant.image_url);
     }
   },[variant, dispatch, productId, variantId, successUpdate, props.history]);
@@ -171,12 +171,22 @@ export default function VariantEditScreen(props) {
               onChange={(e) => setSize(e.target.value)}
             ></input>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="no_stock">Count In Stock</label>
             <input
               id="no_stock"
               type="text"
               placeholder="Enter no_stock"
+              value={no_stock}
+              onChange={(e) => setNo_stock(e.target.value)}
+            ></input>
+          </div> */}
+          <div>
+            <label htmlFor="no_stock">Add new Stock</label>
+            <input
+              id="no_stock"
+              type="text"
+              placeholder="Enter new stock"
               value={no_stock}
               onChange={(e) => setNo_stock(e.target.value)}
             ></input>
