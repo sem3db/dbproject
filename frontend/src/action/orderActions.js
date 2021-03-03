@@ -149,13 +149,17 @@ export const payOrder = (order_id, paymentResult) => async (dispatch,getState) =
 export const listOrderMine = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_MINE_LIST_REQUEST });
   const {userLogin: { userInfo },} = getState();
+  console.log('ppppppppppppppsssssssssssssssppppppppppppp')
+  console.log(userInfo.token)
   try {
     const config={
       headers:{
+        'Content-Type':'application/json',
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const { data } = await Axios.get("/api/orders/mine",config);
+    const { data } = await Axios.get("/api/orders/list",config);
+    console.log(data)
     dispatch({ type: ORDER_MINE_LIST_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -192,9 +196,8 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
   dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
   const { adminSignin:{adminInfo}} = getState();
   try {
-
     const { data } = Axios.put(
-      `/api/orders/deliver/${orderId}`,
+      `/api/orders/setDeliverStatus/${orderId}`,
       {},{
         headers:{ Authorization: `Bearer ${adminInfo.token}`}
       }

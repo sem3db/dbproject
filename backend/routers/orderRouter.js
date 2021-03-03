@@ -7,6 +7,8 @@ const {
   moveToOrder_registered,
   moveToOrder_guest,
   setDeliveryStatus,
+  getOrderList,
+  orderDetailes
 } = require("../models/orderModel.js");
 
 orderRouter.get(
@@ -97,5 +99,31 @@ orderRouter.post(
     }
   })
 );
+
+orderRouter.post(
+  "/",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
+  })
+);
+
+
+orderRouter.post(
+  "/list",isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orderList = await getOrderList(req.user.reg_customer_id);
+    res.send(orderList);
+  })
+);
+
+orderRouter.post(
+  "/orderdetail",isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orderdetail = await orderDetailes(req.body.orderID);
+    res.send(orderdetail);
+  })
+);
+
 
 module.exports = orderRouter;
