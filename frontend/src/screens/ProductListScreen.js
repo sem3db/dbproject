@@ -68,7 +68,7 @@ export default function ProductListScreen(props) {
               <th>SUPPLIER</th>
               <th>WEIGHT</th>
               <th>DIMENSION</th>
-              <th>DESCRIPTION</th>
+              {/* <th>DESCRIPTION</th> */}
               <th>ACTIONS</th>
             </tr>
           </thead>
@@ -83,7 +83,7 @@ export default function ProductListScreen(props) {
                 <td>{product.supplier_name}</td>
                 <td>{product.weight}</td>
                 <td>{product.dimension}</td>
-                <td>{product.description}</td>
+                {/* <td>{product.description}</td> */}
                 <td>
                   <button
                     type="button"
@@ -117,7 +117,7 @@ export default function ProductListScreen(props) {
                       props.history.push(`/reports/report4/${product.product_id}`)
                     }
                   >
-                    Interest period
+                    Interest
                   </button>
                 </td>
               </tr>
