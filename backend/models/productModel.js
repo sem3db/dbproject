@@ -66,7 +66,6 @@ async function findProductById(id) {
 
 async function findVariantByParams(product_id, color, size) {
   try {
-    
     const variant = (
       await customerExecuteSQL(
         "SELECT * FROM variant WHERE product_id =? AND color=? AND size=?",
@@ -91,10 +90,12 @@ async function findVariantByParams(product_id, color, size) {
 
 async function findVariantByIds(product_id, variant_id) {
   try {
-    const product = (await customerExecuteSQL(
+    const product = (
+      await customerExecuteSQL(
         "SELECT product_id,product_name,description,weight,dimension,brand FROM product WHERE product_id =?",
         [parseInt(product_id)]
-      ))[0];
+      )
+    )[0];
 
     const variant = (
       await customerExecuteSQL(
@@ -102,20 +103,20 @@ async function findVariantByIds(product_id, variant_id) {
         [parseInt(product_id), parseInt(variant_id)]
       )
     )[0];
-    
+
     product.rating = (
       await customerExecuteSQL(
         "SELECT getAverageRatingForProduct(?) AS rating",
         [parseInt(product_id)]
       )
     )[0].rating;
-    product.variantId=variant.variant_id;
-    product.color=variant.color;
-    product.size=variant.size;
-    product.noStock= variant.no_stock;
-    product.imageUrl=variant.image_url;
-    product.price=variant.price;
-    
+    product.variantId = variant.variant_id;
+    product.color = variant.color;
+    product.size = variant.size;
+    product.noStock = variant.no_stock;
+    product.imageUrl = variant.image_url;
+    product.price = variant.price;
+
     return product;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
