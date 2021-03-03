@@ -13,10 +13,14 @@ adminRouter.post(
     const login_cred = await loginIn(req.body.email);
     if (login_cred) {
       if (await bcrypt.compare(req.body.password, login_cred[0].password)) {
+        const token = generateToken({
+          user_name: login_cred[0].user_name,
+          email: login_cred[0].email_address,
+        });
         res.send({
           user_name: login_cred[0].user_name,
           email: login_cred[0].email_address,
-          //token: generateToken(login_cred[0]),
+          token: token,
         });
         await updateLastLogin(req.body.email);
         return;
