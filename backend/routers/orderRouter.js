@@ -7,6 +7,7 @@ const {
   moveToOrder_registered,
   moveToOrder_guest,
 } = require("../models/orderModel.js");
+const { isAuth } = require("../utils.js");
 
 orderRouter.get(
   "/",
