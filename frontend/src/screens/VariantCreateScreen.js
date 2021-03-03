@@ -1,96 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailsVariant, updateVariant } from '../action/productAction';
+import { createVariant } from '../action/productAction';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { VARIANT_UPDATE_RESET } from '../constants/variantConstants';
+import { VARIANT_CREATE_RESET } from '../constants/variantConstants';
 
-export default function VariantEditScreen(props) {
-  const productId = props.match.params.id;
-  const variantId = props.match.params.vid;
-  const [SKU, setSKU] = useState('');
-  const [image_url, setImage_url] = useState('');
-  const [price, setPrice] = useState('');
-  const [offer, setOffer] = useState('');
-  const [color, setColor] = useState('');
-  const [size, setSize] = useState('');
-  const [no_stock, setNo_stock] = useState('');
-  
-  const variantDetails = useSelector((state) => state.variantDetails);
-  const { loading, error, variant } = variantDetails;
+export default function VariantCreateScreen(props) {
+    const productId = props.match.params.id;
+    const [SKU, setSKU] = useState('');
+    const [image_url, setImage_url] = useState('');
+    const [price, setPrice] = useState('');
+    const [offer, setOffer] = useState('');
+    const [color, setColor] = useState('');
+    const [size, setSize] = useState('');
+    const [no_stock, setNo_stock] = useState('');
 
-  const variantUpdate = useSelector((state) => state.variantUpdate);
-  const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = variantUpdate;
+    const variantCreate = useSelector((state) => state.variantCreate);
+    const {
+        loading,
+        error,
+        success: successCreate,
+    } = variantCreate;
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (successUpdate) {
-      props.history.push(`/product/${productId}/variantlist`);
+    const dispatch = useDispatch();
+    useEffect(() => {
+    if (successCreate) {
+        dispatch({ type: VARIANT_CREATE_RESET });
+        props.history.push(`/product/${productId}/variantlist`);
     }
-    if (!variant || (variant.variant_id != variantId || successUpdate)) {
-      dispatch({ type: VARIANT_UPDATE_RESET });
-      dispatch(detailsVariant(productId,variantId));
-    } else {
-      setSKU(variant.SKU);
-      setPrice(variant.price);
-      setOffer(variant.offer);
-      setColor(variant.color);
-      setSize(variant.size);
-      setNo_stock(variant.no_stock);
-      setImage_url(variant.image_url);
-    }
-  },[variant, dispatch, productId, variantId, successUpdate, props.history]);
+    },[dispatch, productId,successCreate, props.history]);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(
-        updateVariant(
-            {
-              variant_id: variantId,
-              product_id: productId,
-              SKU,
-              price,
-              offer,
-              color,
-              size,
-              no_stock,
-              image_url,
-            }
-        )
-    );
-  };
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(
+            createVariant(productId,{
+                product_id: productId,
+                SKU,
+                price,
+                offer,
+                color,
+                size,
+                no_stock,
+                image_url,
+                }
+            )
+        );
+    };
 
-// const [loadingUpload, setLoadingUpload] = useState(false);
-// const [errorUpload, setErrorUpload] = useState('');
-// const userSignin = useSelector((state) => state.userSignin);
-// const { userInfo } = userSignin;
-// const uploadFileHandler = async (e) => {
-//   const file = e.target.files[0];
-//   const bodyFormData = new FormData();
-//   bodyFormData.append('image_url', file);
-//   setLoadingUpload(true);
-//   try {
-//     const { data } = await Axios.post('/api/uploads', bodyFormData);
-//     setImage_url(data);
-//     setLoadingUpload(false);
-//   } catch (error) {
-//     setErrorUpload(error.message);
-//     setLoadingUpload(false);
-//   }
-// };
+    // const [loadingUpload, setLoadingUpload] = useState(false);
+    // const [errorUpload, setErrorUpload] = useState('');
+    // const userSignin = useSelector((state) => state.userSignin);
+    // const { userInfo } = userSignin;
+    // const uploadFileHandler = async (e) => {
+    // const file = e.target.files[0];
+    // const bodyFormData = new FormData();
+    // bodyFormData.append('image_url', file);
+    // setLoadingUpload(true);
+    // try {
+    //     const { data } = await Axios.post('/api/uploads', bodyFormData);
+    //     setImage_url(data);
+    //     setLoadingUpload(false);
+    // } catch (error) {
+    //     setErrorUpload(error.message);
+    //     setLoadingUpload(false);
+    // }
+    // };
 
   return (
     <div className="admin">
       <form className="form" onSubmit={submitHandler}>
         <div>
-          <h1>Edit Product {productId} Variant {variantId} </h1>
+          <h1>Create Product {productId} New Variant</h1>
         </div>
-        {loadingUpdate && <Loader></Loader>}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+        {/* {loadingUpdate && <Loader></Loader>}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
         {loading ? (
         <Loader></Loader>
       ) : error ? (
@@ -185,7 +168,7 @@ export default function VariantEditScreen(props) {
           <div>
             <label></label>
             <button className="primary" type="submit">
-              Update
+              Create
             </button>
           </div>
         </>

@@ -13,14 +13,15 @@ import ShippingScreen from './screens/ShippingScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
-import ProductListScreen from './screens/ProductListScreen';
-import OrderListScreen from './screens/OrderListScreen';
-import ProductEditScreen from './screens/ProductEditScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import ProductListScreen from './screens/ProductListScreen';
+import ProductEditScreen from './screens/ProductEditScreen';
+import ProductCreateScreen from './screens/ProductCreateScreen';
+import OrderListScreen from './screens/OrderListScreen';
 import DashBoardScreen from './screens/DashBoardScreen';
 import VariantListScreen from './screens/VariantListScreen';
 import VariantEditScreen from './screens/VariantEditScreen';
-import ProductCreateScreen from './screens/ProductCreateScreen';
+import VariantCreateScreen from './screens/VariantCreateScreen';
 import Report1Screen from "./screens/Report1Screen";
 import Report2Screen from "./screens/Report2Screen";
 import Report3Screen from "./screens/Report3Screen";
@@ -54,7 +55,7 @@ const App = () => {
         <Route path='/product/:id/edit' component={ProductEditScreen} exact ></Route>
         <Route path='/product/:id/variantlist' component={VariantListScreen} exact></Route>
         {/* <Route path='/product/:id/variant/:vid/view' component={VariantViewScreen} exact ></Route> */}
-        {/* <Route path='/product/:id/newvariant/create' component={VariantCreateScreen} exact ></Route> */}
+        <Route path='/product/:id/newvariant/create' component={VariantCreateScreen} exact ></Route>
         <Route path='/product/:id/variant/:vid/edit' component={VariantEditScreen} exact ></Route>
         <Route path='/orderlist' component={OrderListScreen} exact ></Route>
         <Route path='/report1' component={Report1Screen} exact></Route>

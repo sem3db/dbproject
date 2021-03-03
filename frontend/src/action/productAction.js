@@ -281,19 +281,9 @@ export const detailsVariant = (productId,variantId) => async (dispatch) => {
   }
 };
 
-export const createVariant = (productId) => async (dispatch, getState) => {
+export const createVariant = (productId,newvariant) => async (dispatch, getState) => {
   dispatch({ type: VARIANT_CREATE_REQUEST });
   try {
-    const newvariant = {
-      product_id: productId,
-      SKU:"samplesku",
-      price: null,
-      offer: null,
-      color: null,
-      size: null,
-      no_stock: null,
-      image_url: null,
-    };
     const { data } = await axios.post(`/api/products/productlist/${productId}/variants/addvariant`, newvariant);
     dispatch({
       type: VARIANT_CREATE_SUCCESS,
