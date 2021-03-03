@@ -127,8 +127,8 @@ async function moveToOrder_guest(
 
 async function getOrderList(userID) {
   try {
-    const cart_id = customerExecuteSQL("select getcartid(?)",[userID]);
-    const orderlist = customerExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where cart_id = ?",[cart_id]).then();
+    //const cart_id = customerExecuteSQL("select getcartid(?)",[userID]);
+    const orderlist = customerExecuteSQL("select order_id,order_date,delivery_estimate,total_payment,delivery_state from productorder where customer_id = ?",[userID]).then();
     return orderlist;
   } catch (e) {
     console.log(JSON.parse(JSON.stringify(e))["error"]);
