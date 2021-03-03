@@ -21,7 +21,7 @@ orderRouter.get(
   })
 );
 
-orderRouter.get(
+orderRouter.put(
   "/setDeliverStatus/:id",
   expressAsyncHandler(async (req, res) => {
     const isUpdate = await setDeliveryStatus(req.params.id);

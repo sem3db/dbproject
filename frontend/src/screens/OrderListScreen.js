@@ -26,7 +26,7 @@ export default function OrderListScreen(props) {
 
   const deliverHandler = (order) => {
     if (window.confirm('Are you sure to deliver?')) {
-      dispatch(deliverOrder(order._id));
+      dispatch(deliverOrder(order.order_id));
     }
   };
 
@@ -61,6 +61,7 @@ export default function OrderListScreen(props) {
                 <td>{order.customer_type}</td>
                 <td>{order.order_date ? order.order_date.substring(0, 10) : 'No'}</td>
                 <td>{order.total_payment}</td>
+                {/* <td>{order.add}</td> */}
                 <td>{order.delivery_status}</td>
                 <td>
                   {/* <button
