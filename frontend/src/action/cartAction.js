@@ -92,8 +92,8 @@ export const removeFromCart= (product_id,variant_id)=> async(dispatch,getState)=
 
 export const saveShippingAddress= (data)=>async(dispatch,getState)=>{
     console.log(data)
-    if(getState().userLogin){
-        const {userLogin:{userInfo}}=getState()
+    const {userLogin:{userInfo}}=getState()
+    if(userInfo){
         const config={
         headers:{
             'Content-Type':'application/json',

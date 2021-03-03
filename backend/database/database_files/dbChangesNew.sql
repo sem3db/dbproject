@@ -84,3 +84,7 @@ UPDATE `cse_21`.`variant` SET `image_url` = '/images/292.jpg' WHERE (`variant_id
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/293.jpg' WHERE (`variant_id` = '7') and (`product_id` = '29');
 UPDATE `cse_21`.`variant` SET `image_url` = '/images/294.jpg' WHERE (`variant_id` = '8') and (`product_id` = '29');
 
+
+
+ALTER TABLE `cse_21`.`cart_product` 
+CHANGE COLUMN `ID` `ID` INT NOT NULL AUTO_INCREMENT ;
