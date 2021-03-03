@@ -39,3 +39,7 @@ _state);
     select _newguestID as cust_id;
 END$$
 DELIMITER ;
+
+
+
+GRANT EXECUTE ON PROCEDURE cse_21.newGuest TO 'customer'@'localhost';
