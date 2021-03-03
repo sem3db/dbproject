@@ -61,6 +61,7 @@ async function moveToOrder_registered(
     console.log(moveState);
     return moveState;
   } catch (e) {
+    console.log(e)
     console.log(JSON.parse(JSON.stringify(e))["error"]);
     return "Error";
   }
