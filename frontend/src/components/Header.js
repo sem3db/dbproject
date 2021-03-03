@@ -3,14 +3,24 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import {logout} from '../action/userActions'
+import { signout } from "../action/adminActions";
 
-const Header = () => {
-  const dispatch = useDispatch()
-  const userLogin = useSelector(state =>state.userLogin)  
-  const {userInfo} =userLogin
+const Header = (props) => {
+  const dispatch = useDispatch();
+  const userLogin = useSelector(state =>state.userLogin);
+  const {userInfo} =userLogin;
+  const adminSignin = useSelector(state =>state.adminSignin);
+  const {adminInfo} =adminSignin;
+
   const logoutHandler = ()=>{
     dispatch(logout())
   }
+
+  const signoutHandler = ()=>{
+    dispatch(signout())
+    props.history.push(`/`);
+  }
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -58,22 +68,28 @@ const Header = () => {
                 </LinkContainer>
               )}
 
-              {/* to do - admin only */}
-              {/* {userInfo && userInfo.isAdmin && ( */}
-              {"admin" && (
+              {adminInfo ? (
                 <NavDropdown title="Admin" id="admin-dropdown">
-                  <LinkContainer to="/dashboard">
-                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                  <LinkContainer to="/orderlist">
+                    <NavDropdown.Item>Order List</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to="/productlist">
                     <NavDropdown.Item>Product List</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/orderlist">
-                    <NavDropdown.Item>Order List</NavDropdown.Item>
+                  <LinkContainer to="/reports">
+                    <NavDropdown.Item>Reports</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="#signout" onClick={signoutHandler}>
+                    <NavDropdown.Item>Sign Out</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
-              )}
-
+                ) : (
+                  <NavDropdown title="Admin" id="admin-dropdown">
+                  <LinkContainer to="/signin">
+                    <NavDropdown.Item>Sign In</NavDropdown.Item>
+                  </LinkContainer>
+                  </NavDropdown>
+                )}
             </Nav>
           </Navbar.Collapse>
         </Container>

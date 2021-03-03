@@ -1,20 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteOrder, deliverOrder, listOrders } from '../action/orderActions';
+import { deliverOrder, listOrders } from '../action/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { ORDER_DELETE_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants';
+import { ORDER_DELIVER_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen(props) {
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
-
-  const orderDelete = useSelector((state) => state.orderDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = orderDelete;
 
   const orderDeliver = useSelector((state) => state.orderDeliver);
   const {
@@ -25,26 +18,12 @@ export default function OrderListScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (successDelete) {
-      dispatch({ type: ORDER_DELETE_RESET });
-    }
     if (successDeliver) {
       dispatch({ type: ORDER_DELIVER_RESET });
-      // props.history.push(`/product/${createdProduct.product_id}/edit`);
     }
     dispatch(listOrders());
-  }, [dispatch, successDelete, successDeliver, props.history]);
-  // useEffect(() => {
-  //   dispatch({ type: ORDER_DELIVER_RESET });
-  //   dispatch(listOrders());
-  // }, [dispatch, successDeliver]);
+  }, [dispatch, successDeliver]);
 
-  
-  const deleteHandler = (order) => {
-    if (window.confirm('Are you sure to delete?')) {
-      dispatch(deleteOrder(order._id));
-    }
-  };
   const deliverHandler = (order) => {
     if (window.confirm('Are you sure to deliver?')) {
       dispatch(deliverOrder(order._id));
@@ -55,8 +34,6 @@ export default function OrderListScreen(props) {
   return (
     <div className="admin">
       <h1>Orders</h1>
-      {loadingDelete && <Loader></Loader>}
-      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       {loadingDeliver && <Loader></Loader>}
       {errorDeliver && <Message variant="danger">{errorDeliver}</Message>}
       {loading ? (
@@ -90,33 +67,26 @@ export default function OrderListScreen(props) {
                     type="button"
                     className="small"
                     onClick={() => {
-                      props.history.push(`/order/${order._id}`);
+                      props.history.push(`/order/${order.order_id}`);
                     }}
                   >
                     Details
                   </button>
-                  {/* <button
-                      type="button"
-                      className="small"
-                      onClick={() => deleteHandler(order)}
-                    >
-                      Delete
-                    </button> */}
-                    {order.delivery_status !== "delivered" && 
-                    <button
-                      type="button"
-                      className="small"
-                      onClick={() => deliverHandler(order)}
-                    >
-                      Mark As Delivered
-                    </button>
-                    }
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-    );
-  }
+                  {order.delivery_status !== "delivered" && 
+                  <button
+                    type="button"
+                    className="small"
+                    onClick={() => deliverHandler(order)}
+                  >
+                    Mark As Delivered
+                  </button>
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}

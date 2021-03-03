@@ -16,9 +16,6 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_FAIL,
-  ORDER_DELETE_REQUEST,
-  ORDER_DELETE_SUCCESS,
-  ORDER_DELETE_FAIL,
   ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
@@ -146,34 +143,17 @@ export const listOrderMine = () => async (dispatch, getState) => {
   }
 };
 
-// sample
-// const orderdata = [
-//   { order_id: 1,
-//     user: 'Danuka',
-//     createdAt: '2020/01/01 asd',
-//     total_payment: 1000,
-//     paidAt: '2020/01/02 asd',
-//     delivery_status: true,
-//     deliveredAt: '2020/02/03 asd',
-//   },
-//   { order_id: 2,
-//     user: 'Sandaruwan',
-//     createdAt: '2021/01/01 asd',
-//     total_payment: 2000,
-//     paidAt: '2021/01/02 asd',
-//     delivery_status: false,
-//     deliveredAt: '',
-//   },
-// ];
+
 
 export const listOrders = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_LIST_REQUEST });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const { data } = await Axios.get('/api/orders/');
+    const { data } = await Axios.get('/api/orders/', {
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -184,34 +164,17 @@ export const listOrders = () => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_FAIL, payload: message });
   }
 };
-
-export const deleteOrder = (orderId) => async (dispatch, getState) => {
-  dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
-  try {
-    const { data } = Axios.delete(`/api/orders/${orderId}`);
-    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: ORDER_DELETE_FAIL, payload: message });
-  }
-};
   
 export const deliverOrder = (orderId) => async (dispatch, getState) => {
   dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
     const { data } = Axios.put(
       `/api/orders/deliver/${orderId}`,
-      {}
+      {},{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
     );
 
     dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });

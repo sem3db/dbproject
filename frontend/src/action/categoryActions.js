@@ -60,16 +60,10 @@ export const detailsCategory = (categoryId) => async (dispatch) => {
   }
 };
 
-export const createCategory = () => async (dispatch, getState) => {
+export const createCategory = (newcategory) => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_CREATE_REQUEST });
   try {
-
-    const newcategory = {
-      category_name: "samplecategory",
-      description: "sampledescription",
-    };
     const { data } = await axios.post('/api/categories/',newcategory);
-
 
     dispatch({
       type: CATEGORY_CREATE_SUCCESS,
