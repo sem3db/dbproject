@@ -1,5 +1,5 @@
 // - Product category with most orders
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 
 export default function Report3Screen(props) {
@@ -32,10 +32,10 @@ export default function Report3Screen(props) {
                 </button>
             </div>
             </form>
-            {submitted &&
+            {submitted && productcategoryreport &&
             <div>
                 <h2>
-                Product Category: {productcategoryreport}
+                Product Category: <b>{productcategoryreport}</b>
                 </h2>
             </div>
             }

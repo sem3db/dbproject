@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 
 export default function Report1Screen(props) {
@@ -50,12 +50,12 @@ export default function Report1Screen(props) {
           </button>
         </div>
       </form>
-      {submitted &&
+      {submitted && categoryreports &&
       <div>
       <table className="table">
         <thead>
           <tr>
-            <th>CATEGORY</th>
+            <th>CATEGORY NAME</th>
             <th>Q1 SALES</th>
             <th>Q2 SALES</th>
             <th>Q3 SALES</th>
