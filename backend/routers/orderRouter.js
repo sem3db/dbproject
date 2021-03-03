@@ -50,9 +50,9 @@ orderRouter.post(
 orderRouter.post(
   "/placeorder/guest",
   expressAsyncHandler(async (req, res) => {
-    const paymethod = req.body.paymethod;
+    const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
-    const delmethod = req.body.delmethod;
+    const delmethod = req.body.deliveryMethod;
     const note = req.body.note;
     const productlist = req.body.productlist;
 
