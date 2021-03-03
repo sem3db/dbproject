@@ -112,7 +112,7 @@ const ProfileScreen = ({location,history}) => {
                                             <td>{order.delivery_status}</td>
                                             <td>{order.delivery_estimate.substring(0,10)}</td>
                                             <td>
-                                                <LinkContainer to={`/orderdetail/${order.order_id}`}><Button variant='light'>Details</Button></LinkContainer>
+                                                <LinkContainer to={`/order/${order.order_id}`}><Button variant='light'>Details</Button></LinkContainer>
                                             </td>
                                         </tr>
                                     ))}
