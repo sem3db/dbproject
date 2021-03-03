@@ -10,7 +10,6 @@ const categoryRouter = express.Router();
 
 categoryRouter.get(
   "/",
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const categories = await getCategories();
     res.send(categories);
@@ -18,7 +17,6 @@ categoryRouter.get(
 );
 categoryRouter.get(
   "/:id/subcategories",
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const subcategories = await getSubCategories(req.params.id);
     res.send(subcategories);

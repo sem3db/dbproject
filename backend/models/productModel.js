@@ -413,31 +413,26 @@ async function createProduct(
   supplier_name
 ) {
   try {
-    const category_id = await adminExecuteSQL(
-      "SELECT category_id FROM category where category_name=?",
-      [category_name]
+    const dataFetched = await adminExecuteSQL(
+      "call getCatSubcatSupIds(?,?,?)",
+      [category_name, subcategory_name, supplier_name]
     );
+    console.log(dataFetched);
+    const category_id = dataFetched[0][0].category_id;
+    const subcat_id = dataFetched[1][0].subcat_id;
+    const supplier_id = dataFetched[2][0].supplier_id;
 
-    const subcategory_id = await adminExecuteSQL(
-      "SELECT subcat_id FROM subcategory where subcat_name=?",
-      [subcategory_name]
-    );
-
-    const supplier_id = await adminExecuteSQL(
-      "SELECT supplier_id FROM supplier where supplier_name=?",
-      [supplier_name]
-    );
     const lastInsertProductId = await adminExecuteSQL(
       "INSERT INTO product (product_name, category_id, subcat_id, description, weight, dimension, brand,supplier_id) VALUES (?,?,?,?,?,?,?,?)",
       [
         product_name,
-        category_id[0].category_id,
-        subcategory_id[0].subcat_id,
+        category_id,
+        subcat_id,
         description,
         weight,
         dimension,
         brand,
-        supplier_id[0].supplier_id,
+        supplier_id,
       ],
       "LAST_INSERT_ID()"
     );
@@ -445,13 +440,13 @@ async function createProduct(
     const InsertProduct = {
       product_id: lastInsertProductId.insertId,
       product_name: product_name,
-      category_id: category_id[0].category_id,
-      subcat_id: subcategory_id[0].subcat_id,
+      category_id: category_id,
+      subcategory_id: subcat_id,
       description: description,
       weight: weight,
       dimension: dimension,
       brand: brand,
-      supplier_id: supplier_id[0].supplier_id,
+      supplier_id: supplier_id,
     };
 
     return InsertProduct;
@@ -473,30 +468,25 @@ async function updateProduct(
   supplier_name
 ) {
   try {
-    const category_id = await adminExecuteSQL(
-      "SELECT category_id FROM category where category_name=?",
-      [category_name]
+    const dataFetched = await adminExecuteSQL(
+      "call getCatSubcatSupIds(?,?,?)",
+      [category_name, subcat_name, supplier_name]
     );
-    const subcategory_id = await adminExecuteSQL(
-      "SELECT subcat_id FROM subcategory where subcat_name=?",
-      [subcat_name]
-    );
-
-    const supplier_id = await adminExecuteSQL(
-      "SELECT supplier_id FROM supplier where supplier_name=?",
-      [supplier_name]
-    );
+    console.log(dataFetched);
+    const category_id = dataFetched[0][0].category_id;
+    const subcat_id = dataFetched[1][0].subcat_id;
+    const supplier_id = dataFetched[2][0].supplier_id;
     await adminExecuteSQL(
       "UPDATE product set product_name=?, category_id=?, subcat_id=?, description=?, weight=?, dimension=?, brand=?, supplier_id=? WHERE product_id=?",
       [
         product_name,
-        category_id[0].category_id,
-        subcategory_id[0].subcat_id,
+        category_id,
+        subcat_id,
         description,
         weight,
         dimension,
         brand,
-        supplier_id[0].supplier_id,
+        supplier_id,
         product_id,
       ]
     );

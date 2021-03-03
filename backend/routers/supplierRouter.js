@@ -6,8 +6,6 @@ const supplierRouter = express.Router();
 
 supplierRouter.get(
   "/",
-  isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const suppliers = await getSuppliers();
     res.send(suppliers);
