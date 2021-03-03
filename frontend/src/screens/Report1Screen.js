@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-export default function Report1Screen(props) {
+export default function Report1Screen(props,getState) {
   const [year, setYear] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [categoryreports, setCategoryreports] = useState('');
   let l = []
+  const { adminSignin:{adminInfo}} = getState();
 
   const submitHandler = (e) => {
     e.preventDefault();
     async function getCategoryReports(year){
-      const response = await axios.get(`/api/reports/report-1/${year}`);
+      const response = await axios.get(`/api/reports/report-1/${year}`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      });
       const res = response.data;
       for (var g in res){
         let k = []

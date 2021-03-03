@@ -18,11 +18,15 @@ import {
 } from '../constants/categoryConstants';
 
 
-export const listCategories = () => async (dispatch) => {
+export const listCategories = () => async (dispatch, getState) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
+    const { adminSignin:{adminInfo}} = getState();
     try {
 
-      const { data } = await axios.get(`/api/categories`);
+      const { data } = await axios.get(`/api/categories`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
 
       dispatch({
       type: CATEGORY_LIST_SUCCESS,
@@ -40,12 +44,16 @@ export const listCategories = () => async (dispatch) => {
     }
 };
   
-export const detailsCategory = (categoryId) => async (dispatch) => {
+export const detailsCategory = (categoryId) => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_DETAILS_REQUEST, payload: categoryId });
+  const { adminSignin:{adminInfo}} = getState();
   try {
     dispatch({ type: CATEGORY_DETAILS_REQUEST });
 
-    const {data} = await axios.get(`/api/categories/${categoryId}`)
+    const {data} = await axios.get(`/api/categories/${categoryId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -62,8 +70,12 @@ export const detailsCategory = (categoryId) => async (dispatch) => {
 
 export const createCategory = (newcategory) => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_CREATE_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
-    const { data } = await axios.post('/api/categories/',newcategory);
+    const { data } = await axios.post('/api/categories/',newcategory,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({
       type: CATEGORY_CREATE_SUCCESS,
@@ -80,12 +92,14 @@ export const createCategory = (newcategory) => async (dispatch, getState) => {
 
 export const updateCategory = (category) => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_UPDATE_REQUEST, payload: category });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
 
-    const { data } = await axios.put(`/api/categories/${category.category_id}`, category);
+    const { data } = await axios.put(`/api/categories/${category.category_id}`, category,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -99,12 +113,14 @@ export const updateCategory = (category) => async (dispatch, getState) => {
 
 export const deleteCategory = (categoryId) => async (dispatch, getState) => {
   dispatch({ type: CATEGORY_DELETE_REQUEST, payload: categoryId });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
     
-    const { data } = axios.delete(`/api/categories/${categoryId}`);
+    const { data } = await axios.delete(`/api/categories/${categoryId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: CATEGORY_DELETE_SUCCESS });
   } catch (error) {
