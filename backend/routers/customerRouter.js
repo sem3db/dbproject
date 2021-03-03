@@ -8,7 +8,7 @@ const {
   updateCustomer,
   getShippingAddress,
   updateShippingAddress,
-  getMainCities  
+  getMainCities,
 } = require("../models/customerModel.js");
 const { generateToken, isAuth } = require("../utils.js");
 
@@ -24,7 +24,7 @@ userRouter.post(
           email: login_cred[0].email,
           fName: login_cred[0].first_name,
         });
-
+        console.log(token);
         res.send({
           first_name: login_cred[0].first_name,
           email: login_cred[0].email,
@@ -119,12 +119,11 @@ userRouter.get(
     const maincitylist = await getMainCities();
     if (maincitylist) {
       res.send(maincitylist);
-    } else {     
-      res.status(404).send({ message: "No Main Cities." });      
+    } else {
+      res.status(404).send({ message: "No Main Cities." });
     }
   })
 );
-
 
 userRouter.post(
   "/:custometId/shipment",
@@ -138,7 +137,7 @@ userRouter.post(
       req.body.province,
       req.body.phone
     );
-    
+
     res.send(newaddress);
   })
 );
