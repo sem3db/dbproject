@@ -113,7 +113,7 @@ orderRouter.get(
   "/orderdetail/:orderId",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const orderdetail = await orderDetailes(req.params.orderID);
+    const orderdetail = await orderDetailes(req.params.orderId);
     res.send(orderdetail);
   })
 );
