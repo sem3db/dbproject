@@ -6,6 +6,7 @@ const {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
+  setDeliveryStatus,
 } = require("../models/orderModel.js");
 
 orderRouter.get(
@@ -15,6 +16,14 @@ orderRouter.get(
     const orders = await getOrders();
 
     res.send(orders);
+  })
+);
+
+orderRouter.get(
+  "/setDeliverStatus/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
   })
 );
 

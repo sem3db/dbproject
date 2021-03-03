@@ -35,12 +35,13 @@ async function getOrders() {
   }
 }
 
-async function setDeliveryState(order_id) {
+async function setDeliveryStatus(order_id) {
   try {
     await adminExecuteSQL(
       "UPDATE productorder SET delivery_status=? WHERE order_id=?",
       ["delivered", order_id]
     );
+    return "updated";
   } catch (e) {
     return "Error";
   }
@@ -98,5 +99,5 @@ module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
-  setDeliveryState,
+  setDeliveryStatus,
 };
