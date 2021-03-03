@@ -35,12 +35,13 @@ async function getOrders() {
   }
 }
 
-async function setDeliveryState(order_id) {
+async function setDeliveryStatus(order_id) {
   try {
     await adminExecuteSQL(
       "UPDATE productorder SET delivery_status=? WHERE order_id=?",
       ["delivered", order_id]
     );
+    return "updated";
   } catch (e) {
     return "Error";
   }
@@ -61,20 +62,31 @@ async function moveToOrder_registered(
     console.log(moveState);
     return moveState;
   } catch (e) {
+    console.log(e)
     console.log(JSON.parse(JSON.stringify(e))["error"]);
     return "Error";
   }
 }
 
 async function moveToOrder_guest(
-  cust_id,
   paymethod,
   delstat,
   delmethod,
   note,
-  productlist
+  productlist,
+  email,
+  phone,
+  first_name,
+  last_name,
+  zip_code,
+  address_line_1,
+  address_line_2,
+  city,
+  state 
 ) {
   try {
+    const raw_cust_id = await customerExecuteSQL("call newGuest(?,?,?,?,?,?,?,?,?)",[email,phone,first_name,last_name,zip_code,address_line_1,address_line_2,city,state]).then();
+    const cust_id = JSON.parse(JSON.stringify(raw_cust_id))["cust_id"];
     const moveState = await customerExecuteSQL(
       "call moveToOrder_gst(?,?,?,?,?,?)",
       [
@@ -98,5 +110,5 @@ module.exports = {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
-  setDeliveryState,
+  setDeliveryStatus,
 };

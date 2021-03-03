@@ -6,6 +6,7 @@ const {
   getOrders,
   moveToOrder_registered,
   moveToOrder_guest,
+  setDeliveryStatus,
 } = require("../models/orderModel.js");
 
 orderRouter.get(
@@ -18,15 +19,23 @@ orderRouter.get(
   })
 );
 
+orderRouter.get(
+  "/setDeliverStatus/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
+  })
+);
+
 orderRouter.post(
   "/placeorder/registered",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const customerID = req.user.reg_customer_id;
     //const customerID = req.body.customerID;
-    const paymethod = req.body.paymethod;
+    const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
-    const delmethod = req.body.delmethod;
+    const delmethod = req.body.deliveryMethod;
     const note = req.body.note;
 
     if (customerID && paymethod && delstat && delmethod) {
@@ -46,22 +55,40 @@ orderRouter.post(
 
 orderRouter.post(
   "/placeorder/guest",
+  isAuth,
   expressAsyncHandler(async (req, res) => {
-    const customerID = req.body.customerID;
     const paymethod = req.body.paymethod;
     const delstat = req.body.delstat;
     const delmethod = req.body.delmethod;
     const note = req.body.note;
     const productlist = req.body.productlist;
 
-    if (customerID && paymethod && delstat && delmethod && productlist) {
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const zip_code = req.body.zip_code;
+    const address_line_1 = req.body.address_line_1;
+    const address_line_2 = req.body.address_line_2;
+    const city = req.body.city;
+    const state = req.body.state;
+
+    if (paymethod && delstat && delmethod && productlist) {
       const orderState = await moveToOrder_guest(
-        customerID,
         paymethod,
         delstat,
         delmethod,
         note,
-        productlist
+        productlist,
+        email,
+        phone,
+        first_name,
+        last_name,
+        zip_code,
+        address_line_1,
+        address_line_2,
+        city,
+        state
       ).then();
       res.send(orderState);
     } else {

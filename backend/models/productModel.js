@@ -358,23 +358,13 @@ async function getProductForUpdate(product_id) {
       "SELECT product_id, product_name, description, weight, dimension, brand, category_id, subcat_id, supplier_id FROM product WHERE product_id=?",
       [product_id]
     );
-    const category_name = await adminExecuteSQL(
-      "SELECT category_name FROM category where category_id=?",
-      [product[0].category_id]
+    const dataFetched = await adminExecuteSQL(
+      "call getProductForAdmin(?,?,?)",
+      [product[0].category_id, product[0].subcat_id, product[0].supplier_id]
     );
-
-    const subcategory_name = await adminExecuteSQL(
-      "SELECT subcat_name FROM subcategory where subcat_id=?",
-      [product[0].subcat_id]
-    );
-
-    const supplier_name = await adminExecuteSQL(
-      "SELECT supplier_name FROM supplier where supplier_id=?",
-      [product[0].supplier_id]
-    );
-    product[0].category_name = category_name[0].category_name;
-    product[0].subcat_name = subcategory_name[0].subcat_name;
-    product[0].supplier_name = supplier_name[0].supplier_name;
+    product[0].category_name = dataFetched[0][0].category_name;
+    product[0].subcat_name = dataFetched[1][0].subcat_name;
+    product[0].supplier_name = dataFetched[2][0].supplier_name;
     return product;
   } catch (e) {
     console.log("Error :", JSON.parse(JSON.stringify(e))["error"]);
