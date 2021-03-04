@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
-export default function Report4Screen(props) {
+export default function Report4Screen(props,getState) {
     const productId = props.match.params.id;
     const [submitted, setSubmitted] = useState(false);
     const [producttimereport, setProducttimereport] = useState('');
+    const { adminSignin:{adminInfo}} = getState();
 
     // const submitHandler = (e) => {
     //     e.preventDefault();
@@ -20,7 +21,10 @@ export default function Report4Screen(props) {
     // };
     useEffect(() => {
         async function getProductTimeReport(productId){
-            const response = await axios.get(`/api/reports/report-4/${productId}`);
+            const response = await axios.get(`/api/reports/report-4/${productId}`,{
+                headers:{ Authorization: `Bearer ${adminInfo.token}`}
+              }
+            );
             const res = response.data;
             console.log(res);
             setProducttimereport(res)

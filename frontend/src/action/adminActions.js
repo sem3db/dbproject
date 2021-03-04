@@ -13,8 +13,7 @@ export const signin = (email, password) => async(dispatch) => {
     dispatch({type:ADMIN_SIGNIN_REQUEST, payload: { email, password }});
     try{
         const {data} =await axios.post('/api/admin/signin',{email,password})
-        // console.log('bnbn')
-        console.log(data)
+        // console.log(data)
         dispatch({
             type:ADMIN_SIGNIN_SUCCESS,
             payload:data

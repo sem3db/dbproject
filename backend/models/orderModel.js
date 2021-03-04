@@ -145,7 +145,7 @@ async function orderDetailes(orderID) {
       [orderID]
     ).then();
     const productlist = await customerExecuteSQL(
-      "select product_name,product_price,product_offer from order_product join product on order_product.product_id = product.product_id where order_product.order_id=?",
+      "select product_name,product_price,quantity,product_offer from order_product join product on order_product.product_id = product.product_id where order_product.order_id=?",
       [orderID]
     ).then();
     return { order: order[0], order_items: productlist };

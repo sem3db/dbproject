@@ -2,16 +2,20 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
-export default function Report2Screen(props) {
+export default function Report2Screen(props,getState) {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [productreport, setProductreport] = useState('');
+    const { adminSignin:{adminInfo}} = getState();
   
     const submitHandler = (e) => {
         e.preventDefault();
         async function getProductReport(from,to){
-            const response = await axios.post(`/api/reports/report-2`,{"from":from,"to":to});
+            const response = await axios.post(`/api/reports/report-2`,{"from":from,"to":to},{
+                headers:{ Authorization: `Bearer ${adminInfo.token}`}
+              }
+            );
             const res = response.data;
             setProductreport(res)
             setSubmitted(true);
