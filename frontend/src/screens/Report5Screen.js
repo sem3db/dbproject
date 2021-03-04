@@ -2,14 +2,18 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-export default function Report5Screen(props) {
+export default function Report5Screen(props,getState) {
   const [submitted, setSubmitted] = useState(false);
   const [orderreports, setOrderreports] = useState('');
+  const { adminSignin:{adminInfo}} = getState();
 
   const submitHandler = (e) => {
     e.preventDefault();
     async function getOrderReports(){
-      const response = await axios.get(`/api/reports/report-5`);
+      const response = await axios.get(`/api/reports/report-5`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
       const res = response.data;
       setOrderreports(res)
       setSubmitted(true);

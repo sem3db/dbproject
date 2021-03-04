@@ -18,11 +18,15 @@ import {
 } from '../constants/subcategoryConstants';
 
 
-export const listSubcategories = (categoryId) => async (dispatch) =>{
+export const listSubcategories = (categoryId) => async (dispatch, getState) =>{
     dispatch({ type: SUBCATEGORY_LIST_REQUEST });
+    const { adminSignin:{adminInfo}} = getState();
     try {
       // const { data } = await axios.get("/api/categories/${categoryId}/subcategorylist");
-      const { data } = await axios.get(`/api/categories/${categoryId}/subcategories`);
+      const { data } = await axios.get(`/api/categories/${categoryId}/subcategories`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
 
       dispatch({
       type: SUBCATEGORY_LIST_SUCCESS,
@@ -40,12 +44,16 @@ export const listSubcategories = (categoryId) => async (dispatch) =>{
     }
   }
   
-export const detailsSubcategory = (categoryId,subcategoryId) => async (dispatch) => {
+export const detailsSubcategory = (categoryId,subcategoryId) => async (dispatch, getState) => {
   dispatch({ type: SUBCATEGORY_DETAILS_REQUEST, payload: (categoryId,subcategoryId) });
+  const { adminSignin:{adminInfo}} = getState();
   try {
     dispatch({ type: SUBCATEGORY_DETAILS_REQUEST });
 
-    const {data} = await axios.get(`/api/categories/${categoryId}/subcategories/${subcategoryId}`)
+    const {data} = await axios.get(`/api/categories/${categoryId}/subcategories/${subcategoryId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUBCATEGORY_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -60,15 +68,15 @@ export const detailsSubcategory = (categoryId,subcategoryId) => async (dispatch)
   }
 };
 
-export const createSubcategory = (categoryId) => async (dispatch, getState) => {
+export const createSubcategory = (categoryId,newsubcategory) => async (dispatch, getState) => {
   dispatch({ type: SUBCATEGORY_CREATE_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const newsubcategory = {
-        subcat_name: "samplesubcategory",
-        category_id: categoryId,
-    };
-    const { data } = await axios.post(`/api/categories/${categoryId}/subcategories/`,newsubcategory);
+    const { data } = await axios.post(`/api/categories/${categoryId}/subcategories/`,newsubcategory,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
 
     dispatch({
@@ -86,12 +94,14 @@ export const createSubcategory = (categoryId) => async (dispatch, getState) => {
 
 export const updateSubcategory = (categoryId,subcategory) => async (dispatch, getState) => {
   dispatch({ type: SUBCATEGORY_UPDATE_REQUEST, payload: subcategory });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
 
-    const { data } = await axios.put(`/api/categories/${categoryId}/subcategories/${subcategory.subcategory_id}`, subcategory);
+    const { data } = await axios.put(`/api/categories/${categoryId}/subcategories/${subcategory.subcategory_id}`, subcategory,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUBCATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -105,12 +115,14 @@ export const updateSubcategory = (categoryId,subcategory) => async (dispatch, ge
 
 export const deleteSubcategory = (categoryId,subcategoryId) => async (dispatch, getState) => {
   dispatch({ type: SUBCATEGORY_DELETE_REQUEST, payload: (categoryId,subcategoryId) });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
     
-    const { data } = axios.delete(`/api/categories/${categoryId}/subcategories/${subcategoryId}`);
+    const { data } = axios.delete(`/api/categories/${categoryId}/subcategories/${subcategoryId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUBCATEGORY_DELETE_SUCCESS });
   } catch (error) {

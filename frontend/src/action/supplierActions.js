@@ -18,11 +18,15 @@ import {
 } from '../constants/supplierConstants';
 
 
-export const listSuppliers = () => async (dispatch) => {
+export const listSuppliers = () => async (dispatch, getState) => {
     dispatch({ type: SUPPLIER_LIST_REQUEST });
+    const { adminSignin:{adminInfo}} = getState();
     try {
 
-      const { data } = await axios.get(`/api/suppliers/`);
+      const { data } = await axios.get(`/api/suppliers/`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
 
       dispatch({
       type: SUPPLIER_LIST_SUCCESS,
@@ -40,12 +44,16 @@ export const listSuppliers = () => async (dispatch) => {
     }
 };
   
-export const detailsSupplier = (supplierId) => async (dispatch) => {
+export const detailsSupplier = (supplierId) => async (dispatch, getState) => {
   dispatch({ type: SUPPLIER_DETAILS_REQUEST, payload: supplierId });
+  const { adminSignin:{adminInfo}} = getState();
   try {
     dispatch({ type: SUPPLIER_DETAILS_REQUEST });
 
-    const {data} = await axios.get(`/api/suppliers/${supplierId}`)
+    const {data} = await axios.get(`/api/suppliers/${supplierId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUPPLIER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -60,16 +68,15 @@ export const detailsSupplier = (supplierId) => async (dispatch) => {
   }
 };
 
-export const createSupplier = () => async (dispatch, getState) => {
+export const createSupplier = (newsupplier) => async (dispatch, getState) => {
   dispatch({ type: SUPPLIER_CREATE_REQUEST });
+  const { adminSignin:{adminInfo}} = getState();
   try {
 
-    const newsupplier = {
-        supplier_name: "samplesupplier",
-        contact_number: null,
-        email: null,
-    };
-    const { data } = await axios.post('/api/suppliers/',newsupplier);
+    const { data } = await axios.post('/api/suppliers/',newsupplier,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
 
     dispatch({
@@ -87,12 +94,14 @@ export const createSupplier = () => async (dispatch, getState) => {
 
 export const updateSupplier = (supplier) => async (dispatch, getState) => {
   dispatch({ type: SUPPLIER_UPDATE_REQUEST, payload: supplier });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
 
-    const { data } = await axios.put(`/api/suppliers/${supplier.supplier_id}`, supplier);
+    const { data } = await axios.put(`/api/suppliers/${supplier.supplier_id}`, supplier,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUPPLIER_UPDATE_SUCCESS, payload: data });
   } catch (error) {
@@ -106,12 +115,14 @@ export const updateSupplier = (supplier) => async (dispatch, getState) => {
 
 export const deleteSupplier = (supplierId) => async (dispatch, getState) => {
   dispatch({ type: SUPPLIER_DELETE_REQUEST, payload: supplierId });
-  // const {
-  //   userSignin: { userInfo },
-  // } = getState();
+  const { adminSignin:{adminInfo}} = getState();
+
   try {
     
-    const { data } = axios.delete(`/api/suppliers/${supplierId}`);
+    const { data } = axios.delete(`/api/suppliers/${supplierId}`,{
+      headers:{ Authorization: `Bearer ${adminInfo.token}`}
+    }
+    );
 
     dispatch({ type: SUPPLIER_DELETE_SUCCESS });
   } catch (error) {
