@@ -1,17 +1,23 @@
 // - Products with most number of sales in a given period
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Report2Screen(props) {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [productreport, setProductreport] = useState('');
-  
+    const adminSignin = useSelector(state =>state.adminSignin);
+    const {adminInfo} =adminSignin;
+
     const submitHandler = (e) => {
         e.preventDefault();
         async function getProductReport(from,to){
-            const response = await axios.post(`/api/reports/report-2`,{"from":from,"to":to});
+            const response = await axios.post(`/api/reports/report-2`,{"from":from,"to":to},{
+                headers:{ Authorization: `Bearer ${adminInfo.token}`}
+              }
+            );
             const res = response.data;
             setProductreport(res)
             setSubmitted(true);
@@ -22,7 +28,7 @@ export default function Report2Screen(props) {
     return (
         <>
         <div className="admin">
-            <h1>Report 2 - Products with most number of sales</h1>
+            <h1>Report 2 - Products with most number of sales in given period</h1>
             <form className="form" onSubmit={submitHandler}>
             <div>
                 <label htmlFor="from">From</label>

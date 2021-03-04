@@ -8,19 +8,17 @@ const {
   moveToOrder_guest,
   setDeliveryStatus,
   getOrderList,
-  orderDetailes
+  orderDetailes,
 } = require("../models/orderModel.js");
 
 orderRouter.get(
   "/",
-
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
-    
+
     res.send(orders);
   })
 );
-
 
 
 orderRouter.post(

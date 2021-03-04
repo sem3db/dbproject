@@ -16,14 +16,14 @@ import Message from "../components/Message";
 
 
   const OrderScreen = ({match}) => {
-    const orderId = match.params.id;
-    const dispatch = useDispatch()
+  const orderId = match.params.id;
+   const dispatch = useDispatch()
     
 
 const orderDetails = useSelector(state=>state.orderDetails)
-const {order,loading,error}=orderDetails
+const {order,loading,error,orderItems}=orderDetails
 if(!loading){
-    order.itemsPrice = order.cartItems.reduce((acc,item)=>acc +item.price*item.qty,0)
+    order.itemsPrice = orderItems.reduce((acc,item)=>acc +item.price*item.qty,0)
 }
 
 useEffect(()=>{
@@ -36,12 +36,12 @@ useEffect(()=>{
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h1>Order {order.order_id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              {/* <h2>Shipping</h2>
               <p><strong>Name:</strong>{order.user.name}</p>
               <p><strong>Email:</strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
               <p>
@@ -51,32 +51,40 @@ useEffect(()=>{
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered?(
-                  <Message variant='success'>Delivered</Message>):<Message variant='success'>Not Delivered</Message>}
+                  <Message variant='success'>Delivered</Message>):<Message variant='success'>Not Delivered</Message>} */}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-              <strong>Method:</strong>
-              {order.paymentMethod}
+              <h2>Order Details</h2>
+              <p className='pl-5'>
+              <strong>Payment Method : </strong>
+              {order.payment_method}
               </p>
-              <p>
-              <strong>Paid On:</strong>
-              {order.paidAt}
+              <p className='pl-5'>
+              <strong>Order Created On : </strong>
+              {order.order_date.substring(0,10)}
+              </p>
+              <p className='pl-5'>
+              <strong>Delivery Estimate : </strong>
+              {order.delivery_estimate.substring(0,10)}
+              </p>
+              <p className='pl-5'>
+              <strong>Delivery Status : </strong>
+              {order.delivery_status}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.orderItems.length === 0 ? (
+              {orderItems.length === 0 ? (
                 <Message>Order is Empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {order.orderItems.map((item, index) => (
+                  {orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
-                            alt={item.name}
+                            // src={item.image}
+                            alt={item.product_name}
                             fluid
                             rounded
                           />
@@ -89,15 +97,15 @@ useEffect(()=>{
                         <Col md={4}>
                           <Row>
                             <Col className="text-left" md={2}>
-                              {item.qty}
+                              {item.quantity}
                             </Col>
                             <Col md={1}>x</Col>
                             <Col className="text-right" md={3}>
-                              ${item.price}
+                              LKR {item.product_price}
                             </Col>
                             <Col md={1}>=</Col>
                             <Col className="text-right" md={3}>
-                              ${(item.qty * item.price).toFixed(2)}
+                              LKR {(item.quantity * item.product_price).toFixed(2)}
                             </Col>
                           </Row>
                         </Col>
@@ -118,25 +126,25 @@ useEffect(()=>{
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${order.itemsPrice.toFixed(2)}</Col>
+                  <Col>LKR {order.total_payment.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Delivery</Col>
-                  <Col>${order.deliveryCost.toFixed(2)}</Col>
+                  <Col>0</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${order.taxPrice.toFixed(2)}</Col>
+                  <Col>0</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice.toFixed(2)}</Col>
+                  <Col>LKR {order.total_payment.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               

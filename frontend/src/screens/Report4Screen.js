@@ -1,11 +1,14 @@
 // - Given a product, time period with most interest to it
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Report4Screen(props) {
     const productId = props.match.params.id;
     const [submitted, setSubmitted] = useState(false);
     const [producttimereport, setProducttimereport] = useState('');
+    const adminSignin = useSelector(state =>state.adminSignin);
+    const {adminInfo} =adminSignin;
 
     // const submitHandler = (e) => {
     //     e.preventDefault();
@@ -20,7 +23,10 @@ export default function Report4Screen(props) {
     // };
     useEffect(() => {
         async function getProductTimeReport(productId){
-            const response = await axios.get(`/api/reports/report-4/${productId}`);
+            const response = await axios.get(`/api/reports/report-4/${productId}`,{
+                headers:{ Authorization: `Bearer ${adminInfo.token}`}
+              }
+            );
             const res = response.data;
             console.log(res);
             setProducttimereport(res)

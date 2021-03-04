@@ -78,7 +78,7 @@ import FormContainer from "../components/FormContainer";
         }
     }
 
-    const cities=['Negombo', 'Colombo','Gampaha']
+    const cities=['Gampaha','Ja-Ela','Colombo','Kaluthara','Kurunagala','Anuradhapura','Jaffna','Galle','Mathara','Chilaw','Puttlam','Kandy','Kegalle','Panadura','Mannar']
     const provinces=['Western','Southern','Central','Uva','Eastern','Sabaragamuwa','North','North Western','North Central']
 
   return (

@@ -21,6 +21,8 @@ import FormContainer from "../components/FormContainer";
     const [last_name, setLastName] = useState('')
     const [email, setEmail] = useState('')
 
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
 
     const dispatch =useDispatch()
 
@@ -36,7 +38,8 @@ import FormContainer from "../components/FormContainer";
           <CheckoutSteps step1 step2 step3/>
           <h1>Order Details</h1>
           <Form onSubmit={submitHandler}>
-          <Row>
+              {userInfo?"":(<>
+                <Row>
                     <Col className='pr-1'>
                         <Form.Group controlId='first_name'>
                         <Form.Label>First Name</Form.Label>
@@ -54,11 +57,12 @@ import FormContainer from "../components/FormContainer";
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control type='email' placeholder='email Address' value={email} onChange={(event)=>setEmail(event.target.value)}></Form.Control>
                 </Form.Group>
+                </>)}
               <Form.Group>
                   <Form.Label as='legend'>Select Payment Method</Form.Label>
               <Row>
-              <Form.Check className='pr-5' type='radio' label='Paypal or Credit Card' id='Paypal' name='paymentMethod' value='Paypal' checked onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
-              <Form.Check className='pl-5' type='radio' label='Cash On Delivery' id='cash' name='paymentMethod' value='Card' onChange={(e)=>{}}></Form.Check>
+              <Form.Check className='pr-5' type='radio' label='Paypal or Credit Card' id='Paypal' name='paymentMethod' value='Paypal' checked={paymentMethod=="Paypal"} onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
+              <Form.Check className='pl-5' type='radio' label='Cash On Delivery' id='Cash' name='paymentMethod' value='Cash' checked={paymentMethod=="Cash"} onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
               </Row>
               </Form.Group>
               <Form.Group>

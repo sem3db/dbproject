@@ -1,15 +1,21 @@
 // - Product category with most orders
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Report3Screen(props) {
     const [submitted, setSubmitted] = useState(false);
     const [productcategoryreport, setProductcategoryreport] = useState('');
+    const adminSignin = useSelector(state =>state.adminSignin);
+    const {adminInfo} =adminSignin;
   
     const submitHandler = (e) => {
       e.preventDefault();
       async function getProductCategoryReport(){
-        const response = await axios.get(`/api/reports/report-3`);
+        const response = await axios.get(`/api/reports/report-3`,{
+            headers:{ Authorization: `Bearer ${adminInfo.token}`}
+          }
+        );
         const res = response.data;
         setProductcategoryreport(res)
         setSubmitted(true);

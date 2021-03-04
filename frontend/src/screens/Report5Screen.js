@@ -1,15 +1,21 @@
 // - Customer - order report
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Report5Screen(props) {
   const [submitted, setSubmitted] = useState(false);
   const [orderreports, setOrderreports] = useState('');
+  const adminSignin = useSelector(state =>state.adminSignin);
+  const {adminInfo} =adminSignin;
 
   const submitHandler = (e) => {
     e.preventDefault();
     async function getOrderReports(){
-      const response = await axios.get(`/api/reports/report-5`);
+      const response = await axios.get(`/api/reports/report-5`,{
+        headers:{ Authorization: `Bearer ${adminInfo.token}`}
+      }
+      );
       const res = response.data;
       setOrderreports(res)
       setSubmitted(true);
