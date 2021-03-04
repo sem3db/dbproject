@@ -84,31 +84,6 @@ userRouter.get(
   })
 );
 
-// userRouter.put(
-//   "/update/:custometId",
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-//     const createdUser = await updateCustomer(
-//       req.params.custometId,
-//       hashedPassword,
-//       req.body.fName,
-//       req.body.lName,
-//       req.body.zipCode,
-//       req.body.addressLine1,
-//       req.body.addressLine2,
-//       req.body.city,
-//       req.body.state,
-//       req.body.phone
-//     );
-//     res.send({
-//       first_name: createdUser.fName,
-//       last_name: createdUser.lName,
-//     });
-//   })
-// );
-
 
 userRouter.get(
   "/shipment/info",
@@ -157,5 +132,33 @@ userRouter.post(
     res.send(newaddress);
   })
 );
+
+
+
+// userRouter.put(
+//   "/update/:custometId",
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//     const createdUser = await updateCustomer(
+//       req.params.custometId,
+//       hashedPassword,
+//       req.body.fName,
+//       req.body.lName,
+//       req.body.zipCode,
+//       req.body.addressLine1,
+//       req.body.addressLine2,
+//       req.body.city,
+//       req.body.state,
+//       req.body.phone
+//     );
+//     res.send({
+//       first_name: createdUser.fName,
+//       last_name: createdUser.lName,
+//     });
+//   })
+// );
+
 
 module.exports = userRouter;

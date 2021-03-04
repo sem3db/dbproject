@@ -1,6 +1,6 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-const bcrypt = require("bcryptjs");
+
 const {
   findProductById,
   getProducts,
@@ -23,6 +23,10 @@ const { isAuth, isAdmin } = require("../utils.js");
 
 const productRouter = express.Router();
 
+
+//product routes for Customer
+
+
 productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
@@ -30,6 +34,84 @@ productRouter.get(
     res.send(products);
   })
 );
+
+
+
+productRouter.get(
+  "/category/:category",
+  expressAsyncHandler(async (req, res) => {
+    console.log("");
+    const category_products = await findProductsByCategory(req.params.category);
+    if (category_products) {
+      res.send(category_products);
+    } else {
+      res.status(404).send({ message: "Category Not Found" });
+    }
+  })
+);
+
+productRouter.get(
+  "/category/:category/:subcategory",
+  expressAsyncHandler(async (req, res) => {
+    const sub_category_products = await findProductsBySubCategory(
+      req.params.category,
+      req.params.subcategory
+    );
+    if (sub_category_products) {
+      res.send(sub_category_products);
+    } else {
+      res.status(404).send({ message: "Sub Category Not Found" });
+    }
+  })
+);
+
+productRouter.get(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await findProductById(req.params.id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: "Product Not Found" });
+    }
+  })
+);
+
+productRouter.get(
+  "/:id/:color/:size",
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByParams(
+      req.params.id,
+      req.params.color,
+      req.params.size
+    );
+
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: "Variant does not exist" });
+    }
+  })
+);
+
+productRouter.get(
+  "/:productId/:variantId",
+  expressAsyncHandler(async (req, res) => {
+    const variant = await findVariantByIds(
+      req.params.productId,
+      req.params.variantId
+    );
+
+    if (variant) {
+      res.send(variant);
+    } else {
+      res.status(404).send({ message: "Variant does not exist" });
+    }
+  })
+);
+
+
+//product routes for Admin
 
 productRouter.get(
   "/productlist",
@@ -161,77 +243,5 @@ productRouter.delete(
   })
 );
 
-productRouter.get(
-  "/category/:category",
-  expressAsyncHandler(async (req, res) => {
-    console.log("");
-    const category_products = await findProductsByCategory(req.params.category);
-    if (category_products) {
-      res.send(category_products);
-    } else {
-      res.status(404).send({ message: "Category Not Found" });
-    }
-  })
-);
-
-productRouter.get(
-  "/category/:category/:subcategory",
-  expressAsyncHandler(async (req, res) => {
-    const sub_category_products = await findProductsBySubCategory(
-      req.params.category,
-      req.params.subcategory
-    );
-    if (sub_category_products) {
-      res.send(sub_category_products);
-    } else {
-      res.status(404).send({ message: "Sub Category Not Found" });
-    }
-  })
-);
-
-productRouter.get(
-  "/:id",
-  expressAsyncHandler(async (req, res) => {
-    const product = await findProductById(req.params.id);
-    if (product) {
-      res.send(product);
-    } else {
-      res.status(404).send({ message: "Product Not Found" });
-    }
-  })
-);
-
-productRouter.get(
-  "/:id/:color/:size",
-  expressAsyncHandler(async (req, res) => {
-    const variant = await findVariantByParams(
-      req.params.id,
-      req.params.color,
-      req.params.size
-    );
-
-    if (variant) {
-      res.send(variant);
-    } else {
-      res.status(404).send({ message: "Variant does not exist" });
-    }
-  })
-);
-
-productRouter.get(
-  "/:productId/:variantId",
-  expressAsyncHandler(async (req, res) => {
-    const variant = await findVariantByIds(
-      req.params.productId,
-      req.params.variantId
-    );
-
-    if (variant) {
-      res.send(variant);
-    } else {
-      res.status(404).send({ message: "Variant does not exist" });
-    }
-  })
-);
 
 module.exports = productRouter;

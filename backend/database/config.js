@@ -20,6 +20,11 @@ var customerpool = mysql.createPool({
 
 module.exports = { adminpool, customerpool };
 
+
+
+
+
+
 // var adminpool = mysql.createPool({
 //   connectionLimit: process.env.DB_CONNECTION_LIMIT,
 //   host: process.env.DB_HOST,
