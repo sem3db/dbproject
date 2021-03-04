@@ -243,11 +243,15 @@ const PlaceOrderScreen = ({ history }) => {
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup>
               <ListGroup.Item>
+                {cart.orderDetails.paymentMethod=="Cash"?<Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={successPaymentHandler}>Place Order</Button>:(<>
+                
+                
                 {/* <Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={PlaceOrderHandler}>Place Order</Button> */}
                 {loadingPay && <Loader />}
                 {!sdkReady ? (
                   <Loader />
                 ) : (<PayPalButton amount="0.01" onSuccess={successPaymentHandler}/>)}
+                </>)}
               </ListGroup.Item>
             </ListGroup>
           </Card>
