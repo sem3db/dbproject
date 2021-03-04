@@ -13,6 +13,7 @@ const reportRouter = express.Router();
 
 reportRouter.get(
   "/report-1/:year",
+
   expressAsyncHandler(async (req, res) => {
     const qsales = await quaterlySalesReport(req.params.year);
     if (qsales) {
@@ -25,6 +26,7 @@ reportRouter.get(
 
 reportRouter.post(
   "/report-2",
+
   expressAsyncHandler(async (req, res) => {
     const product = await productsWithMostNumberOfSales(
       req.body.from,
