@@ -13,8 +13,6 @@ const {
 
 orderRouter.get(
   "/",
-  isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
 
@@ -24,8 +22,6 @@ orderRouter.get(
 
 orderRouter.put(
   "/setDeliverStatus/:id",
-  isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     console.log(req.params.id);
     const isUpdate = await setDeliveryStatus(req.params.id);
