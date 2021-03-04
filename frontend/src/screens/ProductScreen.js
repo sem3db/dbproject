@@ -119,7 +119,7 @@ import {
                   onClick={addToCartHandler}
                   className="btn-block btn-dark"
                   type="button"
-                  disabled={error1 || variant.noStock === 0}>
+                  disabled={error1}>
                   Add To Cart
                 </Button>
               </ListGroup.Item>

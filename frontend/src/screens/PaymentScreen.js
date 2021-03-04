@@ -62,7 +62,7 @@ import FormContainer from "../components/FormContainer";
                   <Form.Label as='legend'>Select Payment Method</Form.Label>
               <Row>
               <Form.Check className='pr-5' type='radio' label='Paypal or Credit Card' id='Paypal' name='paymentMethod' value='Paypal' checked={paymentMethod=="Paypal"} onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
-              <Form.Check className='pl-5' type='radio' label='Cash On Delivery' id='Cash' name='paymentMethod' value='Cash' checked={paymentMethod=="Cash"} onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
+              <Form.Check className='pl-5' type='radio' label='Cash On Delivery' id='CashOnDelivery' name='paymentMethod' value='CashOnDelivery' checked={paymentMethod=="CashOnDelivery"} onChange={(e)=>setpaymentMethod(e.target.value)}></Form.Check>
               </Row>
               </Form.Group>
               <Form.Group>

@@ -33,6 +33,8 @@ orderRouter.post(
   "/placeorder/registered",
   isAuth,
   expressAsyncHandler(async (req, res) => {
+    console.log("place order registred");
+    console.log(req.body)
     const customerID = req.user.reg_customer_id;
     //const customerID = req.body.customerID;
     const paymethod = req.body.paymentMethod;
@@ -58,7 +60,7 @@ orderRouter.post(
 orderRouter.post(
   "/placeorder/guest",
   expressAsyncHandler(async (req, res) => {
-    console.log("popopopopopopopopopop");
+    console.log("place order guest");
     console.log(req.body);
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;

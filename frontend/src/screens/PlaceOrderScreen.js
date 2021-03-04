@@ -40,6 +40,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+  const g = cart.cartItems.find(x=> x.noStock==0)
 
   useEffect(() => {
       const addPayPalScript = async () => {
@@ -53,6 +54,9 @@ const PlaceOrderScreen = ({ history }) => {
       };
       document.body.appendChild(script);
     };
+    
+    console.log('kjkjkjk')
+    console.log(typeof g)
     // console.log(cart.cartItems.map(({product_id,variant_id, qty})=>({product_id,variant_id, qty})))
     if(success){
       history.push(`/`)
@@ -163,7 +167,7 @@ const PlaceOrderScreen = ({ history }) => {
               <strong>Delivery Option : </strong>
               {cart.orderDetails.deliveryMethod}<br></br>
               <strong>Estimated Delivery Date : </strong>
-              {cities.includes(cart.shippingAddress.city)?'5 Days From Order Date':'7 Days From Order Date'}
+              {(cities.includes(cart.shippingAddress.city) && (typeof g === 'undefined'))?'5 Days From Order Date':(cities.includes(cart.shippingAddress.city))?'8 Days From Order Date':(typeof g === 'undefined')?'7 Days From Order Date':'10 Days From Order Date'}
               </div>
             </ListGroup.Item>
             <ListGroup.Item>
@@ -245,7 +249,7 @@ const PlaceOrderScreen = ({ history }) => {
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup>
               <ListGroup.Item>
-                {cart.orderDetails.paymentMethod=="Cash"?<Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={successPaymentHandler}>Place Order</Button>:(<>
+                {cart.orderDetails.paymentMethod=="CashOnDelivery"?<Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={successPaymentHandler}>Place Order</Button>:(<>
                 
                 
                 {/* <Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={PlaceOrderHandler}>Place Order</Button> */}
