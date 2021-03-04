@@ -20,14 +20,6 @@ orderRouter.get(
   })
 );
 
-orderRouter.put(
-  "/setDeliverStatus/:id",
-  expressAsyncHandler(async (req, res) => {
-    console.log(req.params.id);
-    const isUpdate = await setDeliveryStatus(req.params.id);
-    res.send(isUpdate);
-  })
-);
 
 orderRouter.post(
   "/placeorder/registered",
@@ -102,6 +94,9 @@ orderRouter.post(
   })
 );
 
+
+
+
 orderRouter.get(
   "/list",
   isAuth,
@@ -119,5 +114,14 @@ orderRouter.get(
     res.send(orderdetail);
   })
 );
+
+orderRouter.put(
+  "/setDeliverStatus/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
+  })
+);
+
 
 module.exports = orderRouter;

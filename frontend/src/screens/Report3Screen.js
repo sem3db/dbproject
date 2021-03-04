@@ -1,11 +1,13 @@
 // - Product category with most orders
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Report3Screen(props,getState) {
+export default function Report3Screen(props) {
     const [submitted, setSubmitted] = useState(false);
     const [productcategoryreport, setProductcategoryreport] = useState('');
-    const { adminSignin:{adminInfo}} = getState();
+    const adminSignin = useSelector(state =>state.adminSignin);
+    const {adminInfo} =adminSignin;
   
     const submitHandler = (e) => {
       e.preventDefault();
