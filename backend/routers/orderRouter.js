@@ -21,13 +21,7 @@ orderRouter.get(
   })
 );
 
-orderRouter.put(
-  "/setDeliverStatus/:id",
-  expressAsyncHandler(async (req, res) => {
-    const isUpdate = await setDeliveryStatus(req.params.id);
-    res.send(isUpdate);
-  })
-);
+
 
 orderRouter.post(
   "/placeorder/registered",
@@ -58,8 +52,8 @@ orderRouter.post(
 orderRouter.post(
   "/placeorder/guest",
   expressAsyncHandler(async (req, res) => {
-    console.log('popopopopopopopopopop')
-    console.log(req.body)
+    
+    
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
     const delmethod = req.body.deliveryMethod;
@@ -102,6 +96,7 @@ orderRouter.post(
 
 
 
+
 orderRouter.get(
   "/list",
   isAuth,
@@ -117,6 +112,14 @@ orderRouter.get(
   expressAsyncHandler(async (req, res) => {
     const orderdetail = await orderDetailes(req.params.orderId);
     res.send(orderdetail);
+  })
+);
+
+orderRouter.put(
+  "/setDeliverStatus/:id",
+  expressAsyncHandler(async (req, res) => {
+    const isUpdate = await setDeliveryStatus(req.params.id);
+    res.send(isUpdate);
   })
 );
 
