@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Report1Screen(props,getState) {
+export default function Report1Screen(props) {
   const [year, setYear] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [categoryreports, setCategoryreports] = useState('');
   let l = []
-  const { adminSignin:{adminInfo}} = getState();
+  const adminSignin = useSelector(state =>state.adminSignin);
+  const {adminInfo} =adminSignin;
 
   const submitHandler = (e) => {
     e.preventDefault();

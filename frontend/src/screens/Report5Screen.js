@@ -1,11 +1,13 @@
 // - Customer - order report
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Report5Screen(props,getState) {
+export default function Report5Screen(props) {
   const [submitted, setSubmitted] = useState(false);
   const [orderreports, setOrderreports] = useState('');
-  const { adminSignin:{adminInfo}} = getState();
+  const adminSignin = useSelector(state =>state.adminSignin);
+  const {adminInfo} =adminSignin;
 
   const submitHandler = (e) => {
     e.preventDefault();

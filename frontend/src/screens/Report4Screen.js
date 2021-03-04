@@ -1,12 +1,14 @@
 // - Given a product, time period with most interest to it
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Report4Screen(props,getState) {
+export default function Report4Screen(props) {
     const productId = props.match.params.id;
     const [submitted, setSubmitted] = useState(false);
     const [producttimereport, setProducttimereport] = useState('');
-    const { adminSignin:{adminInfo}} = getState();
+    const adminSignin = useSelector(state =>state.adminSignin);
+    const {adminInfo} =adminSignin;
 
     // const submitHandler = (e) => {
     //     e.preventDefault();
