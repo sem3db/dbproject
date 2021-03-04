@@ -33,6 +33,8 @@ const PlaceOrderScreen = ({ history }) => {
   cart.totalPrice =
     (Number(cart.itemsPrice) + Number(cart.deliveryCost) + Number(cart.taxPrice))*0.1;
 
+  const cities=['Gampaha','Ja-Ela','Colombo','Kaluthara','Kurunagala','Anuradhapura','Jaffna','Galle','Mathara','Chilaw','Puttlam','Kandy','Kegalle','Panadura','Mannar']
+
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
@@ -161,7 +163,7 @@ const PlaceOrderScreen = ({ history }) => {
               <strong>Delivery Option : </strong>
               {cart.orderDetails.deliveryMethod}<br></br>
               <strong>Estimated Delivery Date : </strong>
-              {cart.orderDetails.deliveryMethod}
+              {cities.includes(cart.shippingAddress.city)?'5 Days From Order Date':'7 Days From Order Date'}
               </div>
             </ListGroup.Item>
             <ListGroup.Item>
@@ -243,11 +245,15 @@ const PlaceOrderScreen = ({ history }) => {
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup>
               <ListGroup.Item>
+                {cart.orderDetails.paymentMethod=="Cash"?<Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={successPaymentHandler}>Place Order</Button>:(<>
+                
+                
                 {/* <Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={PlaceOrderHandler}>Place Order</Button> */}
                 {loadingPay && <Loader />}
                 {!sdkReady ? (
                   <Loader />
                 ) : (<PayPalButton amount="0.01" onSuccess={successPaymentHandler}/>)}
+                </>)}
               </ListGroup.Item>
             </ListGroup>
           </Card>

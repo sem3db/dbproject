@@ -8,15 +8,14 @@ const {
   moveToOrder_guest,
   setDeliveryStatus,
   getOrderList,
-  orderDetailes
+  orderDetailes,
 } = require("../models/orderModel.js");
 
 orderRouter.get(
   "/",
-
   expressAsyncHandler(async (req, res) => {
     const orders = await getOrders();
-    
+
     res.send(orders);
   })
 );
@@ -24,6 +23,7 @@ orderRouter.get(
 orderRouter.put(
   "/setDeliverStatus/:id",
   expressAsyncHandler(async (req, res) => {
+    console.log(req.params.id);
     const isUpdate = await setDeliveryStatus(req.params.id);
     res.send(isUpdate);
   })
@@ -58,8 +58,8 @@ orderRouter.post(
 orderRouter.post(
   "/placeorder/guest",
   expressAsyncHandler(async (req, res) => {
-    console.log('popopopopopopopopopop')
-    console.log(req.body)
+    console.log("popopopopopopopopopop");
+    console.log(req.body);
     const paymethod = req.body.paymentMethod;
     const delstat = req.body.delstat;
     const delmethod = req.body.deliveryMethod;
@@ -100,8 +100,6 @@ orderRouter.post(
   })
 );
 
-
-
 orderRouter.get(
   "/list",
   isAuth,
@@ -119,6 +117,5 @@ orderRouter.get(
     res.send(orderdetail);
   })
 );
-
 
 module.exports = orderRouter;
