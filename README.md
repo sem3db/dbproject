@@ -4,33 +4,3 @@ C is a local chain retailer in Texas. Over the years, they were able to acquire 
 
 As per the requirement, system must first hold details about different products. Each product has at least one variant. A variant defines a specific variety of a product. For an example, iPhone X is the product while 16GB and 32GB are product variants. Also colors Black and Red are too variants for the iPhone. Depending on the variant, the price of the product vary. If the product has no varieties, it will have the default variant which will contain the price of it. Moreover each product will have a SKU assigned by the warehouse. Each product belongs to one or more categories. The product catalog of the system would use categories for search and sort the products for the user. Some categories are Mobile, Speakers, etc. Each category can also have sub categories. While there are few common attributes of products, such as title, sku, weight etc. each product need the freedom to define its own custom attributes. Since the system supports online purchase of the products, the inventory of the products need to be managed by the system as well. Inventory would essentially maintain a count of the availability from each product variant. To simply the initial design, consider that all products are stored only in one warehouse. When a customer browse the platform, he/she could either register with the platform or browse as a guest. Customer could add products to the cart without completing any purchase. When product selection is done, he/she could checkout the cart. At this moment the cart turns to an order and the cart is emptied. Every order should contain the customer contact detail in extent (for logged in users, this can be taken from their already provided information). Apart from that, delivery method (store pickup, delivery) and payment method (cash on delivery or card) must be specified. Once a checkout is completed, the inventory must reflect the changes. Consistency in transactions (inventory counts) must be considered when validating purchases.
 
-Apart from these C, requires a comprehensive report system for monitoring and analytics of the platform.
-The reports include:
-- Quarterly sales report for a given year
-- Products with most number of sales in a given period
-- Product category with most orders
-- Given a product, time period with most interest to it
-- Customer - order report
-  
-Additionally, a delivery module needs to be created which shows the approximate delivery times for a given product. The rules for the module are a follows
-- If product has stock, delivery is to a main city (ex: Colombo), it’s 5 days
-- If product has stock, but delivery is not to a main city (ex: Negombo), it’s 7 days
-- If product has no stock add 3 days each of the above cases
-- Delivery estimate should appear in order when it’s in checkout
-These information need to be states with the product and with the order when checking out.
-
-As experts of database design, you are hired first analyse the requirement and propose a database design to encapsulate all the above functionalities. In order to test the functioning of the database, a simple UI is required.
-
-### Task
-Your task is to model the database design to encapsulate these requirement. It should consider all entities and relationships given in the description. Moreover you need to identify the places where procedures, functions and triggers can be employed to guarantee ACID properties. Foreign keys and primary keys must be set to maintain consistency. Indexing should be done when necessary.
-
-Additionally, the you must get a domain idea by reading related material and take assumptions when not explicitly provided. The database must be populated with at least 40 products, with variants and at least 10 different categories. These data insertions can be done manually and no need of UI components just for the task of data input.
-
-## Important notices
-
-### calling function "moveToOrder_guest" << parameter "productlist"
-
-the parameter "productlist" must be provided as a **JSON array** 
-
-ex:-    1.  '[{"variant_id":"2","product_id":"2","quantity":"3"},{"variant_id":"3","product_id":"1","quantity":"4"}]'
-        2.  '[{"variant_id":"5","product_id":"1","quantity":"1"},{"variant_id":"2","product_id":"1","quantity":"2"},{"variant_id":"1","product_id":"3","quantity":"1"}]'
